@@ -13,7 +13,7 @@ function Search({ onSubmit }) {
         style={{
           padding: "8px",
           borderRadius: "5px 0 0 5px",
-          border: "2px solid #007bff",
+          border: "2px solid #e9e91d",
           borderTopRightRadius: 0,
           borderBottomRightRadius: 0,
           outline: "none",
@@ -22,11 +22,11 @@ function Search({ onSubmit }) {
       />
       <button
         style={{
-          backgroundColor: "#007bff",
-          color: "#fff",
+          backgroundColor: "#e9e91d",
+          color: "black",
           padding: "8px 16px",
           borderRadius: "0 5px 5px 0",
-          border: "2px solid #007bff",
+          border: "2px solid #e9e91d",
           borderTopLeftRadius: 0,
           borderBottomLeftRadius: 0,
           cursor: "pointer",

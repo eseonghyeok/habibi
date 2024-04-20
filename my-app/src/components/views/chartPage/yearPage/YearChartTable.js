@@ -20,27 +20,27 @@ function YearChartTable() {
         () => [
             {
                 accessor: "rank",
-                Header: "Rank",
+                Header: "RANK",
             },
             {
                 accessor: "name",
-                Header: "Name",
+                Header: "NAME",
             },
             {
                 accessor: "goal",
-                Header: "Goal",
+                Header: "G",
             },
             {
                 accessor: "assist",
-                Header: "Assist",
+                Header: "A",
             },
             {
                 accessor: "plays",
-                Header: "Plays",
+                Header: "P",
             },
             {
                 accessor: "pts",
-                Header: "Pts.",
+                Header: "PTS",
             },
         ], []
     );
@@ -59,7 +59,7 @@ function YearChartTable() {
         }
     });
 
-    return <Table columns={columns} data={indexedData} />;    
+    return <Table columns={columns} data={indexedData}/>;    
 }
 
 export default YearChartTable;

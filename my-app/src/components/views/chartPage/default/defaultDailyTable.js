@@ -1,9 +1,8 @@
 import React from "react";
 import Axios from 'axios';
 import { useTable, useGlobalFilter, useSortBy } from "react-table";
-import { Button } from 'antd';
 import Search from "./search";
-import soccerStadiumImage from "./soccer_stadium.jpg";
+import chartpage from './chartpage.jpg'
 
 function Table({ columns, data }) {
   const {
@@ -40,16 +39,15 @@ function Table({ columns, data }) {
     let date = new Date();
 
     return (
-        <div style={{ minHeight: "100vh", padding: "20px", backgroundImage: `url(${soccerStadiumImage})`, backgroundSize: "cover", backgroundPosition: "center" }}>
+        <div style={{ minHeight: "100vh", padding: "10px", backgroundImage: `url(${chartpage})`, backgroundSize: "cover", backgroundPosition: "center" }}>
             <div style={{ marginBottom: "20px", textAlign: "center" }}>
-                <h1 style={{ marginBottom: "10px", marginRight: "40%", color: "#fff", fontSize: "50px" }}>{date.toLocaleDateString()}</h1>
-                <h1 style={{ marginBottom: "10px", marginRight: "40%", color: "#fff", fontSize: "50px" }}>🏆HABIBI CHECK PAGE🏆</h1>
-                <p style={{ color: "#fff" }}>💡기록 체크 페이지에서는 당일 선수들의 골, 어시스트를 기록할 수 있습니다.</p>
+                <h1 style={{ marginBottom: "10px", color: "#fff", fontSize: "25px" }}>🏆{date.toLocaleDateString()} HABIBI POINT🏆</h1>
+                <p style={{ fontSize: '11px', color: "#fff" }}>💡기록체크 페이지에서는 매니저가 직접 선수들의 당일 공격포인트를 기록할 수 있습니다.</p>
                 <Search
                 onSubmit={setGlobalFilter} style={{ overflowX: "auto", padding: "0 30px" }}
                 />
             </div>
-            <div style={{ overflowX: "auto", padding: "0 30px" }}>
+            <div style={{ overflowX: "auto" }}>
                 <table
                 {...getTableProps()}
                 style={{
