@@ -70,7 +70,7 @@ function Table({ columns, data }) {
     return (
         <div style={{ minHeight: "100vh", padding: "10px", backgroundImage: `url(${chartpage})`, backgroundSize: "cover", backgroundPosition: "center" }}>
             <div style={{ marginBottom: "20px", textAlign: "center" }}>
-                <h1 style={{ marginBottom: "10px", color: "#fff", fontSize: "25px" }}>🏆{date.toLocaleDateString()} HABIBI POINT🏆</h1>
+                <h1 style={{ marginBottom: "10px", color: "#fff", fontSize: "23px" }}>🏆{date.toLocaleDateString()} HABIBI POINT🏆</h1>
                 <p style={{ fontSize: '11px', color: "#fff" }}>💡기록체크 페이지에서는 매니저가 직접 선수들의 당일 공격포인트를 기록할 수 있습니다.</p>
                 <Search
                 onSubmit={setGlobalFilter} style={{ overflowX: "auto", padding: "0 30px" }}
