@@ -30,11 +30,15 @@ function MinusChartTable() {
             },
             {
                 accessor: "goal",
-                Header: "Goal",
+                Header: "G",
             },
             {
                 accessor: "assist",
-                Header: "Assist",
+                Header: "A",
+            },
+            {
+                accessor: "plays",
+                Header: "P",
             },
         ], []
     );

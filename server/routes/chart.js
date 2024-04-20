@@ -92,17 +92,15 @@ function minusAssist(id) {
     }
 }
 
-function minusPlays(ids) {
-    ids.forEach(id => {
-        if (dailyChart.players[id].plays > 0) {
-            dailyChart.players[id].plays --;
-            monthChart.players[id].plays --;
-            yearChart.players[id].plays --;
-            monthChart.players[id].pts -= 5;
-            yearChart.players[id].pts -= 5;
-            updateChartFile();
-        }
-    });
+function minusPlays(id) {
+    if (dailyChart.players[id].plays > 0) {
+        dailyChart.players[id].plays --;
+        monthChart.players[id].plays --;
+        yearChart.players[id].plays --;
+        monthChart.players[id].pts -= 5;
+        yearChart.players[id].pts -= 5;
+        updateChartFile();
+    }
 }
 
 // Get daily chart
@@ -166,11 +164,10 @@ router.post("/minusAssist", (req, res) => {
 
 // minus plays
 router.post("/minusPlays", (req, res) => {
-    const { attendanceList } = req.body;
-    const ids = attendanceList.map(member => member.id);
+    const { id } = req.body;
     if (!dailyChart) return res.status(400).send();
     res.status(200).json({ success: true })
-    minusPlays(ids);
+    minusPlays(id);
 });
 
 module.exports = router;

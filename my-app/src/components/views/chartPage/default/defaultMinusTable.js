@@ -35,6 +35,17 @@ function Table({ columns, data }) {
             })
     };
 
+    const minusPlaysbyId = (id) => {
+        Axios.post('/api/chart/minusPlays', { id })
+            .then(response => {
+                if(response.data.success) {
+                    window.location.reload();
+                } else {
+                    alert('경기수 반영을 실패하였습니다.')
+                }
+            })
+    };
+
     let date = new Date();
 
     return (
@@ -52,7 +63,7 @@ function Table({ columns, data }) {
                 style={{
                     borderCollapse: "collapse",
                     width: "100%",
-                    fontSize: "0.9em",
+                    fontSize: "11px",
                     boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
                     borderRadius: "8px",
                     backgroundColor: "rgba(255, 255, 255, 0.8)",
@@ -106,6 +117,7 @@ function Table({ columns, data }) {
                                 <td style={{ padding: "12px", borderBottom: "1px solid #ddd", color: "#333", textAlign: "center" }}>
                                     <button onClick={() => minusGoalbyId(row.original.id)} style={{ backgroundColor: "transparent", border: "none" }}>⚽️</button>
                                     <button onClick={() => minusAssistbyId(row.original.id)} style={{ backgroundColor: "transparent", border: "none" }}>🎯</button>
+                                    <button onClick={() => minusPlaysbyId(row.original.id)} style={{ backgroundColor: "transparent", border: "none" }}>🏃</button>
                                 </td>
                             </tr>
                         );
