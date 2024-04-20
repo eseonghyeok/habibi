@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Button } from 'antd';
 import PasswordModal from '../adminPage/PasswordModal'
+import background from './homepage.png'
 
 function HomePage() {
     const [visible, setVisible] = useState(false);
@@ -34,9 +35,9 @@ function HomePage() {
     };
 
     return (
-        <div style={{ textAlign: 'center', marginTop: '50px', height: '675px' }}>
-            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-                <div style={{ marginBottom: '20px' }}>
+        <div style={{ textAlign: 'center', height: '750px' }}>
+            <div style={{ display: 'flex', backgroundImage: `url(${background})`, backgroundSize: 'cover', backgroundPosition: 'center', minHeight: '100vh', flexDirection: 'column', alignItems: 'center' }}>
+                <div style={{ marginBottom: '20px', marginTop: '50px' }}>
                     <Button type="primary" href="/chart/year" size="large" style={buttonStyle}>
                         올해의 랭킹 <p style={{ fontSize: '40px', marginRight: '-30px'}}>🥇</p>
                     </Button>
