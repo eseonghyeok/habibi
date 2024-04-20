@@ -5,7 +5,7 @@ const navbarStyle = {
   display: 'flex',
   alignItems: 'center',
   height: '80px',
-  backgroundColor: '#1890ff',
+  backgroundColor: 'yellow',
 };
 
 const containerStyle = {

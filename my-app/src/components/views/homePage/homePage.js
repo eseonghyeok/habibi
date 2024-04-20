@@ -31,59 +31,59 @@ function HomePage() {
         justifyContent: 'center', 
         alignItems: 'center',
         textDecoration: 'none',
-        fontWeight: 'bold'
+        fontWeight: 'bold',
+        background: '#ffff00e6',
+        color: 'black'
     };
 
     return (
-        <div style={{ textAlign: 'center', height: '750px' }}>
-            <div style={{ display: 'flex', backgroundImage: `url(${background})`, backgroundSize: 'cover', backgroundPosition: 'center', minHeight: '100vh', flexDirection: 'column', alignItems: 'center' }}>
-                <div style={{ marginBottom: '20px', marginTop: '50px' }}>
-                    <Button type="primary" href="/chart/year" size="large" style={buttonStyle}>
-                        올해의 랭킹 <p style={{ fontSize: '40px', marginRight: '-30px'}}>🥇</p>
-                    </Button>
-                </div>
-                <div style={{ marginBottom: '20px' }}>
-                    <Button type="primary" href="/chart/month" size="large" style={buttonStyle}>
-                        이달의 랭킹 <p style={{ fontSize: '40px', marginRight: '-30px'}}>🥈</p>
-                    </Button>
-                </div>
-                {/* <div style={{ marginBottom: '20px' }}>
-                    <Button type="primary" href="/star" size="large" style={buttonStyle}>
-                        명예의 전당 <p style={{ fontSize: '40px', marginRight: '-30px'}}>🗽</p>
-                    </Button>
-                </div> */}
-                {isLoggedIn ? (
-                    <div>
-                        <div style={{ marginBottom: '20px' }}>
-                            <Button type="primary" href="/attendance" size="large" style={buttonStyle}>
-                                출석체크 <p style={{ fontSize: '35px', marginRight: '-30px'}}>📋</p>
-                            </Button>
-                        </div>
-                        <div style={{ marginBottom: '20px' }}>
-                            <Button type="primary" href="/chart/daily" size="large" style={buttonStyle}>
-                                기록체크 <p style={{ fontSize: '35px', marginRight: '-30px'}}>⚽️</p>
-                            </Button>
-                        </div>
-                        <div style={{ marginBottom: '20px' }}>
-                            <Button type="primary" size="large" onClick={logoutSuccess} style={buttonStyle}>
-                                로그아웃 <p style={{ fontSize: '35px', marginRight: '-30px'}}>🔒</p>
-                            </Button>
-                        </div>
-                        <div style={{ marginBottom: '20px' }}>
-                            <Button type="primary" href="/chart/minus" size="large" style={{width: '240px', height: '80px', background: 'red', fontSize: '23px', fontFamily: 'Verdana, sans-serif', textAlign: 'center', display: 'flex', justifyContent: 'center', alignItems: 'center',textDecoration: 'none',fontWeight: 'bold'}}>
-                                기록수정 <p style={{ fontSize: '35px', marginRight: '-30px'}}>⚠️</p>
-                            </Button>
-                        </div>
-                    </div>
-                ) : (
-                    <div style={{ marginBottom: '20px' }}>
-                        <Button type="primary" size="large" onClick={showModal} style={buttonStyle}>
-                            로그인 <p style={{ fontSize: '30px', marginRight: '-30px'}}>🔓</p>
-                        </Button>
-                        <PasswordModal visible={visible} onCancel={handleCancel} />
-                    </div>
-                )}
+        <div style={{ textAlign: 'center', height: '750px', display: 'flex', backgroundImage: `url(${background})`, backgroundSize: 'cover', backgroundPosition: 'center', minHeight: '100vh', flexDirection: 'column', alignItems: 'center' }}>
+            <div style={{ marginBottom: '20px', marginTop: '50px' }}>
+                <Button type="primary" href="/chart/year" size="large" style={buttonStyle}>
+                    올해의 랭킹 <p style={{ fontSize: '40px', marginRight: '-30px'}}>🥇</p>
+                </Button>
             </div>
+            <div style={{ marginBottom: '20px' }}>
+                <Button type="primary" href="/chart/month" size="large" style={buttonStyle}>
+                    이달의 랭킹 <p style={{ fontSize: '40px', marginRight: '-30px'}}>🥈</p>
+                </Button>
+            </div>
+            {/* <div style={{ marginBottom: '20px' }}>
+                <Button type="primary" href="/star" size="large" style={buttonStyle}>
+                    명예의 전당 <p style={{ fontSize: '40px', marginRight: '-30px'}}>🗽</p>
+                </Button>
+            </div> */}
+            {isLoggedIn ? (
+                <div>
+                    <div style={{ marginBottom: '20px' }}>
+                        <Button type="primary" href="/attendance" size="large" style={buttonStyle}>
+                            출석체크 <p style={{ fontSize: '35px', marginRight: '-30px'}}>📋</p>
+                        </Button>
+                    </div>
+                    <div style={{ marginBottom: '20px' }}>
+                        <Button type="primary" href="/chart/daily" size="large" style={buttonStyle}>
+                            기록체크 <p style={{ fontSize: '35px', marginRight: '-30px'}}>⚽️</p>
+                        </Button>
+                    </div>
+                    <div style={{ marginBottom: '20px' }}>
+                        <Button type="primary" size="large" onClick={logoutSuccess} style={buttonStyle}>
+                            로그아웃 <p style={{ fontSize: '35px', marginRight: '-30px'}}>🔒</p>
+                        </Button>
+                    </div>
+                    <div style={{ marginBottom: '20px' }}>
+                        <Button type="primary" href="/chart/minus" size="large" style={{width: '240px', height: '80px', background: '#ff7a00e3', fontSize: '23px', fontFamily: 'Verdana, sans-serif', textAlign: 'center', display: 'flex', justifyContent: 'center', alignItems: 'center',textDecoration: 'none', fontWeight: 'bold'}}>
+                            기록수정 <p style={{ fontSize: '35px', marginRight: '-30px'}}>⚠️</p>
+                        </Button>
+                    </div>
+                </div>
+            ) : (
+                <div style={{ marginBottom: '20px' }}>
+                    <Button type="primary" size="large" onClick={showModal} style={buttonStyle}>
+                        로그인 <p style={{ fontSize: '30px', marginRight: '-30px'}}>🔓</p>
+                    </Button>
+                    <PasswordModal visible={visible} onCancel={handleCancel} />
+                </div>
+            )}
         </div>
     );
 }
