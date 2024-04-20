@@ -2,19 +2,21 @@ import React, { useState } from 'react';
 import Axios from 'axios';
 import { Button, List, Modal } from 'antd';
 import groundJpg from './ground.jpg';
-import banchJpg from './banch.jpg';
-import background from '../chartPage/default/soccer_stadium.jpg';
+import list from './playerlist.jpg';
+import profile1 from './profile/1.jpg'
+import profile2 from './profile/2.jpg'
+import profile3 from './profile/3.jpg'
 
 function AttendancePage() {
     const all = [
-        { id: 0, name: "김형철" }, { id: 1, name: "송효석" }, { id: 2, name: "박재범" }, { id: 3, name: "권위준" }, { id: 4, name: "신종은" },
-        { id: 5, name: "이정일" }, { id: 6, name: "조돈휘" }, { id: 7, name: "현종권" }, { id: 8, name: "곽영래" }, { id: 9, name: "정회화" },
-        { id: 10, name: "김상명" }, { id: 11, name: "신종윤" }, { id: 12, name: "임필우" }, { id: 13, name: "김명관" }, { id: 14, name: "이병철" },
-        { id: 15, name: "강동균" }, { id: 16, name: "류희대" }, { id: 17, name: "여성진" }, { id: 18, name: "김영준" }, { id: 19, name: "장효준" },
-        { id: 20, name: "정기택" }, { id: 21, name: "김정민" }, { id: 22, name: "김주환" }, { id: 23, name: "이지철" }, { id: 24, name: "김진호" },
-        { id: 25, name: "박진산" }, { id: 26, name: "임다훈" }, { id: 27, name: "박찬용" }, { id: 28, name: "이종범" }, { id: 29, name: "박기환" },
-        { id: 30, name: "이주은" }, { id: 31, name: "권현택" }, { id: 32, name: "민준홍" }, { id: 33, name: "이성혁" }, { id: 34, name: "이   정" },
-        { id: 35, name: "이상욱" }, { id: 36, name: "박준영" }, { id: 37, name: "윤한중" }
+        { id: 0, name: "김형철", image: profile1, num: 3 }, { id: 1, name: "송효석", image: profile1, num: 18 }, { id: 2, name: "박재범", image: profile1, num: 0 }, { id: 3, name: "권위준", image: profile1, num: 14 }, { id: 4, name: "신종은", image: profile1, num: 17 },
+        { id: 5, name: "이정일", image: profile1, num: 77 }, { id: 6, name: "조돈휘", image: profile1, num: 77 }, { id: 7, name: "현종권", image: profile1, num: 8 }, { id: 8, name: "곽영래", image: profile1, num: 32 }, { id: 9, name: "정회화", image: profile1, num: 7 },
+        { id: 10, name: "김상명", image: profile1, num: 52 }, { id: 11, name: "신종윤", image: profile1, num: 13 }, { id: 12, name: "임필우", image: profile1, num: 19 }, { id: 13, name: "김명관", image: profile1, num: 11 }, { id: 14, name: "이병철", image: profile1, num: 11 },
+        { id: 15, name: "강동균", image: profile2, num: 6 }, { id: 16, name: "류희대", image: profile2, num: 16 }, { id: 17, name: "여성진", image: profile2, num: 99 }, { id: 18, name: "김영준", image: profile2, num: 1 }, { id: 19, name: "장효준", image: profile2, num: 6 },
+        { id: 20, name: "정기택", image: profile2, num: 2 }, { id: 21, name: "김정민", image: profile2, num: 7 }, { id: 22, name: "김주환", image: profile2, num: 5 }, { id: 23, name: "이지철", image: profile2, num: 9 }, { id: 24, name: "김진호", image: profile2, num: 7 },
+        { id: 25, name: "박진산", image: profile2, num: 17 }, { id: 26, name: "임다훈", image: profile2, num: 22 }, { id: 27, name: "박찬용", image: profile3, num: 30 }, { id: 28, name: "이종범", image: profile3, num: 4 }, { id: 29, name: "박기환", image: profile3, num: 6 },
+        { id: 30, name: "이주은", image: profile3, num: 20 }, { id: 31, name: "권현택", image: profile3, num: 13 }, { id: 32, name: "민준홍", image: profile3, num: 35 }, { id: 33, name: "이성혁", image: profile3, num: 10 }, { id: 34, name: "이   정", image: profile3, num: 11 },
+        { id: 35, name: "이상욱", image: profile3, num: '00' }, { id: 36, name: "박준영", image: profile3, num: 27 }, { id: 37, name: "윤한중", image: profile3, num: 12 }
     ];
 
     //회원 리스트
@@ -41,6 +43,7 @@ function AttendancePage() {
             title: '출석 명단 제출',
             content: (
                 <div>
+                    <p>출석한 회원 수: {attendanceList.length}명</p>
                     <p>정말 등록하시겠습니까?</p>
                     <p>등록 이후에는 명단이 초기화 됩니다.</p>
                     <p>당일 최종 명단 등록할 때 사용을 권장합니다.</p>
@@ -71,36 +74,49 @@ function AttendancePage() {
     let date = new Date();
 
     return (
-        <div style={{ textAlign: 'center', minHeight: "100vh", padding: "20px", backgroundImage: `url(${background})`, backgroundSize: "cover", backgroundPosition: "center" }}>
-            <div style={{ marginBottom: "20px", textAlign: "center" }}>
-                <h1 style={{ marginBottom: "10px", marginRight: "40%", color: "#fff", fontSize: "50px" }}>{date.toLocaleDateString()}</h1>
-                <h1 style={{ marginBottom: "10px", marginRight: "40%", color: "#fff", fontSize: "50px" }}>🙋‍♂출석체크🙋‍♂</h1>
-                <p style={{ color: "#fff" }}>💡출석 체크 페이지에서는 당일 참석한 선수들을 체크하고 출석포인트를 기록합니다.</p>
+        <div style={{ textAlign: 'center', minHeight: "100vh" }}>
+            <div style={{ padding: "10px", backgroundImage: `url(${list})`, backgroundSize: 'cover' }}>
+                <div style={{ textAlign: "center" }}>
+                    <h1 style={{ color: "#fff", fontSize: "25px" }}>🙋‍♂{date.toLocaleDateString()} 출석체크🙋‍♂</h1>
+                    <p style={{ fontSize: '11px', color: "#fff" }}>💡출석 체크 페이지에서는 당일 참석한 선수들을 체크하고 출석포인트를 기록합니다.</p>
+                </div>
+                <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', minHeight: "50vh" }}>
+                    <h2 style={{ color: 'white', fontWeight: 'bold' }}>HABIBI FC PLAYER LIST</h2>
+                    <List
+                        grid={{ gutter: 10, column: 5 }}
+                        dataSource={members}
+                        renderItem={member => (
+                            <List.Item>
+                                <Button onClick={() => handleAttendance(member)} style={{ width: '70px', height: '80px', borderRadius: '3px', fontSize: '12px' }}>
+                                <div style={{ position: 'relative', width: '100%', height: '100%' }}>
+                                    <img src={member.image} alt={member.name} style={{ marginLeft: '-13px', width: '65px', height: '76px', objectFit: 'cover', borderRadius: '3px' }} />
+                                    <span style={{ position: 'absolute', bottom: '10px', left: '-15%', transform: 'translateX(-50%)', color: 'black', fontSize: '18px', fontWeight: 'bold' }}>{member.num}</span>
+                                    <span style={{ position: 'absolute', bottom: '-9px', left: '50%', transform: 'translateX(-50%)', color: 'black', fontSize: '15px', fontWeight: 'bold' }}>{member.name}</span>
+                                </div>
+                                </Button>
+                            </List.Item>
+                        )}
+                    />
+                </div>
             </div>
-            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', minHeight: "50vh", background: `url(${banchJpg})`, backgroundSize: 'cover', padding: '20px' }}>
-                <h2 style={{ color: 'white' }}>회원 리스트</h2>
-                <List
-                    grid={{ gutter: 10, column: 8 }}
-                    dataSource={members}
-                    renderItem={member => (
-                        <List.Item>
-                            <Button onClick={() => handleAttendance(member)}>{member.name}</Button>
-                        </List.Item>
-                    )}
-                />
-            </div>
-            <Button type="primary" onClick={submitAttendanceList}>명단 등록</Button>
             <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', minHeight: "50vh", background: `url(${groundJpg})`, backgroundSize: 'cover', padding: '20px' }}>
-                <h2 style={{ color: 'white' }}>출석 명단</h2>
+                <h2 style={{ color: 'white' }}>TODAY'S PLAYER</h2>
                 <List
-                    grid={{ gutter: 10, column: 4 }}
+                    grid={{ gutter: 10, column: 5 }}
                     dataSource={attendanceList}
                     renderItem={member => (
                         <List.Item>
-                            <Button onClick={() => removeAttendance(member)}>{member.name}</Button>
+                            <Button onClick={() => removeAttendance(member)} style={{ width: '70px', height: '80px', borderRadius: '3px', fontSize: '12px' }}>
+                                <div style={{ position: 'relative', width: '100%', height: '100%' }}>
+                                    <img src={member.image} alt={member.name} style={{ marginLeft: '-13px', width: '65px', height: '76px', objectFit: 'cover', borderRadius: '3px' }} />
+                                    <span style={{ position: 'absolute', bottom: '10px', left: '-15%', transform: 'translateX(-50%)', color: 'black', fontSize: '18px', fontWeight: 'bold' }}>{member.num}</span>
+                                    <span style={{ position: 'absolute', bottom: '-9px', left: '50%', transform: 'translateX(-50%)', color: 'black', fontSize: '15px', fontWeight: 'bold' }}>{member.name}</span>
+                                </div>
+                            </Button>
                         </List.Item>
                     )}
                 />
+                <Button type="primary" onClick={submitAttendanceList} style={{ background: '#2a85fb', width: '105px', height: '45px', borderRadius: '6px', fontSize: '15px' }}>명단 등록</Button>
             </div>
         </div>
     );

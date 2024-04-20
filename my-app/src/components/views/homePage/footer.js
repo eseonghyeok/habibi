@@ -9,7 +9,7 @@ const footerStyle = {
   height: '80px',
   width: '100%',
   textAlign: 'center',
-  position: 'fixed',
+  backgroundImage: 'linear-gradient(to top, rgba(255, 255, 0, 1) 75%, rgba(255, 255, 0, 0.6))',
   bottom: 0
 };
 

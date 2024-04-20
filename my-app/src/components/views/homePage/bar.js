@@ -6,6 +6,7 @@ const navbarStyle = {
   alignItems: 'center',
   height: '80px',
   backgroundColor: 'yellow',
+  backgroundImage: 'linear-gradient(to bottom, rgba(255, 255, 0, 1) 75%, rgba(255, 255, 0, 0.6))'
 };
 
 const containerStyle = {
