@@ -60,6 +60,7 @@ function AttendancePage() {
                         console.log('명단 등록에 성공하였습니다.')
                         setAttendanceList([]); // 출석 명단 초기화
                         setMembers(all); // 회원 리스트 초기화
+                        window.location.reload();
                     } else {
                         alert('명단 등록에 실패하였습니다.')
                     }
@@ -69,7 +70,6 @@ function AttendancePage() {
                 console.log('취소됨');
             },
         });
-        window.location.reload();
     };
 
     let date = new Date();
