@@ -4,7 +4,7 @@ import { Button, Modal, Form, Input } from 'antd';
 function PasswordModal({ visible, onCancel }) {
     const [form] = Form.useForm();
     const [loading, setLoading] = useState(false);
-    const DEFAULT_PASSWD = '123'
+    const DEFAULT_PASSWD = '1541'
 
     const loginSuccess = () => {
         localStorage.setItem('isLoggedIn', 'true');

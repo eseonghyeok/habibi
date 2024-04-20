@@ -69,6 +69,7 @@ function AttendancePage() {
                 console.log('취소됨');
             },
         });
+        window.location.reload();
     };
 
     let date = new Date();

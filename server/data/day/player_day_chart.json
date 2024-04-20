@@ -4,48 +4,48 @@
       "id": 0,
       "name": "김형철",
       "goal": 0,
-      "assist": 1,
-      "plays": 4
+      "assist": 0,
+      "plays": 0
     },
     {
       "id": 1,
       "name": "송효석",
-      "goal": 22,
-      "assist": 6,
-      "plays": 3
+      "goal": 0,
+      "assist": 0,
+      "plays": 0
     },
     {
       "id": 2,
       "name": "박재범",
       "goal": 0,
       "assist": 0,
-      "plays": 1
+      "plays": 0
     },
     {
       "id": 3,
       "name": "권위준",
-      "goal": 1,
-      "assist": 1,
-      "plays": 1
+      "goal": 0,
+      "assist": 0,
+      "plays": 0
     },
     {
       "id": 4,
       "name": "신종은",
-      "goal": 19,
-      "assist": 9,
-      "plays": 1
+      "goal": 0,
+      "assist": 0,
+      "plays": 0
     },
     {
       "id": 5,
       "name": "이정일",
       "goal": 0,
       "assist": 0,
-      "plays": 1
+      "plays": 0
     },
     {
       "id": 6,
       "name": "조돈휘",
-      "goal": 1,
+      "goal": 0,
       "assist": 0,
       "plays": 0
     },
@@ -54,7 +54,7 @@
       "name": "현종권",
       "goal": 0,
       "assist": 0,
-      "plays": 1
+      "plays": 0
     },
     {
       "id": 8,
@@ -89,14 +89,14 @@
       "name": "임필우",
       "goal": 0,
       "assist": 0,
-      "plays": 1
+      "plays": 0
     },
     {
       "id": 13,
       "name": "김명관",
       "goal": 0,
       "assist": 0,
-      "plays": 1
+      "plays": 0
     },
     {
       "id": 14,
@@ -145,21 +145,21 @@
       "name": "정기택",
       "goal": 0,
       "assist": 0,
-      "plays": 1
+      "plays": 0
     },
     {
       "id": 21,
       "name": "김정민",
       "goal": 0,
       "assist": 0,
-      "plays": 2
+      "plays": 0
     },
     {
       "id": 22,
       "name": "김주환",
       "goal": 0,
       "assist": 0,
-      "plays": 2
+      "plays": 0
     },
     {
       "id": 23,
@@ -180,91 +180,91 @@
       "name": "박진산",
       "goal": 0,
       "assist": 0,
-      "plays": 1
+      "plays": 0
     },
     {
       "id": 26,
       "name": "임다훈",
       "goal": 0,
       "assist": 0,
-      "plays": 2
+      "plays": 0
     },
     {
       "id": 27,
       "name": "박찬용",
       "goal": 0,
       "assist": 0,
-      "plays": 2
+      "plays": 0
     },
     {
       "id": 28,
       "name": "이종범",
       "goal": 0,
       "assist": 0,
-      "plays": 2
+      "plays": 0
     },
     {
       "id": 29,
       "name": "박기환",
       "goal": 0,
       "assist": 0,
-      "plays": 2
+      "plays": 0
     },
     {
       "id": 30,
       "name": "이주은",
       "goal": 0,
       "assist": 0,
-      "plays": 1
+      "plays": 0
     },
     {
       "id": 31,
       "name": "권현택",
       "goal": 0,
       "assist": 0,
-      "plays": 2
+      "plays": 0
     },
     {
       "id": 32,
       "name": "민준홍",
       "goal": 0,
       "assist": 0,
-      "plays": 1
+      "plays": 0
     },
     {
       "id": 33,
       "name": "이성혁",
       "goal": 0,
       "assist": 0,
-      "plays": 3
+      "plays": 0
     },
     {
       "id": 34,
       "name": "이  정",
       "goal": 0,
       "assist": 0,
-      "plays": 3
+      "plays": 0
     },
     {
       "id": 35,
       "name": "이상욱",
       "goal": 0,
       "assist": 0,
-      "plays": 2
+      "plays": 0
     },
     {
       "id": 36,
       "name": "박준영",
       "goal": 0,
       "assist": 0,
-      "plays": 2
+      "plays": 0
     },
     {
       "id": 37,
       "name": "윤한중",
       "goal": 0,
       "assist": 0,
-      "plays": 1
+      "plays": 0
     }
   ]
 }

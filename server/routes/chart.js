@@ -8,6 +8,7 @@ let month = date.getMonth() + 1;
 const dailyChart = require('../data/day/player_day_chart.json');
 const monthChart = require('../data/month/player_chart_' + month + '_' + year + '.json');
 const yearChart = require('../data/year/player_chart_' + year + '.json');
+const defaultDailyChartPath = './server/data/day/player_day_chart_default.json';
 const dailyChartPath = './server/data/day/player_day_chart.json';
 const monthChartPath = './server/data/month/player_chart_' + month + '_' + year + '.json';
 const yearChartPath = './server/data/year/player_chart_' + year + '.json';
@@ -39,6 +40,22 @@ function updateChartFile() {
     });
 
     if(success) console.log('모든 차트 JSON 파일이 성공적으로 갱신되었습니다.');
+}
+
+function initDailyChart() {
+    // // 디폴트 파일 읽기
+    // const defaultContent = fs.readFileSync(defaultDailyChartPath, 'utf8');
+
+    // // 작업 가능한 파일에 디폴트 내용 덮어쓰기
+    // fs.writeFileSync(dailyChartPath, defaultContent);
+    // //updateChartFile();
+    // console.log('기록체크 페이지를 디폴트 값으로 초기화 했습니다.')
+    for (let id = 0; id < 38; id++) {
+        dailyChart.players[id].goal = 0;
+        dailyChart.players[id].assist = 0;
+        dailyChart.players[id].plays = 0;
+    }
+    updateChartFile();
 }
 
 function plusGoal(id) {
@@ -102,6 +119,13 @@ function minusPlays(id) {
         updateChartFile();
     }
 }
+
+// replace default daily chart
+router.post("/initDaily", (req, res) => {
+    if (!dailyChart) return res.status(400).send();
+    res.status(200).json({ success: true })
+    initDailyChart();
+});
 
 // Get daily chart
 router.get("/daily", (req, res) => {
