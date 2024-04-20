@@ -34,7 +34,7 @@ function Table({ columns, data }) {
             fontSize: "0.9em",
             fontSize: "11px",
             backgroundColor: "rgba(255, 255, 255, 0)",
-            marginBottom: '75px'
+            marginBottom: '30px'
           }}
         >
           <thead>
