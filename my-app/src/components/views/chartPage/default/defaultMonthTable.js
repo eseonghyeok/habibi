@@ -31,7 +31,6 @@ function Table({ columns, data }) {
           style={{
             borderCollapse: "collapse",
             width: "100%",
-            fontSize: "0.9em",
             fontSize: "11px",
             backgroundColor: "rgba(255, 255, 255, 0)",
             marginBottom: '30px'

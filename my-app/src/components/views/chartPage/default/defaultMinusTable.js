@@ -51,7 +51,7 @@ function Table({ columns, data }) {
     return (
         <div style={{ minHeight: "100vh", padding: "10px", backgroundColor: "black", backgroundPosition: "center" }}>
             <div style={{ marginBottom: "20px", textAlign: "center" }}>
-                <h1 style={{ marginBottom: "10px", color: "#fff", fontSize: "25px", color: '#ff6800' }}>⚠️{date.toLocaleDateString()} 기록 차감⚠️</h1>
+                <h1 style={{ marginBottom: "10px", fontSize: "25px", color: '#ff6800' }}>⚠️{date.toLocaleDateString()} 기록 차감⚠️</h1>
                 <p style={{ fontSize: '11px', color: "#fff" }}>💡기록수정 페이지에서는 매니저가 직접 오기입된 선수들의 차트 정보를 차감할 수 있습니다.</p>
                 <Search
                 onSubmit={setGlobalFilter} style={{ overflowX: "auto", padding: "0 30px" }}
