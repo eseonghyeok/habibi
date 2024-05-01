@@ -2,16 +2,16 @@ const express = require('express');
 const router = express.Router();
 const fs = require('fs');
 
-let date = new Date();
-let year = date.getFullYear();
-let month = date.getMonth() + 1;
+// let date = new Date();
+// let year = date.getFullYear();
+// let month = date.getMonth() + 1;
 const dailyChart = require('../data/day/player_day_chart.json');
-const monthChart = require('../data/month/player_chart_' + month + '_' + year + '.json');
-const yearChart = require('../data/year/player_chart_' + year + '.json');
+const monthChart = require('../data/month/player_chart_5_2024.json');
+const yearChart = require('../data/year/player_chart_2024.json');
 const defaultDailyChartPath = './server/data/day/player_day_chart_default.json';
 const dailyChartPath = './server/data/day/player_day_chart.json';
-const monthChartPath = './server/data/month/player_chart_' + month + '_' + year + '.json';
-const yearChartPath = './server/data/year/player_chart_' + year + '.json';
+const monthChartPath = './server/data/month/player_chart_5_2024.json';
+const yearChartPath = './server/data/year/player_chart_2024.json';
 
 function updateChartFile() {
     let success = 1;

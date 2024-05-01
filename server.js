@@ -4,8 +4,8 @@ const path = require('path')
 const cors = require('cors');
 
 //build 후 server와 연동할 때
-app.listen(8080, function(){
-    console.log('listening on 8080')
+app.listen(5000, function(){
+    console.log('listening on 5000')
 })
 
 

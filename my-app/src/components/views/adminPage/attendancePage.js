@@ -16,7 +16,8 @@ function AttendancePage() {
         { id: 20, name: "정기택", image: profile2, num: 2 }, { id: 21, name: "김정민", image: profile2, num: 7 }, { id: 22, name: "김주환", image: profile2, num: 5 }, { id: 23, name: "이지철", image: profile2, num: 9 }, { id: 24, name: "김진호", image: profile2, num: 7 },
         { id: 25, name: "박진산", image: profile2, num: 17 }, { id: 26, name: "임다훈", image: profile2, num: 22 }, { id: 27, name: "박찬용", image: profile3, num: 30 }, { id: 28, name: "이종범", image: profile3, num: 4 }, { id: 29, name: "박기환", image: profile3, num: 6 },
         { id: 30, name: "이주은", image: profile3, num: 20 }, { id: 31, name: "권현택", image: profile3, num: 13 }, { id: 32, name: "민준홍", image: profile3, num: 35 }, { id: 33, name: "이성혁", image: profile3, num: 10 }, { id: 34, name: "이   정", image: profile3, num: 11 },
-        { id: 35, name: "이상욱", image: profile3, num: '00' }, { id: 36, name: "박준영", image: profile3, num: 27 }, { id: 37, name: "윤한중", image: profile3, num: 12 }
+        { id: 35, name: "이상욱", image: profile3, num: '00' }, { id: 36, name: "박준영", image: profile3, num: 27 }, { id: 37, name: "윤한중", image: profile3, num: 12 }, { id: 37, name: "황성진", image: profile3, num: 10 }, { id: 37, name: "정현준", image: profile3, num: 15 }, 
+        { id: 37, name: "정도식", image: profile3, num: 10 }
     ];
 
     //회원 리스트
