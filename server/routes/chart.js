@@ -50,7 +50,7 @@ function initDailyChart() {
     // fs.writeFileSync(dailyChartPath, defaultContent);
     // //updateChartFile();
     // console.log('기록체크 페이지를 디폴트 값으로 초기화 했습니다.')
-    for (let id = 0; id < 38; id++) {
+    for (let id = 0; id < 41; id++) {
         dailyChart.players[id].goal = 0;
         dailyChart.players[id].assist = 0;
         dailyChart.players[id].plays = 0;
