@@ -6,8 +6,9 @@ import monthChartTable from "./components/views/chartPage/monthPage/MonthChartTa
 import yearChartTable from "./components/views/chartPage/yearPage/YearChartTable"
 import dailyChartTable from "./components/views/chartPage/dayPage/DailyChartTable"
 import minusChartTable from "./components/views/chartPage/dayPage/MinusChartTable"
-import starTable from "./components/views/homePage/famePage"
-import AttendancePage from "./components/views/adminPage/attendancePage"
+import awardPage from "./components/views/homePage/awardPage"
+import attendancePage from "./components/views/adminPage/attendancePage"
+import notiPage from "./components/views/homePage/notiPage"
 import Footer from "./components/views/homePage/footer"
 
 import './App.css';
@@ -23,8 +24,9 @@ function App() {
           <Route exact path="/chart/year" Component={yearChartTable} />
           <Route exact path="/chart/daily" Component={dailyChartTable} />
           <Route exact path="/chart/minus" Component={minusChartTable} />
-          <Route exact path="/star" Component={starTable} />
-          <Route exact path="/attendance" Component={AttendancePage} />
+          <Route exact path="/award" Component={awardPage} />
+          <Route exact path="/attendance" Component={attendancePage} />
+          <Route exact path="/notification" Component={notiPage} />
         </Routes>
       </div>
       <Footer/>

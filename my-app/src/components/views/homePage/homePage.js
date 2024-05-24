@@ -37,8 +37,13 @@ function HomePage() {
     };
 
     return (
-        <div style={{ textAlign: 'center', height: '750px', display: 'flex', backgroundImage: `url(${background})`, backgroundSize: 'cover', backgroundPosition: 'center', minHeight: '100vh', flexDirection: 'column', alignItems: 'center' }}>
+        <div style={{ textAlign: 'center', display: 'flex', backgroundImage: `url(${background})`, backgroundSize: 'cover', backgroundPosition: 'center', minHeight: '100vh', flexDirection: 'column', alignItems: 'center' }}>
             <div style={{ marginBottom: '20px', marginTop: '50px' }}>
+                <Button type="primary" href="/notification" size="large" style={buttonStyle}>
+                    공지사항 <p style={{ fontSize: '40px', marginRight: '-30px'}}>📢</p>
+                </Button>
+            </div>
+            <div style={{ marginBottom: '20px' }}>
                 <Button type="primary" href="/chart/year" size="large" style={buttonStyle}>
                     올해의 랭킹 <p style={{ fontSize: '40px', marginRight: '-30px'}}>🥇</p>
                 </Button>
@@ -48,11 +53,11 @@ function HomePage() {
                     이달의 랭킹 <p style={{ fontSize: '40px', marginRight: '-30px'}}>🥈</p>
                 </Button>
             </div>
-            {/* <div style={{ marginBottom: '20px' }}>
-                <Button type="primary" href="/star" size="large" style={buttonStyle}>
+            <div style={{ marginBottom: '20px' }}>
+                <Button type="primary" href="/award" size="large" style={buttonStyle}>
                     명예의 전당 <p style={{ fontSize: '40px', marginRight: '-30px'}}>🗽</p>
                 </Button>
-            </div> */}
+            </div>
             {isLoggedIn ? (
                 <div>
                     <div style={{ marginBottom: '20px' }}>

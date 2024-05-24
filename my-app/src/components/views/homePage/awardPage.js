@@ -1,6 +1,6 @@
 import React from 'react';
 
-const HallOfFamePage = () => {
+function HallOfFamePage() {
     // 명예의 전당에 전시할 이미지 URL 배열
     const imageUrls = [
         'https://example.com/image1.jpg',
