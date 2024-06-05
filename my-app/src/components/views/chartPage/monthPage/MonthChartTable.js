@@ -4,17 +4,22 @@ import Table from "../default/defaultMonthTable";
 
 function MonthChartTable() {
     const [Player, setPlayer] = useState([])
+    const [month, setMonth] = useState('6')
 
     useEffect(() => { 
-        Axios.get('/api/chart/month')
+        Axios.get(`/api/chart/month/${month}`)
         .then(response => {
             if(response.data.success) {
-                setPlayer(response.data.monthChart.players)
+                if (response.data.monthChart) {
+                    setPlayer(response.data.monthChart.players)
+                } else {
+                    setPlayer(response.data.otherChart.players)
+                }
             } else {
                 alert('월간차트 가져오기를 실패하였습니다.')
             }
         })  
-    }, [])
+    }, [month])
 
     const columns = useMemo(
         () => [
@@ -59,7 +64,27 @@ function MonthChartTable() {
         }
     });
     
-    return <Table columns={columns} data={indexedData} />;    
+    const buttonStyle = (isActive) => ({
+        marginRight: '10px',
+        padding: '10px 20px',
+        border: 'none',
+        backgroundColor: isActive ? '#007bff' : 'rgb(227 227 227)',
+        color: isActive ? 'white' : 'black',
+        cursor: 'pointer',
+        fontSize: '16px'
+    });
+
+    return (
+        <div>
+            <div style={{backgroundColor: 'yellow'}}>
+                <button style={buttonStyle(month === '3')} onClick={() => setMonth('3')}>3월</button>
+                <button style={buttonStyle(month === '4')} onClick={() => setMonth('4')}>4월</button>
+                <button style={buttonStyle(month === '5')} onClick={() => setMonth('5')}>5월</button>
+                <button style={buttonStyle(month === '6')} onClick={() => setMonth('6')}>6월</button>
+            </div>
+            <Table columns={columns} data={indexedData} />
+        </div>
+    );
 }
 
 export default MonthChartTable;
