@@ -2,15 +2,13 @@ const express = require('express');
 const router = express.Router();
 const fs = require('fs');
 
-// let date = new Date();
-// let year = date.getFullYear();
-// let month = date.getMonth() + 1;
+//달마다 month 변경
 const dailyChart = require('../data/day/player_day_chart.json');
-const monthChart = require('../data/month/player_chart_5_2024.json');
+const monthChart = require('../data/month/player_chart_6_2024.json');
 const yearChart = require('../data/year/player_chart_2024.json');
-const defaultDailyChartPath = './server/data/day/player_day_chart_default.json';
+
 const dailyChartPath = './server/data/day/player_day_chart.json';
-const monthChartPath = './server/data/month/player_chart_5_2024.json';
+const monthChartPath = './server/data/month/player_chart_6_2024.json';
 const yearChartPath = './server/data/year/player_chart_2024.json';
 
 function updateChartFile() {
@@ -43,14 +41,8 @@ function updateChartFile() {
 }
 
 function initDailyChart() {
-    // // 디폴트 파일 읽기
-    // const defaultContent = fs.readFileSync(defaultDailyChartPath, 'utf8');
-
-    // // 작업 가능한 파일에 디폴트 내용 덮어쓰기
-    // fs.writeFileSync(dailyChartPath, defaultContent);
-    // //updateChartFile();
-    // console.log('기록체크 페이지를 디폴트 값으로 초기화 했습니다.')
-    for (let id = 0; id < 41; id++) {
+    console.log()
+    for (let id = 0; id < dailyChart.players.length; id++) {
         dailyChart.players[id].goal = 0;
         dailyChart.players[id].assist = 0;
         dailyChart.players[id].plays = 0;

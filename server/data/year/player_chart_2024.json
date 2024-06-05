@@ -92,18 +92,18 @@
       "pts": 5
     },
     {
-      "name": "김명관",
-      "goal": 0,
-      "assist": 0,
-      "plays": 0,
-      "pts": 0
-    },
-    {
       "name": "이병철",
       "goal": 8,
       "assist": 4,
       "plays": 6,
       "pts": 42
+    },
+    {
+      "name": "황성진",
+      "goal": 6,
+      "assist": 2,
+      "plays": 3,
+      "pts": 23
     },
     {
       "name": "강동균",
@@ -155,6 +155,13 @@
       "pts": 25
     },
     {
+      "name": "정현준",
+      "goal": 2,
+      "assist": 0,
+      "plays": 1,
+      "pts": 7
+    },
+    {
       "name": "김주환",
       "goal": 24,
       "assist": 12,
@@ -190,6 +197,13 @@
       "pts": 24
     },
     {
+      "name": "강병준",
+      "goal": 0,
+      "assist": 0,
+      "plays": 0,
+      "pts": 0
+    },
+    {
       "name": "박찬용",
       "goal": 2,
       "assist": 1,
@@ -209,6 +223,13 @@
       "assist": 5,
       "plays": 3,
       "pts": 24
+    },
+    {
+      "name": "정도식",
+      "goal": 3,
+      "assist": 0,
+      "plays": 1,
+      "pts": 8
     },
     {
       "name": "이주은",
@@ -265,27 +286,6 @@
       "assist": 8,
       "plays": 9,
       "pts": 75
-    },
-    {
-      "name": "황성진",
-      "goal": 6,
-      "assist": 2,
-      "plays": 3,
-      "pts": 23
-    },
-    {
-      "name": "정현준",
-      "goal": 2,
-      "assist": 0,
-      "plays": 1,
-      "pts": 7
-    },
-    {
-      "name": "정도식",
-      "goal": 3,
-      "assist": 0,
-      "plays": 1,
-      "pts": 8
     }
   ]
 }

@@ -9,7 +9,6 @@ function DailyChartTable() {
     useEffect(() => { 
         Axios.get('/api/chart/daily')
         .then(response => {
-            console.log(response.data)
             if(response.data.success) {
                 setPlayer(response.data.dailyChart.players);
             } else {
@@ -44,12 +43,12 @@ function DailyChartTable() {
     );
 
     let Data = Player.sort(function(a, b) {
-        return b.goal - a.goal; // 내림차순 정렬
+        return (b.goal + b.assist) - (a.goal + a.assist); // 내림차순 정렬
     });
     
     let playerRank = 0;
     let indexedData = Data.map((item, index, array) => {
-        if (index > 0 && array[index].goal === array[index - 1].goal) {
+        if (index > 0 && (array[index].goal + array[index].assist) === (array[index - 1].goal + array[index - 1].assist)) {
             return { ...item, rank: playerRank };
         } else {
             playerRank ++;
