@@ -1,12 +1,14 @@
 {
   "files": {
     "main.css": "/static/css/main.f855e6bc.css",
-    "main.js": "/static/js/main.4084e96f.js",
+    "main.js": "/static/js/main.7efa0327.js",
     "static/js/453.ed3810f9.chunk.js": "/static/js/453.ed3810f9.chunk.js",
-    "static/media/Jan.png": "/static/media/Jan.20212430db306396388a.png",
-    "static/media/Feb.png": "/static/media/Feb.b7a946826c8276f9696c.png",
-    "static/media/Mar.png": "/static/media/Mar.27a637dc12b82faff45e.png",
-    "static/media/Apr.png": "/static/media/Apr.dedd2213618f8d4b7b0e.png",
+    "static/media/awardpage.jpg": "/static/media/awardpage.e4ade615e94b183de001.jpg",
+    "static/media/mar-hoihwa.png": "/static/media/mar-hoihwa.855324f949b5e99c5cc3.png",
+    "static/media/apr-juhwan.png": "/static/media/apr-juhwan.8de39252f49e9f63c760.png",
+    "static/media/feb-juhwan.png": "/static/media/feb-juhwan.e14d712db2ae4ac38b41.png",
+    "static/media/feb-hoihwa.png": "/static/media/feb-hoihwa.34977e381b9f76f84188.png",
+    "static/media/jan-juhwan.png": "/static/media/jan-juhwan.75c92f4a6a441eca2787.png",
     "static/media/noti.jpg": "/static/media/noti.3920db002a21f61887e2.jpg",
     "static/media/chartpage.jpg": "/static/media/chartpage.ca4ed4e5f1e1ad615e54.jpg",
     "static/media/ground.jpg": "/static/media/ground.04af02d3026ee0f45d5a.jpg",
@@ -15,11 +17,11 @@
     "static/media/playerlist.jpg": "/static/media/playerlist.18a29affb5c5c4a8188b.jpg",
     "index.html": "/index.html",
     "main.f855e6bc.css.map": "/static/css/main.f855e6bc.css.map",
-    "main.4084e96f.js.map": "/static/js/main.4084e96f.js.map",
+    "main.7efa0327.js.map": "/static/js/main.7efa0327.js.map",
     "453.ed3810f9.chunk.js.map": "/static/js/453.ed3810f9.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.f855e6bc.css",
-    "static/js/main.4084e96f.js"
+    "static/js/main.7efa0327.js"
   ]
 }
