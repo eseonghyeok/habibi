@@ -5,12 +5,13 @@ import Feb1 from './award/player/feb-hoihwa.png';
 import Feb2 from './award/player/feb-juhwan.png';
 import Mar from './award/player/mar-hoihwa.png';
 import Apr from './award/player/apr-juhwan.png';
+import May from './award/player/may-jongkwon.png';
 
 function HallOfFamePage() {
     const [currentImageIndex, setCurrentImageIndex] = useState(0);
 
-    const imageUrls = [Jan, Feb1, Feb2, Mar, Apr];
-    const monthNames = ['2024 January', '2024 February 공동', '2024 February 공동', '2024 March', '2024 April'];
+    const imageUrls = [Jan, Feb1, Feb2, Mar, Apr, May];
+    const monthNames = ['2024 January', '2024 February 공동', '2024 February 공동', '2024 March', '2024 April', '2024 May'];
 
     const nextSlide = () => {
         setCurrentImageIndex((prevIndex) => (prevIndex === imageUrls.length - 1 ? 0 : prevIndex + 1));
@@ -21,8 +22,6 @@ function HallOfFamePage() {
     };
 
     const arrowButtonStyle = {
-        marginRight: '10px',
-        marginLeft: '10px',
         background: 'none',
         border: 'none',
         fontSize: '35px',
