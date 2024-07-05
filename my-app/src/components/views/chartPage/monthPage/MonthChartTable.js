@@ -81,6 +81,7 @@ function MonthChartTable() {
                 <button style={buttonStyle(month === '4')} onClick={() => setMonth('4')}>4월</button>
                 <button style={buttonStyle(month === '5')} onClick={() => setMonth('5')}>5월</button>
                 <button style={buttonStyle(month === '6')} onClick={() => setMonth('6')}>6월</button>
+                <button style={buttonStyle(month === '7')} onClick={() => setMonth('7')}>7월</button>
             </div>
             <Table columns={columns} data={indexedData} />
         </div>
