@@ -4,7 +4,7 @@ import Table from "../default/defaultMonthTable";
 
 function MonthChartTable() {
     const [Player, setPlayer] = useState([])
-    const [month, setMonth] = useState('6')
+    const [month, setMonth] = useState('7')
 
     useEffect(() => { 
         Axios.get(`/api/chart/month/${month}`)
