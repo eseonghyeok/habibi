@@ -1,12 +1,13 @@
 {
   "files": {
     "main.css": "/static/css/main.f855e6bc.css",
-    "main.js": "/static/js/main.7157d2cc.js",
+    "main.js": "/static/js/main.365d5140.js",
     "static/js/453.ed3810f9.chunk.js": "/static/js/453.ed3810f9.chunk.js",
     "static/media/awardpage.jpg": "/static/media/awardpage.e4ade615e94b183de001.jpg",
     "static/media/mar-hoihwa.png": "/static/media/mar-hoihwa.855324f949b5e99c5cc3.png",
     "static/media/may-jongkwon.png": "/static/media/may-jongkwon.708a245dc1225b350a86.png",
     "static/media/apr-juhwan.png": "/static/media/apr-juhwan.8de39252f49e9f63c760.png",
+    "static/media/jun-hoihwa.png": "/static/media/jun-hoihwa.1058373b220af21a4c65.png",
     "static/media/feb-juhwan.png": "/static/media/feb-juhwan.e14d712db2ae4ac38b41.png",
     "static/media/feb-hoihwa.png": "/static/media/feb-hoihwa.34977e381b9f76f84188.png",
     "static/media/jan-juhwan.png": "/static/media/jan-juhwan.75c92f4a6a441eca2787.png",
@@ -18,11 +19,11 @@
     "static/media/playerlist.jpg": "/static/media/playerlist.18a29affb5c5c4a8188b.jpg",
     "index.html": "/index.html",
     "main.f855e6bc.css.map": "/static/css/main.f855e6bc.css.map",
-    "main.7157d2cc.js.map": "/static/js/main.7157d2cc.js.map",
+    "main.365d5140.js.map": "/static/js/main.365d5140.js.map",
     "453.ed3810f9.chunk.js.map": "/static/js/453.ed3810f9.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.f855e6bc.css",
-    "static/js/main.7157d2cc.js"
+    "static/js/main.365d5140.js"
   ]
 }
