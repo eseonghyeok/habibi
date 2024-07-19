@@ -4,43 +4,43 @@
       "name": "김형철",
       "goal": 21,
       "assist": 14,
-      "plays": 12,
-      "pts": 95
+      "plays": 13,
+      "pts": 100
     },
     {
       "name": "송효석",
-      "goal": 6,
-      "assist": 13,
-      "plays": 7,
-      "pts": 54
+      "goal": 8,
+      "assist": 15,
+      "plays": 8,
+      "pts": 63
     },
     {
       "name": "박재범",
-      "goal": 10,
-      "assist": 9,
-      "plays": 9,
-      "pts": 64
+      "goal": 12,
+      "assist": 11,
+      "plays": 10,
+      "pts": 73
     },
     {
       "name": "권위준",
-      "goal": 15,
-      "assist": 7,
-      "plays": 13,
-      "pts": 87
+      "goal": 16,
+      "assist": 8,
+      "plays": 14,
+      "pts": 94
     },
     {
       "name": "신종은",
-      "goal": 14,
-      "assist": 1,
-      "plays": 6,
-      "pts": 45
+      "goal": 16,
+      "assist": 2,
+      "plays": 7,
+      "pts": 53
     },
     {
       "name": "이정일",
-      "goal": 28,
-      "assist": 20,
-      "plays": 13,
-      "pts": 113
+      "goal": 29,
+      "assist": 21,
+      "plays": 14,
+      "pts": 120
     },
     {
       "name": "조돈휘",
@@ -51,24 +51,24 @@
     },
     {
       "name": "현종권",
-      "goal": 40,
-      "assist": 25,
-      "plays": 11,
-      "pts": 120
+      "goal": 41,
+      "assist": 27,
+      "plays": 12,
+      "pts": 128
     },
     {
       "name": "곽영래",
-      "goal": 16,
+      "goal": 18,
       "assist": 12,
-      "plays": 9,
-      "pts": 73
+      "plays": 10,
+      "pts": 80
     },
     {
       "name": "정회화",
-      "goal": 65,
-      "assist": 19,
-      "plays": 12,
-      "pts": 144
+      "goal": 71,
+      "assist": 20,
+      "plays": 13,
+      "pts": 156
     },
     {
       "name": "김상명",
@@ -79,10 +79,10 @@
     },
     {
       "name": "신종윤",
-      "goal": 13,
-      "assist": 6,
-      "plays": 12,
-      "pts": 79
+      "goal": 14,
+      "assist": 7,
+      "plays": 13,
+      "pts": 86
     },
     {
       "name": "임필우",
@@ -93,10 +93,10 @@
     },
     {
       "name": "이병철",
-      "goal": 13,
-      "assist": 9,
-      "plays": 9,
-      "pts": 67
+      "goal": 19,
+      "assist": 11,
+      "plays": 10,
+      "pts": 80
     },
     {
       "name": "황성진",
@@ -109,8 +109,8 @@
       "name": "강동균",
       "goal": 1,
       "assist": 0,
-      "plays": 1,
-      "pts": 6
+      "plays": 2,
+      "pts": 11
     },
     {
       "name": "류희대",
@@ -150,9 +150,9 @@
     {
       "name": "김정민",
       "goal": 3,
-      "assist": 4,
-      "plays": 5,
-      "pts": 32
+      "assist": 5,
+      "plays": 6,
+      "pts": 38
     },
     {
       "name": "정현준",
@@ -177,17 +177,17 @@
     },
     {
       "name": "김진호",
-      "goal": 29,
+      "goal": 34,
       "assist": 14,
-      "plays": 10,
-      "pts": 93
+      "plays": 11,
+      "pts": 103
     },
     {
       "name": "박진산",
       "goal": 17,
-      "assist": 10,
-      "plays": 9,
-      "pts": 72
+      "assist": 12,
+      "plays": 10,
+      "pts": 79
     },
     {
       "name": "임다훈",
@@ -198,24 +198,24 @@
     },
     {
       "name": "강병준",
-      "goal": 5,
-      "assist": 3,
-      "plays": 3,
-      "pts": 23
+      "goal": 6,
+      "assist": 5,
+      "plays": 4,
+      "pts": 31
     },
     {
       "name": "박찬용",
       "goal": 6,
       "assist": 5,
-      "plays": 6,
-      "pts": 41
+      "plays": 7,
+      "pts": 46
     },
     {
       "name": "이종범",
       "goal": 9,
-      "assist": 2,
-      "plays": 5,
-      "pts": 36
+      "assist": 4,
+      "plays": 6,
+      "pts": 43
     },
     {
       "name": "박기환",
@@ -283,9 +283,9 @@
     {
       "name": "윤한중",
       "goal": 24,
-      "assist": 11,
-      "plays": 11,
-      "pts": 90
+      "assist": 12,
+      "plays": 12,
+      "pts": 96
     }
   ]
 }
