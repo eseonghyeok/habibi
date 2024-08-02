@@ -4,7 +4,7 @@ import Table from "../default/defaultMonthTable";
 
 function MonthChartTable() {
     const [Player, setPlayer] = useState([])
-    const [month, setMonth] = useState('7')
+    const [month, setMonth] = useState('8')
 
     useEffect(() => { 
         Axios.get(`/api/chart/month/${month}`)
@@ -74,14 +74,23 @@ function MonthChartTable() {
         fontSize: '16px'
     });
 
+    const scrollContainerStyle = {
+        display: 'flex',
+        overflowX: 'auto',
+        whiteSpace: 'nowrap',
+        backgroundColor: 'yellow',
+        padding: '10px 0'
+    };
+
     return (
         <div>
-            <div style={{backgroundColor: 'yellow'}}>
+            <div style={scrollContainerStyle}>
                 <button style={buttonStyle(month === '3')} onClick={() => setMonth('3')}>3월</button>
                 <button style={buttonStyle(month === '4')} onClick={() => setMonth('4')}>4월</button>
                 <button style={buttonStyle(month === '5')} onClick={() => setMonth('5')}>5월</button>
                 <button style={buttonStyle(month === '6')} onClick={() => setMonth('6')}>6월</button>
                 <button style={buttonStyle(month === '7')} onClick={() => setMonth('7')}>7월</button>
+                <button style={buttonStyle(month === '8')} onClick={() => setMonth('8')}>8월</button>
             </div>
             <Table columns={columns} data={indexedData} />
         </div>
