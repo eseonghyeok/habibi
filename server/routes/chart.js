@@ -4,10 +4,10 @@ const fs = require('fs');
 
 //달마다 month 변경
 const dailyChart = require('../data/day/player_day_chart.json');
-const monthChart = require('../data/month/player_chart_8_2024.json');
+const monthChart = require('../data/month/player_chart_9_2024.json');
 const yearChart = require('../data/year/player_chart_2024.json');
 const dailyChartPath = './server/data/day/player_day_chart.json';
-const monthChartPath = './server/data/month/player_chart_8_2024.json';
+const monthChartPath = './server/data/month/player_chart_9_2024.json';
 const yearChartPath = './server/data/year/player_chart_2024.json';
 
 //과거 월간차트
@@ -16,6 +16,7 @@ const AprChart = require('../data/month/player_chart_4_2024.json');
 const MayChart = require('../data/month/player_chart_5_2024.json');
 const JuneChart = require('../data/month/player_chart_6_2024.json');
 const JulyChart = require('../data/month/player_chart_7_2024.json');
+const AugChart = require('../data/month/player_chart_8_2024.json');
 
 function updateChartFile() {
     let success = 1;
@@ -161,6 +162,12 @@ router.get("/month/7", (req, res) => {
 });
 
 router.get("/month/8", (req, res) => {
+    otherChart = AugChart
+    if (!otherChart) return res.status(400).send();
+    res.status(200).json({ success: true, otherChart })
+});
+
+router.get("/month/9", (req, res) => {
     if (!monthChart) return res.status(400).send();
     res.status(200).json({ success: true, monthChart })
 });

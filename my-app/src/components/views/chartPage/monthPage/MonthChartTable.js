@@ -1,25 +1,34 @@
-import React, { useEffect, useState, useMemo } from 'react'
+import React, { useEffect, useState, useMemo, useRef } from 'react';
 import Axios from 'axios';
 import Table from "../default/defaultMonthTable";
 
 function MonthChartTable() {
-    const [Player, setPlayer] = useState([])
-    const [month, setMonth] = useState('8')
+    const [Player, setPlayer] = useState([]);
+    const [month, setMonth] = useState('9');
+    const scrollRef = useRef(null);
+    const buttonRefs = useRef({});
 
     useEffect(() => { 
         Axios.get(`/api/chart/month/${month}`)
         .then(response => {
             if(response.data.success) {
                 if (response.data.monthChart) {
-                    setPlayer(response.data.monthChart.players)
+                    setPlayer(response.data.monthChart.players);
                 } else {
-                    setPlayer(response.data.otherChart.players)
+                    setPlayer(response.data.otherChart.players);
                 }
             } else {
-                alert('월간차트 가져오기를 실패하였습니다.')
+                alert('월간차트 가져오기를 실패하였습니다.');
             }
         })  
-    }, [month])
+    }, [month]);
+
+    useEffect(() => {
+        // 해당 월 버튼을 스크롤 컨테이너의 중앙에 가깝게 위치시킵니다.
+        if (buttonRefs.current[month]) {
+            buttonRefs.current[month].scrollIntoView({ inline: 'center', behavior: 'smooth' });
+        }
+    }, [month]);
 
     const columns = useMemo(
         () => [
@@ -53,7 +62,7 @@ function MonthChartTable() {
     let Data = Player.sort(function(a, b) {
         return b.pts - a.pts; // 내림차순 정렬
     });
-    
+
     let playerRank = 0;
     let indexedData = Data.map((item, index, array) => {
         if (index > 0 && array[index].pts === array[index - 1].pts) {
@@ -63,7 +72,7 @@ function MonthChartTable() {
             return { ...item, rank: playerRank };
         }
     });
-    
+
     const buttonStyle = (isActive) => ({
         marginRight: '10px',
         padding: '10px 20px',
@@ -84,13 +93,17 @@ function MonthChartTable() {
 
     return (
         <div>
-            <div style={scrollContainerStyle}>
-                <button style={buttonStyle(month === '3')} onClick={() => setMonth('3')}>3월</button>
-                <button style={buttonStyle(month === '4')} onClick={() => setMonth('4')}>4월</button>
-                <button style={buttonStyle(month === '5')} onClick={() => setMonth('5')}>5월</button>
-                <button style={buttonStyle(month === '6')} onClick={() => setMonth('6')}>6월</button>
-                <button style={buttonStyle(month === '7')} onClick={() => setMonth('7')}>7월</button>
-                <button style={buttonStyle(month === '8')} onClick={() => setMonth('8')}>8월</button>
+            <div style={scrollContainerStyle} ref={scrollRef}>
+                {['3', '4', '5', '6', '7', '8', '9'].map((m) => (
+                    <button
+                        key={m}
+                        style={buttonStyle(month === m)}
+                        onClick={() => setMonth(m)}
+                        ref={(el) => buttonRefs.current[m] = el}
+                    >
+                        {m}월
+                    </button>
+                ))}
             </div>
             <Table columns={columns} data={indexedData} />
         </div>
