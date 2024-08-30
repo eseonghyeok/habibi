@@ -8,12 +8,13 @@ import Apr from './award/player/apr-juhwan.png';
 import May from './award/player/may-jongkwon.png';
 import Jun from './award/player/jun-hoihwa.png';
 import Jul from './award/player/jul-hoihwa.png';
+import Aug from './award/player/aug-jongkwon.png';
 
 function HallOfFamePage() {
-    const [currentImageIndex, setCurrentImageIndex] = useState(7);
+    const [currentImageIndex, setCurrentImageIndex] = useState(8);
 
-    const imageUrls = [Jan, Feb1, Feb2, Mar, Apr, May, Jun, Jul];
-    const monthNames = ['2024 January', '2024 February 공동', '2024 February 공동', '2024 March', '2024 April', '2024 May', '2024 June', '2024 July'];
+    const imageUrls = [Jan, Feb1, Feb2, Mar, Apr, May, Jun, Jul, Aug];
+    const monthNames = ['2024 January', '2024 February 공동', '2024 February 공동', '2024 March', '2024 April', '2024 May', '2024 June', '2024 July', '2024 August'];
 
     const nextSlide = () => {
         setCurrentImageIndex((prevIndex) => (prevIndex === imageUrls.length - 1 ? 0 : prevIndex + 1));
