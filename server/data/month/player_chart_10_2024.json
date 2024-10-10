@@ -2,38 +2,38 @@
   "players": [
     {
       "name": "김형철",
-      "goal": 0,
-      "assist": 0,
+      "goal": 23,
+      "assist": 10,
       "plays": 0,
-      "pts": 0
+      "pts": 33
     },
     {
       "name": "송효석",
-      "goal": 0,
-      "assist": 0,
+      "goal": 21,
+      "assist": 7,
       "plays": 0,
-      "pts": 0
+      "pts": 28
     },
     {
       "name": "박재범",
-      "goal": 0,
-      "assist": 0,
+      "goal": 4,
+      "assist": 4,
       "plays": 0,
-      "pts": 0
+      "pts": 8
     },
     {
       "name": "권위준",
-      "goal": 0,
-      "assist": 0,
-      "plays": 0,
-      "pts": 0
+      "goal": 2,
+      "assist": 2,
+      "plays": 1,
+      "pts": 9
     },
     {
       "name": "신종은",
-      "goal": 0,
-      "assist": 0,
+      "goal": 1,
+      "assist": 1,
       "plays": 0,
-      "pts": 0
+      "pts": 2
     },
     {
       "name": "이정일",
@@ -44,10 +44,10 @@
     },
     {
       "name": "조돈휘",
-      "goal": 0,
+      "goal": 3,
       "assist": 0,
       "plays": 0,
-      "pts": 0
+      "pts": 3
     },
     {
       "name": "현종권",
@@ -95,15 +95,15 @@
       "name": "이병철",
       "goal": 0,
       "assist": 0,
-      "plays": 0,
-      "pts": 0
+      "plays": 1,
+      "pts": 5
     },
     {
       "name": "황성진",
       "goal": 0,
       "assist": 0,
-      "plays": 0,
-      "pts": 0
+      "plays": 1,
+      "pts": 5
     },
     {
       "name": "강동균",
@@ -136,9 +136,9 @@
     {
       "name": "장효준",
       "goal": 0,
-      "assist": 0,
+      "assist": 1,
       "plays": 0,
-      "pts": 0
+      "pts": 1
     },
     {
       "name": "정기택",
@@ -170,10 +170,10 @@
     },
     {
       "name": "이지철",
-      "goal": 0,
+      "goal": 1,
       "assist": 0,
       "plays": 0,
-      "pts": 0
+      "pts": 1
     },
     {
       "name": "김진호",
@@ -242,8 +242,8 @@
       "name": "권현택",
       "goal": 0,
       "assist": 0,
-      "plays": 0,
-      "pts": 0
+      "plays": 1,
+      "pts": 5
     },
     {
       "name": "민준홍",
@@ -270,22 +270,22 @@
       "name": "이상욱",
       "goal": 0,
       "assist": 0,
-      "plays": 0,
-      "pts": 0
+      "plays": 1,
+      "pts": 5
     },
     {
       "name": "박준영",
       "goal": 0,
       "assist": 0,
-      "plays": 0,
-      "pts": 0
+      "plays": 1,
+      "pts": 5
     },
     {
       "name": "윤한중",
       "goal": 0,
       "assist": 0,
-      "plays": 0,
-      "pts": 0
+      "plays": 1,
+      "pts": 5
     }
   ]
 }

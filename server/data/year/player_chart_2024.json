@@ -2,38 +2,38 @@
   "players": [
     {
       "name": "김형철",
-      "goal": 24,
-      "assist": 21,
+      "goal": 47,
+      "assist": 31,
       "plays": 22,
-      "pts": 155
+      "pts": 188
     },
     {
       "name": "송효석",
-      "goal": 18,
-      "assist": 25,
+      "goal": 39,
+      "assist": 32,
       "plays": 12,
-      "pts": 103
+      "pts": 131
     },
     {
       "name": "박재범",
-      "goal": 24,
-      "assist": 20,
+      "goal": 28,
+      "assist": 24,
       "plays": 17,
-      "pts": 129
+      "pts": 137
     },
     {
       "name": "권위준",
-      "goal": 19,
-      "assist": 10,
-      "plays": 21,
-      "pts": 134
+      "goal": 21,
+      "assist": 12,
+      "plays": 22,
+      "pts": 143
     },
     {
       "name": "신종은",
-      "goal": 17,
-      "assist": 3,
+      "goal": 18,
+      "assist": 4,
       "plays": 10,
-      "pts": 70
+      "pts": 72
     },
     {
       "name": "이정일",
@@ -44,10 +44,10 @@
     },
     {
       "name": "조돈휘",
-      "goal": 1,
+      "goal": 4,
       "assist": 4,
       "plays": 3,
-      "pts": 20
+      "pts": 23
     },
     {
       "name": "현종권",
@@ -95,15 +95,15 @@
       "name": "이병철",
       "goal": 28,
       "assist": 19,
-      "plays": 16,
-      "pts": 127
+      "plays": 17,
+      "pts": 132
     },
     {
       "name": "황성진",
       "goal": 6,
       "assist": 2,
-      "plays": 3,
-      "pts": 23
+      "plays": 4,
+      "pts": 28
     },
     {
       "name": "강동균",
@@ -136,9 +136,9 @@
     {
       "name": "장효준",
       "goal": 11,
-      "assist": 6,
+      "assist": 7,
       "plays": 11,
-      "pts": 72
+      "pts": 73
     },
     {
       "name": "정기택",
@@ -170,10 +170,10 @@
     },
     {
       "name": "이지철",
-      "goal": 28,
+      "goal": 29,
       "assist": 8,
       "plays": 11,
-      "pts": 91
+      "pts": 92
     },
     {
       "name": "김진호",
@@ -242,8 +242,8 @@
       "name": "권현택",
       "goal": 6,
       "assist": 5,
-      "plays": 4,
-      "pts": 31
+      "plays": 5,
+      "pts": 36
     },
     {
       "name": "민준홍",
@@ -270,22 +270,22 @@
       "name": "이상욱",
       "goal": 5,
       "assist": 4,
-      "plays": 10,
-      "pts": 59
+      "plays": 11,
+      "pts": 64
     },
     {
       "name": "박준영",
       "goal": 6,
       "assist": 5,
-      "plays": 7,
-      "pts": 46
+      "plays": 8,
+      "pts": 51
     },
     {
       "name": "윤한중",
       "goal": 28,
       "assist": 16,
-      "plays": 16,
-      "pts": 124
+      "plays": 17,
+      "pts": 129
     }
   ]
 }

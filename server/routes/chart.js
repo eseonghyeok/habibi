@@ -1,6 +1,11 @@
 const express = require('express');
 const router = express.Router();
 const fs = require('fs');
+const path = require('path');
+
+//로그
+//const logFilePath = path.join(__dirname, '../logs/admin_2024.json');
+const logFilePath = './server/logs/admin_2024.json';
 
 //달마다 month 변경
 const dailyChart = require('../data/day/player_day_chart.json');
@@ -49,6 +54,38 @@ function updateChartFile() {
 }
 
 function initDailyChart() {
+    let date = new Date();
+    let logData = dailyChart.players.filter(player => player.goal !== 0 || player.assist !== 0 || player.plays !== 0).map(player => `${player.name}-${player.goal}-${player.assist}-${player.plays}`).join(', ');
+    const newLog = {
+        log: date.toLocaleString() + ' 기록(골-도움-출석) : ' + logData
+    };
+
+    fs.readFile(logFilePath, 'utf8', (err, data) => {
+        if (err) {
+            console.error('로그 파일 읽기 오류:', err);
+            return;
+        }
+
+        let logArray;
+        if (data){
+            try {
+                logArray = JSON.parse(data);
+            } catch (parseError) {
+                console.error('JSON 파싱 오류:', parseError);
+                return;
+            }
+        }
+        logArray.push(newLog);
+
+        fs.writeFile(logFilePath, JSON.stringify(logArray, null, 2), (err) => {
+            if (err) {
+                console.error('로그 파일 쓰기 오류:', err);
+            } else {
+                console.log('로그 파일이 성공적으로 업데이트되었습니다.');
+            }
+        });
+    });
+
     for (let id = 0; id < dailyChart.players.length; id++) {
         dailyChart.players[id].goal = 0;
         dailyChart.players[id].assist = 0;
@@ -123,6 +160,7 @@ function minusPlays(id) {
 router.post("/initDaily", (req, res) => {
     if (!dailyChart) return res.status(400).send();
     res.status(200).json({ success: true })
+
     initDailyChart();
 });
 
@@ -202,9 +240,11 @@ router.post("/plusAssist", (req, res) => {
 });
 
 // plus plays
-router.post("/plusPlays", (req, res) => {
+router.post("/plusPlays", (req, res) => { 
+    let date = new Date();
     const { attendanceList } = req.body;
     const ids = attendanceList.map(member => member.id);
+
     if (!dailyChart) return res.status(400).send();
     res.status(200).json({ success: true })
     plusPlays(ids);
@@ -232,6 +272,13 @@ router.post("/minusPlays", (req, res) => {
     if (!dailyChart) return res.status(400).send();
     res.status(200).json({ success: true })
     minusPlays(id);
+});
+
+// Get log page
+router.get("/log", (req, res) => {
+    const logPage = require('../logs/admin_2024.json');
+    if (!logPage) return res.status(400).send();
+    res.status(200).json({ success: true, logPage })
 });
 
 module.exports = router;

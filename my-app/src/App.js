@@ -9,6 +9,7 @@ import minusChartTable from "./components/views/chartPage/dayPage/MinusChartTabl
 import awardPage from "./components/views/homePage/awardPage"
 import attendancePage from "./components/views/adminPage/attendancePage"
 import notiPage from "./components/views/homePage/notiPage"
+import logPage from "./components/views/homePage/logPage"
 import Footer from "./components/views/homePage/footer"
 
 import './App.css';
@@ -27,6 +28,7 @@ function App() {
           <Route exact path="/award" Component={awardPage} />
           <Route exact path="/attendance" Component={attendancePage} />
           <Route exact path="/notification" Component={notiPage} />
+          <Route exact path="/logcheck" Component={logPage} />
         </Routes>
       </div>
       <Footer/>
