@@ -3,10 +3,6 @@ const router = express.Router();
 const fs = require('fs');
 const path = require('path');
 
-//로그
-//const logFilePath = path.join(__dirname, '../logs/admin_2024.json');
-const logFilePath = './server/logs/admin_2024.json';
-
 //달마다 month 변경
 const dailyChart = require('../data/day/player_day_chart.json');
 const monthChart = require('../data/month/player_chart_11_2024.json');
@@ -279,13 +275,6 @@ router.post("/minusPlays", (req, res) => {
     if (!dailyChart) return res.status(400).send();
     res.status(200).json({ success: true })
     minusPlays(id);
-});
-
-// Get log page
-router.get("/log", (req, res) => {
-    const logPage = require('../logs/admin_2024.json');
-    if (!logPage) return res.status(400).send();
-    res.status(200).json({ success: true, logPage })
 });
 
 module.exports = router;

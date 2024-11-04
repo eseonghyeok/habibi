@@ -80,11 +80,6 @@ function HomePage() {
                             기록수정 <p style={{ fontSize: '35px', marginRight: '-30px'}}>⚠️</p>
                         </Button>
                     </div>
-                    {/* <div style={{ marginBottom: '20px' }}>
-                        <Button type="primary" href="/logcheck" size="large" style={buttonStyle}>
-                            기록로그 <p style={{ fontSize: '35px', marginRight: '-30px'}}>✍️</p>
-                        </Button>
-                    </div> */}
                 </div>
             ) : (
                 <div style={{ marginBottom: '20px' }}>
