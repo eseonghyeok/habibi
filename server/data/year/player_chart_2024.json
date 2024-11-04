@@ -99,13 +99,6 @@
       "pts": 157
     },
     {
-      "name": "황성진",
-      "goal": 6,
-      "assist": 2,
-      "plays": 3,
-      "pts": 23
-    },
-    {
       "name": "강동균",
       "goal": 6,
       "assist": 2,
@@ -246,25 +239,11 @@
       "pts": 31
     },
     {
-      "name": "민준홍",
-      "goal": 2,
-      "assist": 0,
-      "plays": 4,
-      "pts": 22
-    },
-    {
       "name": "이성혁",
       "goal": 23,
       "assist": 35,
       "plays": 12,
       "pts": 118
-    },
-    {
-      "name": "이  정",
-      "goal": 1,
-      "assist": 0,
-      "plays": 2,
-      "pts": 11
     },
     {
       "name": "이상욱",
@@ -286,6 +265,27 @@
       "assist": 17,
       "plays": 18,
       "pts": 138
+    },
+    {
+      "name": "이  정",
+      "goal": 1,
+      "assist": 0,
+      "plays": 3,
+      "pts": 16
+    },
+    {
+      "name": "민준홍",
+      "goal": 2,
+      "assist": 0,
+      "plays": 4,
+      "pts": 22
+    },
+    {
+      "name": "황성진",
+      "goal": 6,
+      "assist": 2,
+      "plays": 3,
+      "pts": 23
     }
   ]
 }

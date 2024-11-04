@@ -12,12 +12,12 @@ function AttendancePage() {
         { id: 0, name: "김형철", image: profile1, num: 3 }, { id: 1, name: "송효석", image: profile1, num: 18 }, { id: 2, name: "박재범", image: profile1, num: 0 }, { id: 3, name: "권위준", image: profile1, num: 14 }, { id: 4, name: "신종은", image: profile1, num: 17 },
         { id: 5, name: "이정일", image: profile1, num: 77 }, { id: 6, name: "조돈휘", image: profile1, num: 77 }, { id: 7, name: "현종권", image: profile1, num: 8 }, { id: 8, name: "곽영래", image: profile1, num: 32 }, { id: 9, name: "정회화", image: profile1, num: 7 },
         { id: 10, name: "김상명", image: profile1, num: 52 }, { id: 11, name: "신종윤", image: profile1, num: 13 }, { id: 12, name: "임필우", image: profile1, num: 19 }, { id: 13, name: "이병철", image: profile1, num: 11 },
-        { id: 15, name: "강동균", image: profile2, num: 6 }, { id: 16, name: "류희대", image: profile2, num: 16 }, { id: 17, name: "여성진", image: profile2, num: 99 }, { id: 18, name: "김영준", image: profile2, num: 1 }, { id: 19, name: "장효준", image: profile2, num: 6 },
-        { id: 20, name: "정기택", image: profile2, num: 2 }, { id: 21, name: "김정민", image: profile2, num: 7 }, { id: 22, name: "정현준", image: profile2, num: 15 }, { id: 23, name: "김주환", image: profile2, num: 5 }, { id: 24, name: "이지철", image: profile2, num: 9 }, 
-        { id: 25, name: "김진호", image: profile2, num: 7 }, { id: 26, name: "박진산", image: profile2, num: 17 }, { id: 27, name: "임다훈", image: profile2, num: 22 }, { id: 28, name: "강병준", image: profile3, num: 11 },{ id: 29, name: "박찬용", image: profile3, num: 30 },
-        { id: 30, name: "이종범", image: profile3, num: 4 }, { id: 31, name: "박기환", image: profile3, num: 6 }, { id: 32, name: "정도식", image: profile3, num: 10 }, { id: 33, name: "이주은", image: profile3, num: 20 }, { id: 34, name: "권현택", image: profile3, num: 13 },
-        { id: 36, name: "이성혁", image: profile3, num: 10 }, { id: 38, name: "이상욱", image: profile3, num: '00' }, { id: 39, name: "박준영", image: profile3, num: 27 },
-        { id: 40, name: "윤한중", image: profile3, num: 12 }
+        { id: 14, name: "강동균", image: profile2, num: 6 }, { id: 15, name: "류희대", image: profile2, num: 16 }, { id: 16, name: "여성진", image: profile2, num: 99 }, { id: 17, name: "김영준", image: profile2, num: 1 }, { id: 18, name: "장효준", image: profile2, num: 6 },
+        { id: 19, name: "정기택", image: profile2, num: 2 }, { id: 20, name: "김정민", image: profile2, num: 7 }, { id: 21, name: "정현준", image: profile2, num: 15 }, { id: 22, name: "김주환", image: profile2, num: 5 }, { id: 23, name: "이지철", image: profile2, num: 9 }, 
+        { id: 24, name: "김진호", image: profile2, num: 7 }, { id: 25, name: "박진산", image: profile2, num: 17 }, { id: 26, name: "임다훈", image: profile2, num: 22 }, { id: 27, name: "강병준", image: profile3, num: 11 },{ id: 28, name: "박찬용", image: profile3, num: 30 },
+        { id: 29, name: "이종범", image: profile3, num: 4 }, { id: 30, name: "박기환", image: profile3, num: 6 }, { id: 31, name: "정도식", image: profile3, num: 10 }, { id: 32, name: "이주은", image: profile3, num: 20 }, { id: 33, name: "권현택", image: profile3, num: 13 },
+        { id: 34, name: "이성혁", image: profile3, num: 10 }, { id: 35, name: "이상욱", image: profile3, num: '00' }, { id: 36, name: "박준영", image: profile3, num: 27 },
+        { id: 37, name: "윤한중", image: profile3, num: 12 }
     ];
 
     //회원 리스트
