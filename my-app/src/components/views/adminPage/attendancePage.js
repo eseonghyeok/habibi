@@ -54,7 +54,7 @@ function AttendancePage() {
             cancelText: '취소',
             onOk() {
                 console.log('출석 명단 제출:', attendanceList);
-                Axios.post('/api/chart/plusPlays', { attendanceList })
+                Axios.post('/api/record/plusPlays', { attendanceList })
                 .then(response => {
                     console.log(response.data)
                     if(response.data.success) {

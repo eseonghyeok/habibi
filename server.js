@@ -21,6 +21,7 @@ app.get('/', function(req, res){
 })
 
 app.use('/api/chart', require('./server/routes/chart'));
+app.use('/api/record', require('./server/routes/record'));
 
 
 

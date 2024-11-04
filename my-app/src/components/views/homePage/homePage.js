@@ -44,12 +44,12 @@ function HomePage() {
                 </Button>
             </div>
             <div style={{ marginBottom: '20px' }}>
-                <Button type="primary" href="/chart/year" size="large" style={buttonStyle}>
+                <Button type="primary" href="/record/year" size="large" style={buttonStyle}>
                     올해의 랭킹 <p style={{ fontSize: '40px', marginRight: '-30px'}}>🥇</p>
                 </Button>
             </div>
             <div style={{ marginBottom: '20px' }}>
-                <Button type="primary" href="/chart/month" size="large" style={buttonStyle}>
+                <Button type="primary" href="/record/month" size="large" style={buttonStyle}>
                     이달의 랭킹 <p style={{ fontSize: '40px', marginRight: '-30px'}}>🥈</p>
                 </Button>
             </div>
@@ -61,23 +61,23 @@ function HomePage() {
             {isLoggedIn ? (
                 <div>
                     <div style={{ marginBottom: '20px' }}>
+                        <Button type="primary" href="/record/plus" size="large" style={buttonStyle}>
+                            기록체크 <p style={{ fontSize: '35px', marginRight: '-30px'}}>⚽️</p>
+                        </Button>
+                    </div>
+                    <div style={{ marginBottom: '20px' }}>
+                        <Button type="primary" href="/record/minus" size="large" style={buttonStyle}>
+                            기록차감 <p style={{ fontSize: '35px', marginRight: '-30px'}}>⚠️</p>
+                        </Button>
+                    </div>
+                    <div style={{ marginBottom: '20px' }}>
                         <Button type="primary" href="/attendance" size="large" style={buttonStyle}>
                             출석체크 <p style={{ fontSize: '35px', marginRight: '-30px'}}>📋</p>
                         </Button>
                     </div>
                     <div style={{ marginBottom: '20px' }}>
-                        <Button type="primary" href="/chart/daily" size="large" style={buttonStyle}>
-                            기록체크 <p style={{ fontSize: '35px', marginRight: '-30px'}}>⚽️</p>
-                        </Button>
-                    </div>
-                    <div style={{ marginBottom: '20px' }}>
                         <Button type="primary" size="large" onClick={logoutSuccess} style={buttonStyle}>
                             로그아웃 <p style={{ fontSize: '35px', marginRight: '-30px'}}>🔒</p>
-                        </Button>
-                    </div>
-                    <div style={{ marginBottom: '20px' }}>
-                        <Button type="primary" href="/chart/minus" size="large" style={{width: '240px', height: '80px', background: '#ff7a00e3', fontSize: '23px', fontFamily: 'Verdana, sans-serif', textAlign: 'center', display: 'flex', justifyContent: 'center', alignItems: 'center',textDecoration: 'none', fontWeight: 'bold'}}>
-                            기록수정 <p style={{ fontSize: '35px', marginRight: '-30px'}}>⚠️</p>
                         </Button>
                     </div>
                 </div>
@@ -89,6 +89,11 @@ function HomePage() {
                     <PasswordModal visible={visible} onCancel={handleCancel} />
                 </div>
             )}
+            <div style={{ marginBottom: '20px' }}>
+                <Button type="primary" href="/past" size="large" style={buttonStyle}>
+                    하비비 2024 <p style={{ fontSize: '40px', marginRight: '-30px'}}>💛</p>
+                </Button>
+            </div>
         </div>
     );
 }
