@@ -57,32 +57,6 @@ function initDailyChart() {
         log: date.toLocaleString() + ' 기록(골-도움-출석) : ' + logData
     };
 
-    fs.readFile(logFilePath, 'utf8', (err, data) => {
-        if (err) {
-            console.error('로그 파일 읽기 오류:', err);
-            return;
-        }
-
-        let logArray;
-        if (data){
-            try {
-                logArray = JSON.parse(data);
-            } catch (parseError) {
-                console.error('JSON 파싱 오류:', parseError);
-                return;
-            }
-        }
-        logArray.push(newLog);
-
-        fs.writeFile(logFilePath, JSON.stringify(logArray, null, 2), (err) => {
-            if (err) {
-                console.error('로그 파일 쓰기 오류:', err);
-            } else {
-                console.log('로그 파일이 성공적으로 업데이트되었습니다.');
-            }
-        });
-    });
-
     for (let id = 0; id < dailyChart.players.length; id++) {
         dailyChart.players[id].goal = 0;
         dailyChart.players[id].assist = 0;
