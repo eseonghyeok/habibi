@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import backgroud from './noti.jpg'
+import backgroud from '../../images/noti.jpg'
 
 function NotiPage() {
     const [activeTab, setActiveTab] = useState('player');

@@ -1,5 +1,5 @@
 import React from 'react';
-const Logo = require('./logo.png');
+const Logo = require('../../images/logo.png');
 
 const navbarStyle = {
   display: 'flex',

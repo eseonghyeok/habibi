@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Button } from 'antd';
 import PasswordModal from '../adminPage/PasswordModal'
-import background from './homepage.png'
+import background from '../../images/homepage.png'
 
 function HomePage() {
     const [visible, setVisible] = useState(false);

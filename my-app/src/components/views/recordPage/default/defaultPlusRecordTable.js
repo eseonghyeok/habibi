@@ -3,7 +3,7 @@ import Axios from 'axios';
 import { useTable, useGlobalFilter, useSortBy } from "react-table";
 import { Button, Modal } from 'antd';
 import Search from "./search";
-import chartpage from './chartpage.jpg'
+import chartpage from '../../../images/chartpage.jpg'
 
 function Table({ columns, data }) {
     const {

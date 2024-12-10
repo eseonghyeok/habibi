@@ -1,14 +1,14 @@
 import React, { useState } from 'react';
-import awardpage from './awardpage.jpg'
-import Jan from './award/player/jan-juhwan.png';
-import Feb1 from './award/player/feb-hoihwa.png';
-import Feb2 from './award/player/feb-juhwan.png';
-import Mar from './award/player/mar-hoihwa.png';
-import Apr from './award/player/apr-juhwan.png';
-import May from './award/player/may-jongkwon.png';
-import Jun from './award/player/jun-hoihwa.png';
-import Jul from './award/player/jul-hoihwa.png';
-import Aug from './award/player/aug-jongkwon.png';
+import awardpage from '../../images/award/awardpage.jpg'
+import Jan from '../../images/award/player/jan-juhwan.png';
+import Feb1 from '../../images/award/player/feb-hoihwa.png';
+import Feb2 from '../../images/award/player/feb-juhwan.png';
+import Mar from '../../images/award/player/mar-hoihwa.png';
+import Apr from '../../images/award/player/apr-juhwan.png';
+import May from '../../images/award/player/may-jongkwon.png';
+import Jun from '../../images/award/player/jun-hoihwa.png';
+import Jul from '../../images/award/player/jul-hoihwa.png';
+import Aug from '../../images/award/player/aug-jongkwon.png';
 
 function HallOfFamePage() {
     const [currentImageIndex, setCurrentImageIndex] = useState(8);

@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
 import Axios from 'axios';
 import { Button, List, Modal } from 'antd';
-import groundJpg from './ground.jpg';
-import list from './playerlist.jpg';
-import profile1 from './profile/1.jpg'
-import profile2 from './profile/2.jpg'
-import profile3 from './profile/3.jpg'
+import groundJpg from '../../images/ground.jpg';
+import list from '../../images/playerlist.jpg';
+import profile1 from '../../images/profile/1.jpg'
+import profile2 from '../../images/profile/2.jpg'
+import profile3 from '../../images/profile/3.jpg'
 
 function AttendancePage() {
     const all = [

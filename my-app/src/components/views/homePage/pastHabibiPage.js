@@ -1,6 +1,6 @@
 import React from 'react';
 import { Button } from 'antd';
-import background from './homepage.png'
+import background from '../../images/homepage.png'
 
 function PastHabibiPage() {
     const buttonStyle = { 

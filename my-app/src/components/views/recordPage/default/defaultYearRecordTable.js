@@ -1,7 +1,7 @@
 import React from "react";
 import { useTable, useGlobalFilter, useSortBy } from "react-table";
 import Search from "./search";
-import chartpage from './chartpage.jpg'
+import chartpage from '../../../images/chartpage.jpg'
 
 function Table({ columns, data }) {
   const {
