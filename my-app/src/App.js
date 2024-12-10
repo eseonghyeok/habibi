@@ -10,6 +10,12 @@ import awardPage from "./components/views/homePage/awardPage"
 import attendancePage from "./components/views/adminPage/attendancePage"
 import notiPage from "./components/views/homePage/notiPage"
 import Footer from "./components/views/homePage/footer"
+//2025 new version
+import pastHabibiPage from "./components/views/homePage/pastHabibiPage"
+import monthRecordTable from "./components/views/recordPage/monthPage/MonthRecordTable"
+import yearRecordTable from "./components/views/recordPage/yearPage/YearRecordTable"
+import plusRecordPage from "./components/views/recordPage/dayPage/PlusRecordPage"
+import minusRecordPage from "./components/views/recordPage/dayPage/MinusRecordPage"
 
 import './App.css';
 
@@ -27,6 +33,11 @@ function App() {
           <Route exact path="/award" Component={awardPage} />
           <Route exact path="/attendance" Component={attendancePage} />
           <Route exact path="/notification" Component={notiPage} />
+          <Route exact path="/record/month" Component={monthRecordTable} />
+          <Route exact path="/record/year" Component={yearRecordTable} />
+          <Route exact path="/record/plus" Component={plusRecordPage} />
+          <Route exact path="/record/minus" Component={minusRecordPage} />
+          <Route exact path="/past" Component={pastHabibiPage} />
         </Routes>
       </div>
       <Footer/>
