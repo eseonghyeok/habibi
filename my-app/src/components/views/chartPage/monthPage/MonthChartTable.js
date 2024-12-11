@@ -19,6 +19,7 @@ function MonthChartTable() {
                 }
             } else {
                 alert('월간차트 가져오기를 실패하였습니다.');
+                window.location.reload();
             }
         })  
     }, [month]);

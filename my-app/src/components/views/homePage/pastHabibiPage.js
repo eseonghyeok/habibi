@@ -30,6 +30,11 @@ function PastHabibiPage() {
                     2024 월간차트 <p style={{ fontSize: '40px', marginRight: '-30px'}}>🥈</p>
                 </Button>
             </div>
+            <div style={{ marginBottom: '20px' }}>
+                <Button type="primary" href="/award" size="large" style={buttonStyle}>
+                    2024 명예의 전당 <p style={{ fontSize: '35px', marginRight: '-20px'}}>🗽</p>
+                </Button>
+            </div>
         </div>
     );
 }

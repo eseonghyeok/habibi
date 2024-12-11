@@ -53,11 +53,6 @@ function HomePage() {
                     이달의 랭킹 <p style={{ fontSize: '40px', marginRight: '-30px'}}>🥈</p>
                 </Button>
             </div>
-            <div style={{ marginBottom: '20px' }}>
-                <Button type="primary" href="/award" size="large" style={buttonStyle}>
-                    명예의 전당 <p style={{ fontSize: '40px', marginRight: '-30px'}}>🗽</p>
-                </Button>
-            </div>
             {isLoggedIn ? (
                 <div>
                     <div style={{ marginBottom: '20px' }}>
