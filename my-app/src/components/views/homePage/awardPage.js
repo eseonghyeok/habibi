@@ -13,6 +13,7 @@ import Sep1 from '../../images/award/player/sep-jinho.png';
 import Sep2 from '../../images/award/player/sep-juhwan.png';
 import Oct from '../../images/award/player/oct-jinho.png';
 import Nov from '../../images/award/player/nov-jinho.png';
+import PlayerOfTheYear from '../../images/award/player/who.png';
 
 function HallOfFamePage() {
     const imageUrls = [
@@ -42,13 +43,28 @@ function HallOfFamePage() {
                 backgroundPosition: 'center',
             }}
         >
-            <h1 style={{ marginBottom: '70px', color: 'white', fontSize: '20px' }}>HABIBI FOOTBALL CLUB</h1>
-            <h1 style={{ marginBottom: '70px', color: 'white', fontSize: '30px' }}>🗽2024 명예의 전당🗽</h1>
+            <h1 style={{ marginBottom: '-20px', color: 'white', fontSize: '20px' }}>HABIBI FOOTBALL CLUB</h1>
+            <h1 style={{ marginBottom: '50px', color: 'white', fontSize: '30px' }}>2024 명예의 전당</h1>
             <div>
-                <h1 style={{ marginBottom: '-10px', color: 'white', fontSize: '30px' }}>🏆PLAYER OF THE YEAR🏆</h1>
+                <h1 style={{ marginBottom: '-10px', color: 'white', fontSize: '25px' }}>🏆PLAYER OF THE YEAR🏆</h1>
+                <div
+                    style={{
+                        margin: '20px auto',
+                        maxWidth: '170px',
+                        padding: '10px',
+                        backgroundColor: 'rgba(0, 0, 0, 0.7)',
+                        borderRadius: '10px',
+                    }}
+                >
+                    <img
+                        src={PlayerOfTheYear}
+                        alt="Player of the Year"
+                        style={{ width: '100%', borderRadius: '10px' }}
+                    />
+                </div>
             </div>
             <div>
-                <h1 style={{ marginBottom: '-10px', color: 'white', fontSize: '30px' }}>🥇PLAYER OF THE MONTH🥇</h1>
+                <h1 style={{ marginBottom: '-10px', color: 'white', fontSize: '25px' }}>🥇PLAYER OF THE MONTH🥇</h1>
                 <div
                     style={{
                         display: 'grid',
