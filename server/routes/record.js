@@ -3,6 +3,10 @@ const router = express.Router();
 const fs = require('fs');
 const path = require('path');
 
+//오늘의 팀 정보 파일
+const dailyTeam = require('../data/day/daily_team_2025.json');
+const dailyTeamPath = './server/data/day/daily_team_2025.json';
+
 //달마다 month 변경
 const dailyChart = require('../data/day/player_day_chart_2025.json');
 const monthChart = require('../data/month/player_chart_1_2025.json');
@@ -10,6 +14,18 @@ const yearChart = require('../data/year/player_chart_2025.json');
 const dailyChartPath = './server/data/day/player_day_chart_2025.json';
 const monthChartPath = './server/data/month/player_chart_1_2025.json';
 const yearChartPath = './server/data/year/player_chart_2025.json';
+
+function updateTeaFile() {
+    let success = 1;
+    fs.writeFile(dailyTeamPath, JSON.stringify(dailyTeam, null, 2), (err) => {
+        if (err) {
+            console.error('오늘의 팀 정보 JSON 파일 쓰기 오류:', err);
+            success = 0;
+            return;
+        }
+    });
+    if(success) console.log('오늘의 팀 정보 JSON 파일이 성공적으로 갱신되었습니다.');
+}
 
 function updateChartFile() {
     let success = 1;
@@ -41,31 +57,6 @@ function updateChartFile() {
 }
 
 function initDailyChart() {
-    fs.readFile(logFilePath, 'utf8', (err, data) => {
-        if (err) {
-            console.error('로그 파일 읽기 오류:', err);
-            return;
-        }
-
-        let logArray;
-        if (data){
-            try {
-                logArray = JSON.parse(data);
-            } catch (parseError) {
-                console.error('JSON 파싱 오류:', parseError);
-                return;
-            }
-        }
-
-        fs.writeFile(logFilePath, JSON.stringify(logArray, null, 2), (err) => {
-            if (err) {
-                console.error('로그 파일 쓰기 오류:', err);
-            } else {
-                console.log('로그 파일이 성공적으로 업데이트되었습니다.');
-            }
-        });
-    });
-
     for (let id = 0; id < dailyChart.players.length; id++) {
         dailyChart.players[id].win = 0;
         dailyChart.players[id].draw = 0;
@@ -81,9 +72,6 @@ function plusPlays(ids) {
         dailyChart.players[id].plays ++;
         monthChart.players[id].plays ++;
         yearChart.players[id].plays ++;
-        dailyChart.players[id].pts += 5;
-        monthChart.players[id].pts += 5;
-        yearChart.players[id].pts += 5;
         updateChartFile();
     });
 }
@@ -93,20 +81,20 @@ function minusPlays(id) {
         dailyChart.players[id].plays --;
         monthChart.players[id].plays --;
         yearChart.players[id].plays --;
-        dailyChart.players[id].pts -= 5;
-        monthChart.players[id].pts -= 5;
-        yearChart.players[id].pts -= 5;
         updateChartFile();
     }
 }
 
-function plusWin(id) {
-    dailyChart.players[id].win ++;
-    monthChart.players[id].win ++;
-    yearChart.players[id].win ++;
-    dailyChart.players[id].pts += 2;
-    monthChart.players[id].pts += 2;
-    yearChart.players[id].pts += 2;
+function plusWin(ids) {
+    console.log(ids)
+    ids.forEach(id => {
+        dailyChart.players[id].win ++;
+        monthChart.players[id].win ++;
+        yearChart.players[id].win ++;
+        dailyChart.players[id].pts += 3;
+        monthChart.players[id].pts += 3;
+        yearChart.players[id].pts += 3;
+    });
     updateChartFile();
 }
 
@@ -115,20 +103,22 @@ function minusWin(id) {
         dailyChart.players[id].win --;
         monthChart.players[id].win --;
         yearChart.players[id].win --;
-        dailyChart.players[id].pts -= 2;
-        monthChart.players[id].pts -= 2;
-        yearChart.players[id].pts -= 2;
+        dailyChart.players[id].pts -= 3;
+        monthChart.players[id].pts -= 3;
+        yearChart.players[id].pts -= 3;
         updateChartFile();
     }
 }
 
-function plusDraw(id) {
-    dailyChart.players[id].draw ++;
-    monthChart.players[id].draw ++;
-    yearChart.players[id].draw ++;
-    dailyChart.players[id].pts ++;
-    monthChart.players[id].pts ++;
-    yearChart.players[id].pts ++;
+function plusDraw(ids) {
+    ids.forEach(id => {
+        dailyChart.players[id].draw ++;
+        monthChart.players[id].draw ++;
+        yearChart.players[id].draw ++;
+        dailyChart.players[id].pts ++;
+        monthChart.players[id].pts ++;
+        yearChart.players[id].pts ++;
+    });
     updateChartFile();
 }
 
@@ -144,10 +134,12 @@ function minusDraw(id) {
     }
 }
 
-function plusLose(id) {
-    dailyChart.players[id].lose ++;
-    monthChart.players[id].lose ++;
-    yearChart.players[id].lose ++;
+function plusLose(ids) {
+    ids.forEach(id => {
+        dailyChart.players[id].lose ++;
+        monthChart.players[id].lose ++;
+        yearChart.players[id].lose ++;
+    });
     updateChartFile();
 }
 
@@ -159,6 +151,20 @@ function minusLose(id) {
         updateChartFile();
     }
 }
+
+function editTeam(a, b, c, other) {
+    dailyTeam.A = a;
+    dailyTeam.B = b;
+    dailyTeam.C = c;
+    dailyTeam.Others = other;
+    updateTeaFile();
+}
+
+// Get daily team
+router.get("/getDailyTeam", (req, res) => {
+    if (!dailyTeam) return res.status(400).send();
+    res.status(200).json({ success: true, dailyTeam })
+});
 
 // replace default daily chart
 router.post("/initDaily", (req, res) => {
@@ -234,14 +240,15 @@ router.get("/getYear", (req, res) => {
 });
 
 //plays
-router.post("/plusPlays", (req, res) => { 
-    let date = new Date();
-    const { attendanceList } = req.body;
-    const ids = attendanceList.map(member => member.id);
-
+router.post("/submitTeams", (req, res) => { 
+    const { A, B, C, Others } = req.body;
+    const ids = [...A, ...B, ...C, ...Others];
+    
     if (!dailyChart) return res.status(400).send();
     res.status(200).json({ success: true })
     plusPlays(ids);
+
+    editTeam(A, B, C, Others);
 });
 router.post("/minusPlays", (req, res) => {
     const { id } = req.body;
@@ -253,6 +260,7 @@ router.post("/minusPlays", (req, res) => {
 // Win
 router.post("/plusWin", (req, res) => {
     let { id } = req.body;
+    console.log(id)
     if (!dailyChart) return res.status(400).send();
     res.status(200).json({ success: true })
     plusWin(id);

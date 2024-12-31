@@ -56,18 +56,23 @@ function HomePage() {
             {isLoggedIn ? (
                 <div>
                     <div style={{ marginBottom: '20px' }}>
+                        <Button type="primary" href="/attendance" size="large" style={buttonStyle}>
+                            출석체크 <p style={{ fontSize: '35px', marginRight: '-30px'}}>📋</p>
+                        </Button>
+                    </div>
+                    <div style={{ marginBottom: '20px' }}>
+                        <Button type="primary" href="/record/teams" size="large" style={buttonStyle}>
+                            승점기록 <p style={{ fontSize: '35px', marginRight: '-30px'}}>📊</p>
+                        </Button>
+                    </div>
+                    <div style={{ marginBottom: '20px' }}>
                         <Button type="primary" href="/record/plus" size="large" style={buttonStyle}>
-                            기록체크 <p style={{ fontSize: '35px', marginRight: '-30px'}}>⚽️</p>
+                            기록증가 <p style={{ fontSize: '35px', marginRight: '-30px'}}>➕</p>
                         </Button>
                     </div>
                     <div style={{ marginBottom: '20px' }}>
                         <Button type="primary" href="/record/minus" size="large" style={buttonStyle}>
-                            기록차감 <p style={{ fontSize: '35px', marginRight: '-30px'}}>⚠️</p>
-                        </Button>
-                    </div>
-                    <div style={{ marginBottom: '20px' }}>
-                        <Button type="primary" href="/attendance" size="large" style={buttonStyle}>
-                            출석체크 <p style={{ fontSize: '35px', marginRight: '-30px'}}>📋</p>
+                            기록차감 <p style={{ fontSize: '35px', marginRight: '-30px'}}>➖</p>
                         </Button>
                     </div>
                     <div style={{ marginBottom: '20px' }}>
