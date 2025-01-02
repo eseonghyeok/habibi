@@ -17,11 +17,11 @@ function Table({ columns, data, filteredIds }) {
 
   const initDailyChart = (ids) => {
     Modal.confirm({
-      title: '출석체크+기록반영',
+      title: '기록 반영',
       content: (
         <div>
           <p>정말 종료하시겠습니까?</p>
-          <p>종료하시면 차트가 초기화되며 출석 및 경기 기록이 반영됩니다.</p>
+          <p>종료하시면 차트가 초기화되며 경기 기록이 반영됩니다.</p>
           <p>당일 최종 반영할 때 사용을 권장합니다.</p>
         </div>
       ),

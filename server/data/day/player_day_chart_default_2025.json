@@ -7,7 +7,8 @@
       "draw": 0,
       "lose": 0,
       "plays": 0,
-      "pts": 0
+      "pts": 0,
+      "attendance": 0
     },
     {
       "id": 1,
@@ -16,7 +17,8 @@
       "draw": 0,
       "lose": 0,
       "plays": 0,
-      "pts": 0
+      "pts": 0,
+      "attendance": 0
     },
     {
       "id": 2,
@@ -25,7 +27,8 @@
       "draw": 0,
       "lose": 0,
       "plays": 0,
-      "pts": 0
+      "pts": 0,
+      "attendance": 0
     },
     {
       "id": 3,
@@ -34,7 +37,8 @@
       "draw": 0,
       "lose": 0,
       "plays": 0,
-      "pts": 0
+      "pts": 0,
+      "attendance": 0
     },
     {
       "id": 4,
@@ -43,7 +47,8 @@
       "draw": 0,
       "lose": 0,
       "plays": 0,
-      "pts": 0
+      "pts": 0,
+      "attendance": 0
     },
     {
       "id": 5,
@@ -52,7 +57,8 @@
       "draw": 0,
       "lose": 0,
       "plays": 0,
-      "pts": 0
+      "pts": 0,
+      "attendance": 0
     },
     {
       "id": 6,
@@ -61,7 +67,8 @@
       "draw": 0,
       "lose": 0,
       "plays": 0,
-      "pts": 0
+      "pts": 0,
+      "attendance": 0
     },
     {
       "id": 7,
@@ -70,7 +77,8 @@
       "draw": 0,
       "lose": 0,
       "plays": 0,
-      "pts": 0
+      "pts": 0,
+      "attendance": 0
     },
     {
       "id": 8,
@@ -79,7 +87,8 @@
       "draw": 0,
       "lose": 0,
       "plays": 0,
-      "pts": 0
+      "pts": 0,
+      "attendance": 0
     },
     {
       "id": 9,
@@ -88,7 +97,8 @@
       "draw": 0,
       "lose": 0,
       "plays": 0,
-      "pts": 0
+      "pts": 0,
+      "attendance": 0
     },
     {
       "id": 10,
@@ -97,7 +107,8 @@
       "draw": 0,
       "lose": 0,
       "plays": 0,
-      "pts": 0
+      "pts": 0,
+      "attendance": 0
     },
     {
       "id": 11,
@@ -106,7 +117,8 @@
       "draw": 0,
       "lose": 0,
       "plays": 0,
-      "pts": 0
+      "pts": 0,
+      "attendance": 0
     },
     {
       "id": 12,
@@ -115,7 +127,8 @@
       "draw": 0,
       "lose": 0,
       "plays": 0,
-      "pts": 0
+      "pts": 0,
+      "attendance": 0
     },
     {
       "id": 13,
@@ -124,7 +137,8 @@
       "draw": 0,
       "lose": 0,
       "plays": 0,
-      "pts": 0
+      "pts": 0,
+      "attendance": 0
     },
     {
       "id": 14,
@@ -133,7 +147,8 @@
       "draw": 0,
       "lose": 0,
       "plays": 0,
-      "pts": 0
+      "pts": 0,
+      "attendance": 0
     },
     {
       "id": 15,
@@ -142,7 +157,8 @@
       "draw": 0,
       "lose": 0,
       "plays": 0,
-      "pts": 0
+      "pts": 0,
+      "attendance": 0
     },
     {
       "id": 16,
@@ -151,7 +167,8 @@
       "draw": 0,
       "lose": 0,
       "plays": 0,
-      "pts": 0
+      "pts": 0,
+      "attendance": 0
     },
     {
       "id": 17,
@@ -160,7 +177,8 @@
       "draw": 0,
       "lose": 0,
       "plays": 0,
-      "pts": 0
+      "pts": 0,
+      "attendance": 0
     },
     {
       "id": 18,
@@ -169,7 +187,8 @@
       "draw": 0,
       "lose": 0,
       "plays": 0,
-      "pts": 0
+      "pts": 0,
+      "attendance": 0
     },
     {
       "id": 19,
@@ -178,7 +197,8 @@
       "draw": 0,
       "lose": 0,
       "plays": 0,
-      "pts": 0
+      "pts": 0,
+      "attendance": 0
     },
     {
       "id": 20,
@@ -187,7 +207,8 @@
       "draw": 0,
       "lose": 0,
       "plays": 0,
-      "pts": 0
+      "pts": 0,
+      "attendance": 0
     },
     {
       "id": 21,
@@ -196,7 +217,8 @@
       "draw": 0,
       "lose": 0,
       "plays": 0,
-      "pts": 0
+      "pts": 0,
+      "attendance": 0
     },
     {
       "id": 22,
@@ -205,7 +227,8 @@
       "draw": 0,
       "lose": 0,
       "plays": 0,
-      "pts": 0
+      "pts": 0,
+      "attendance": 0
     },
     {
       "id": 23,
@@ -214,7 +237,8 @@
       "draw": 0,
       "lose": 0,
       "plays": 0,
-      "pts": 0
+      "pts": 0,
+      "attendance": 0
     },
     {
       "id": 24,
@@ -223,7 +247,8 @@
       "draw": 0,
       "lose": 0,
       "plays": 0,
-      "pts": 0
+      "pts": 0,
+      "attendance": 0
     },
     {
       "id": 25,
@@ -232,7 +257,8 @@
       "draw": 0,
       "lose": 0,
       "plays": 0,
-      "pts": 0
+      "pts": 0,
+      "attendance": 0
     },
     {
       "id": 26,
@@ -241,7 +267,8 @@
       "draw": 0,
       "lose": 0,
       "plays": 0,
-      "pts": 0
+      "pts": 0,
+      "attendance": 0
     },
     {
       "id": 27,
@@ -250,7 +277,8 @@
       "draw": 0,
       "lose": 0,
       "plays": 0,
-      "pts": 0
+      "pts": 0,
+      "attendance": 0
     },
     {
       "id": 28,
@@ -259,7 +287,8 @@
       "draw": 0,
       "lose": 0,
       "plays": 0,
-      "pts": 0
+      "pts": 0,
+      "attendance": 0
     },
     {
       "id": 29,
@@ -268,7 +297,8 @@
       "draw": 0,
       "lose": 0,
       "plays": 0,
-      "pts": 0
+      "pts": 0,
+      "attendance": 0
     },
     {
       "id": 30,
@@ -277,7 +307,8 @@
       "draw": 0,
       "lose": 0,
       "plays": 0,
-      "pts": 0
+      "pts": 0,
+      "attendance": 0
     },
     {
       "id": 31,
@@ -286,7 +317,8 @@
       "draw": 0,
       "lose": 0,
       "plays": 0,
-      "pts": 0
+      "pts": 0,
+      "attendance": 0
     },
     {
       "id": 32,
@@ -295,7 +327,8 @@
       "draw": 0,
       "lose": 0,
       "plays": 0,
-      "pts": 0
+      "pts": 0,
+      "attendance": 0
     },
     {
       "id": 33,
@@ -304,7 +337,8 @@
       "draw": 0,
       "lose": 0,
       "plays": 0,
-      "pts": 0
+      "pts": 0,
+      "attendance": 0
     },
     {
       "id": 34,
@@ -313,7 +347,8 @@
       "draw": 0,
       "lose": 0,
       "plays": 0,
-      "pts": 0
+      "pts": 0,
+      "attendance": 0
     },
     {
       "id": 35,
@@ -322,7 +357,8 @@
       "draw": 0,
       "lose": 0,
       "plays": 0,
-      "pts": 0
+      "pts": 0,
+      "attendance": 0
     },
     {
       "id": 36,
@@ -331,7 +367,8 @@
       "draw": 0,
       "lose": 0,
       "plays": 0,
-      "pts": 0
+      "pts": 0,
+      "attendance": 0
     },
     {
       "id": 37,
@@ -340,7 +377,8 @@
       "draw": 0,
       "lose": 0,
       "plays": 0,
-      "pts": 0
+      "pts": 0,
+      "attendance": 0
     },
     {
       "id": 38,
@@ -349,7 +387,8 @@
       "draw": 0,
       "lose": 0,
       "plays": 0,
-      "pts": 0
+      "pts": 0,
+      "attendance": 0
     },
     {
       "id": 39,
@@ -358,7 +397,8 @@
       "draw": 0,
       "lose": 0,
       "plays": 0,
-      "pts": 0
+      "pts": 0,
+      "attendance": 0
     },
     {
       "id": 40,
@@ -367,7 +407,8 @@
       "draw": 0,
       "lose": 0,
       "plays": 0,
-      "pts": 0
+      "pts": 0,
+      "attendance": 0
     }
   ]
 }

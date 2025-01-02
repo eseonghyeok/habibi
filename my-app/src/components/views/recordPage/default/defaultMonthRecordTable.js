@@ -21,8 +21,8 @@ function Table({ columns, data }) {
       <div style={{ marginBottom: "20px", textAlign: "center" }}>
         <h1 style={{ marginBottom: "10px", color: "#fff", fontSize: "25px" }}>🏆월간 HABIBI RANKING🏆</h1>
         <p style={{ fontSize: '11px', color: "#fff" }}>💡이달의 랭킹 페이지에서는 선수들의 월별 랭킹차트를 확인할 수 있습니다.</p>
-        <p style={{ fontSize: '10px', color: "#fff" }}>💡점수는 출석 및 승무패 기록으로 합산됩니다.</p>
-        <p style={{ fontSize: '10px', color: "#fff" }}>💡기록이 오기입된 경우 매니저에게 문의해주세요!</p>
+        <p style={{ fontSize: '10px', color: "#fff" }}>💡점수는 승무패 기록으로 합산됩니다.</p>
+        <p style={{ fontSize: '10px', color: "#fff" }}>💡출석은 횟수로만 기록되며 점수에 포함되지 않습니다.</p>
         <Search
           onSubmit={setGlobalFilter} style={{ overflowX: "auto", padding: "0 30px" }}
         />

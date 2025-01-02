@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Axios from 'axios';
 import { Button, List, Modal } from 'antd';
 import groundJpg from '../../images/ground.png';
@@ -28,6 +28,29 @@ function AttendancePage() {
     const [generalTeam, setGeneralTeam] = useState([]);
     const [activeTeam, setActiveTeam] = useState('A');
 
+    useEffect(() => { 
+        Axios.get('/api/record/getDailyTeam')
+        .then(response => {
+            console.log(response.data)
+            if(response.data.success) {
+                const { A, B, C, Others } = response.data.dailyTeam;
+                const players = [...A, ...B, ...C, ...Others];
+                const benchPlayers = all.filter(member => !players.includes(member.id));
+                const mapMembersWithProfile = (ids, profileImage) => 
+                    all.filter(member => ids.includes(member.id))
+                        .map(member => ({ ...member, image: profileImage }));
+
+                setATeam(mapMembersWithProfile(A, profile1)); 
+                setBTeam(mapMembersWithProfile(B, profile2)); 
+                setCTeam(mapMembersWithProfile(C, profile3)); 
+                setGeneralTeam(mapMembersWithProfile(Others, profile4));
+                setMembers(benchPlayers);
+            } else {
+                alert('오늘의 팀 정보 가져오기를 실패하였습니다.')
+            }
+        })  
+    }, [])
+
     const handleTeamAdd = (member) => {
         const profileImage = activeTeam === 'A' ? profile1 : activeTeam === 'B' ? profile2 : activeTeam === 'C' ? profile3 : profile4;
         const memberWithImage = { ...member, image: profileImage };
@@ -49,9 +72,36 @@ function AttendancePage() {
         setMembers([...members, { id: member.id, name: member.name }]); // Remove image when returning to member list
     };
 
+    const initDailyTeam = () => {
+        Modal.confirm({
+            title: '팀 초기화',
+            content: (
+                <div>
+                    <p>정말 초기화하시겠습니까?</p>
+                    <p>종료하시면 팀 구성원이 초기화됩니다.</p>
+                </div>
+            ),
+            okText: '확인',
+            cancelText: '취소',
+            onOk() {
+                Axios.post('/api/record/initDailyTeam')
+                .then(response => {
+                    if(response.data.success) {
+                        window.location.reload();
+                    } else {
+                        alert('팀 초기화에 실패하였습니다.')
+                    }
+                })
+            },
+            onCancel() {
+                console.log('취소됨');
+            },
+        });
+    };
+
     const submitAttendanceList = () => {
         Modal.confirm({
-            title: '출석 명단 제출',
+            title: '명단 제출',
             content: (
                 <div>
                     <p>A팀 인원: {aTeam.length}명</p>
@@ -59,7 +109,7 @@ function AttendancePage() {
                     <p>C팀 인원: {cTeam.length}명</p>
                     <p>일반 인원: {generalTeam.length}명</p>
                     <p>정말 등록하시겠습니까?</p>
-                    <p>등록 이후에는 명단이 초기화 됩니다.</p>
+                    <p>수정 후 재등록도 가능합니다.</p>
                 </div>
             ),
             okText: '등록',
@@ -74,12 +124,7 @@ function AttendancePage() {
                 })
                 .then(response => {
                     if (response.data.success) {
-                        console.log('명단 등록에 성공하였습니다.');
-                        setATeam([]); 
-                        setBTeam([]); 
-                        setCTeam([]); 
-                        setGeneralTeam([]); 
-                        setMembers(all); 
+                        console.log('명단 등록에 성공하였습니다.'); 
                     } else {
                         alert('명단 등록에 실패하였습니다.');
                     }
@@ -97,7 +142,8 @@ function AttendancePage() {
         <div style={{ textAlign: 'center', minHeight: "100vh" }}>
             <div style={{ backgroundImage: `url(${list})` }}>
                 <div style={{ padding: "10px", color: 'white' }}>
-                    <h1>🙋‍♂ {date.toLocaleDateString()} 팀 나누기 🙋‍♂</h1>
+                    <h1>🔴 팀 나누기 🔵</h1>
+                    <p> {date.toLocaleDateString()} </p>
                     <p>💡 A, B, C, 일반 팀을 선택하고 회원을 추가하세요.</p>
                     <p>💡 일반팀은 후반 2시간 참여인원으로 출석처리만 반영됩니다.</p>
                     <div style={{ display: 'flex', justifyContent: 'center', gap: '10px', marginBottom: '10px' }}>
@@ -131,7 +177,7 @@ function AttendancePage() {
                 </div>
             </div>
 
-            <div style={{ padding: '20px', background: `url(${groundJpg})`, backgroundSize: 'cover' }}>
+            <div style={{ padding: '20px', background: `url(${groundJpg})`, backgroundSize: 'cover', position: 'relative', overflow: 'hidden' }}>
                 {['A', 'B', 'C', '일반'].map((team) => (
                     <div key={team} style={{ marginBottom: '20px' }}>
                         <h2 style={{ color: 'white' }}>{team}</h2>
@@ -149,9 +195,10 @@ function AttendancePage() {
                         />
                     </div>
                 ))}
-                <Button type="primary" onClick={submitAttendanceList} style={{ background: '#2a85fb', width: '120px', height: '50px', borderRadius: '6px', fontSize: '16px' }}>
-                    명단 등록
-                </Button>
+                <div style={{ marginTop: '70px' }}>
+                    <Button type="primary" onClick={() => initDailyTeam()} style={{ background: '#d9363e', width: '120px', height: '50px', borderRadius: '6px', fontSize: '16px', position: 'absolute', bottom: '1%', left: '4%' }}>초기화</Button>
+                    <Button type="primary" onClick={submitAttendanceList} style={{ background: '#2a85fb', width: '120px', height: '50px', borderRadius: '6px', fontSize: '16px', position: 'absolute', bottom: '1%', right: '4%'  }}>저장</Button>
+                </div>
             </div>
         </div>
     );

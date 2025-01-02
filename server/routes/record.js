@@ -103,6 +103,7 @@ function initDailyChart() {
         dailyChart.players[id].lose = 0;
         dailyChart.players[id].plays = 0;
         dailyChart.players[id].pts = 0;
+        dailyChart.players[id].attendance = 0;
     }
     updateChartFile();
 }
@@ -115,10 +116,18 @@ function plusPlaysByAttend(ids) {
     });
 }
 
+function checkAttendance(ids) {
+    ids.forEach(id => {
+        dailyChart.players[id].attendance = 1;
+        updateChartFile();
+    });
+}
+
 function plusPlays(ids) {
     ids.forEach(id => {
-        //일간차트에만 임시 표시용으로 기록
         dailyChart.players[id].plays ++;
+        monthChart.players[id].plays ++;
+        yearChart.players[id].plays ++;
         updateChartFile();
     });
 }
@@ -231,7 +240,6 @@ router.post("/initDailyTeam", (req, res) => {
 router.post("/initDaily", (req, res) => {
     if (!dailyChart) return res.status(400).send();
     res.status(200).json({ success: true })
-
     initDailyChart();
 });
 
@@ -314,8 +322,7 @@ router.post("/submitTeams", (req, res) => {
     
     if (!dailyChart) return res.status(400).send();
     res.status(200).json({ success: true })
-    plusPlays(ids);
-
+    checkAttendance(ids);
     editTeam(A, B, C, Others);
 });
 router.post("/minusPlays", (req, res) => {
