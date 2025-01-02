@@ -152,6 +152,34 @@ function AttendancePage() {
             })
     };
 
+    const initDailyTeam = () => {
+        Modal.confirm({
+            title: '팀 초기화',
+            content: (
+                <div>
+                    <p>정말 초기화하시겠습니까?</p>
+                    <p>종료하시면 팀 구성원이 초기화됩니다.</p>
+                    <p>최종 반영 또는 팀 재구성 시 사용을 권장합니다.</p>
+                </div>
+            ),
+            okText: '진행',
+            cancelText: '취소',
+            onOk() {
+                Axios.post('/api/record/initDailyTeam')
+                .then(response => {
+                    if(response.data.success) {
+                        window.location.reload();
+                    } else {
+                        alert('팀 초기화에 실패하였습니다.')
+                    }
+                })
+            },
+            onCancel() {
+                console.log('취소됨');
+            },
+        });
+    };  
+
     let date = new Date();
 
     return (
@@ -380,6 +408,9 @@ function AttendancePage() {
                             </List.Item>
                         )}
                     />
+                </div>
+                <div style={{ display: "flex", justifyContent: "flex-end" }}>
+                    <Button type="primary" onClick={() => initDailyTeam()} style={{ background: '#2a85fb', width: '145px', height: '45px', borderRadius: '6px', fontSize: '13px', marginTop: '10px' }}>팀 초기화</Button>
                 </div>
             </div>
 

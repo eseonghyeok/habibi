@@ -15,34 +15,6 @@ function Table({ columns, data }) {
         setGlobalFilter,
     } = useTable({ columns, data }, useGlobalFilter, useSortBy);
 
-    const initDailyChart = () => {
-        Modal.confirm({
-            title: '선수기록 최종반영',
-            content: (
-                <div>
-                    <p>정말 종료하시겠습니까?</p>
-                    <p>종료하시면 차트가 초기화됩니다.</p>
-                    <p>당일 최종 반영할 때 사용을 권장합니다.</p>
-                </div>
-            ),
-            okText: '반영',
-            cancelText: '취소',
-            onOk() {
-                Axios.post('/api/chart/initDaily')
-                .then(response => {
-                    if(response.data.success) {
-                        window.location.reload();
-                    } else {
-                        alert('차트 초기화(최종 반영)에 실패하였습니다.')
-                    }
-                })
-            },
-            onCancel() {
-                console.log('취소됨');
-            },
-        });
-    };    
-
     const plusWinbyId = (id) => {
         Axios.post('/api/record/plusWin', { id })
             .then(response => {
@@ -155,9 +127,6 @@ function Table({ columns, data }) {
                         })}
                     </tbody>
                 </table>
-            </div>
-            <div style={{ display: "flex", justifyContent: "flex-end" }}>
-                <Button type="primary" onClick={() => initDailyChart()} style={{ background: '#2a85fb', width: '145px', height: '45px', borderRadius: '6px', fontSize: '13px', marginTop: '10px' }}>경기종료(최종반영)</Button>
             </div>
         </div>
     );

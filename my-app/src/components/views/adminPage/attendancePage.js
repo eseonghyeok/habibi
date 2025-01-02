@@ -97,7 +97,7 @@ function AttendancePage() {
         <div style={{ textAlign: 'center', minHeight: "100vh" }}>
             <div style={{ backgroundImage: `url(${list})` }}>
                 <div style={{ padding: "10px", color: 'white' }}>
-                    <h1>🙋‍♂ {date.toLocaleDateString()} 출석 체크 🙋‍♂</h1>
+                    <h1>🙋‍♂ {date.toLocaleDateString()} 팀 나누기 🙋‍♂</h1>
                     <p>💡 A, B, C, 일반 팀을 선택하고 회원을 추가하세요.</p>
                     <p>💡 일반팀은 후반 2시간 참여인원으로 출석처리만 반영됩니다.</p>
                     <div style={{ display: 'flex', justifyContent: 'center', gap: '10px', marginBottom: '10px' }}>

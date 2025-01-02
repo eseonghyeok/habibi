@@ -15,6 +15,7 @@ import pastHabibiPage from "./components/views/homePage/pastHabibiPage"
 import monthRecordTable from "./components/views/recordPage/monthPage/MonthRecordTable"
 import yearRecordTable from "./components/views/recordPage/yearPage/YearRecordTable"
 import dailyTeamPage from "./components/views/recordPage/dayPage/DailyTeamPage"
+import dailyResultPage from "./components/views/recordPage/dayPage/DailyResultPage"
 import plusRecordPage from "./components/views/recordPage/dayPage/PlusRecordPage"
 import minusRecordPage from "./components/views/recordPage/dayPage/MinusRecordPage"
 
@@ -37,6 +38,7 @@ function App() {
           <Route exact path="/record/month" Component={monthRecordTable} />
           <Route exact path="/record/year" Component={yearRecordTable} />
           <Route exact path="/record/teams" Component={dailyTeamPage} />
+          <Route exact path="/record/result" Component={dailyResultPage} />
           <Route exact path="/record/plus" Component={plusRecordPage} />
           <Route exact path="/record/minus" Component={minusRecordPage} />
           <Route exact path="/past" Component={pastHabibiPage} />

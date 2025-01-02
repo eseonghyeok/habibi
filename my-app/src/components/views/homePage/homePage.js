@@ -57,12 +57,17 @@ function HomePage() {
                 <div>
                     <div style={{ marginBottom: '20px' }}>
                         <Button type="primary" href="/attendance" size="large" style={buttonStyle}>
-                            출석체크 <p style={{ fontSize: '35px', marginRight: '-30px'}}>📋</p>
+                            팀 나누기 <p style={{ fontSize: '35px', marginRight: '-30px'}}>📋</p>
                         </Button>
                     </div>
                     <div style={{ marginBottom: '20px' }}>
                         <Button type="primary" href="/record/teams" size="large" style={buttonStyle}>
-                            승점기록 <p style={{ fontSize: '35px', marginRight: '-30px'}}>📊</p>
+                            승점 체크 <p style={{ fontSize: '35px', marginRight: '-30px'}}>📊</p>
+                        </Button>
+                    </div>
+                    <div style={{ marginBottom: '20px' }}>
+                        <Button type="primary" href="/record/result" size="large" style={buttonStyle}>
+                            오늘의결과 <p style={{ fontSize: '35px', marginRight: '-30px'}}>✅</p>
                         </Button>
                     </div>
                     <div style={{ marginBottom: '20px' }}>

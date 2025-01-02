@@ -107,11 +107,18 @@ function initDailyChart() {
     updateChartFile();
 }
 
-function plusPlays(ids) {
+function plusPlaysByAttend(ids) {
     ids.forEach(id => {
-        dailyChart.players[id].plays ++;
         monthChart.players[id].plays ++;
         yearChart.players[id].plays ++;
+        updateChartFile();
+    });
+}
+
+function plusPlays(ids) {
+    ids.forEach(id => {
+        //일간차트에만 임시 표시용으로 기록
+        dailyChart.players[id].plays ++;
         updateChartFile();
     });
 }
@@ -214,9 +221,9 @@ router.post("/loseTeam", (req, res) => {
     res.status(200).json({ success: true })
     plusLoseTeam(team);
 });
-router.get("/initDailyTeam", (req, res) => {
+router.post("/initDailyTeam", (req, res) => {
     if (!dailyTeam) return res.status(400).send();
-    res.status(200).json({ success: true, dailyTeam })
+    res.status(200).json({ success: true })
     initDailyTeam();
 });
 
@@ -294,6 +301,13 @@ router.get("/getYear", (req, res) => {
 });
 
 //plays
+router.post("/plusPlays", (req, res) => { 
+    const { ids } = req.body;
+    
+    if (!dailyChart) return res.status(400).send();
+    res.status(200).json({ success: true })
+    plusPlaysByAttend(ids);
+});
 router.post("/submitTeams", (req, res) => { 
     const { A, B, C, Others } = req.body;
     const ids = [...A, ...B, ...C, ...Others];
