@@ -15,7 +15,7 @@ const dailyChartPath = './server/data/day/player_day_chart_2025.json';
 const monthChartPath = './server/data/month/player_chart_1_2025.json';
 const yearChartPath = './server/data/year/player_chart_2025.json';
 
-function updateTeaFile() {
+function updateTeamFile() {
     let success = 1;
     fs.writeFile(dailyTeamPath, JSON.stringify(dailyTeam, null, 2), (err) => {
         if (err) {
@@ -56,6 +56,46 @@ function updateChartFile() {
     if(success) console.log('모든 차트 JSON 파일이 성공적으로 갱신되었습니다.');
 }
 
+function initDailyTeam() {
+    dailyTeam.A = [];
+    dailyTeam.B = [];
+    dailyTeam.C = [];
+    dailyTeam.Others = [];
+    dailyTeam.Result.A.win = 0;
+    dailyTeam.Result.A.draw = 0;
+    dailyTeam.Result.A.lose = 0;
+    dailyTeam.Result.B.win = 0;
+    dailyTeam.Result.B.draw = 0;
+    dailyTeam.Result.B.lose = 0;
+    dailyTeam.Result.C.win = 0;
+    dailyTeam.Result.C.draw = 0;
+    dailyTeam.Result.C.lose = 0;
+    updateTeamFile();
+}
+
+function editTeam(a, b, c, other) {
+    dailyTeam.A = a;
+    dailyTeam.B = b;
+    dailyTeam.C = c;
+    dailyTeam.Others = other;
+    updateTeamFile();
+}
+
+function plusWinTeam(team) {
+    dailyTeam.Result[team].win ++;
+    updateTeamFile();
+}
+
+function plusDrawTeam(team) {
+    dailyTeam.Result[team].draw ++;
+    updateTeamFile();
+}
+
+function plusLoseTeam(team) {
+    dailyTeam.Result[team].lose ++;
+    updateTeamFile();
+}
+
 function initDailyChart() {
     for (let id = 0; id < dailyChart.players.length; id++) {
         dailyChart.players[id].win = 0;
@@ -86,7 +126,6 @@ function minusPlays(id) {
 }
 
 function plusWin(ids) {
-    console.log(ids)
     ids.forEach(id => {
         dailyChart.players[id].win ++;
         monthChart.players[id].win ++;
@@ -152,18 +191,33 @@ function minusLose(id) {
     }
 }
 
-function editTeam(a, b, c, other) {
-    dailyTeam.A = a;
-    dailyTeam.B = b;
-    dailyTeam.C = c;
-    dailyTeam.Others = other;
-    updateTeaFile();
-}
-
 // Get daily team
 router.get("/getDailyTeam", (req, res) => {
     if (!dailyTeam) return res.status(400).send();
     res.status(200).json({ success: true, dailyTeam })
+});
+router.post("/winTeam", (req, res) => {
+    let { team } = req.body;
+    if (!dailyTeam) return res.status(400).send();
+    res.status(200).json({ success: true })
+    plusWinTeam(team);
+});
+router.post("/drawTeam", (req, res) => {
+    let { team } = req.body;
+    if (!dailyTeam) return res.status(400).send();
+    res.status(200).json({ success: true })
+    plusDrawTeam(team);
+});
+router.post("/loseTeam", (req, res) => {
+    let { team } = req.body;
+    if (!dailyTeam) return res.status(400).send();
+    res.status(200).json({ success: true })
+    plusLoseTeam(team);
+});
+router.get("/initDailyTeam", (req, res) => {
+    if (!dailyTeam) return res.status(400).send();
+    res.status(200).json({ success: true, dailyTeam })
+    initDailyTeam();
 });
 
 // replace default daily chart
@@ -260,7 +314,6 @@ router.post("/minusPlays", (req, res) => {
 // Win
 router.post("/plusWin", (req, res) => {
     let { id } = req.body;
-    console.log(id)
     if (!dailyChart) return res.status(400).send();
     res.status(200).json({ success: true })
     plusWin(id);

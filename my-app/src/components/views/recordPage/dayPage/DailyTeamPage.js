@@ -28,6 +28,9 @@ function AttendancePage() {
     const [generalTeam, setGeneralTeam] = useState([]);
     const [activeTeam, setActiveTeam] = useState('A');
     
+    const [aResult, setAResult] = useState([]);
+    const [bResult, setBResult] = useState([]);
+    const [cResult, setCResult] = useState([]);
     const [aIds, setAIds] = useState([]);
     const [bIds, setBIds] = useState([]);
     const [cIds, setCIds] = useState([]);
@@ -38,11 +41,14 @@ function AttendancePage() {
         .then(response => {
             console.log(response.data)
             if(response.data.success) {
-                const { A, B, C, Others } = response.data.dailyTeam;
+                const { A, B, C, Others, Result } = response.data.dailyTeam;
                 setAIds(A);
                 setBIds(B);
                 setCIds(C);
                 setOthersIds(Others);
+                setAResult(Result.A);
+                setBResult(Result.B);
+                setCResult(Result.C);
                 const mapMembersWithProfile = (ids, profileImage) => 
                     all
                         .filter(member => ids.includes(member.id))
@@ -113,6 +119,39 @@ function AttendancePage() {
             })
     };
 
+    const plusWinByTeam = (team) => {
+        Axios.post('/api/record/winTeam', { team })
+            .then(response => {
+                if(response.data.success) {
+                    //window.location.reload();
+                } else {
+                    alert('승리 횟수 반영을 실패하였습니다.')
+                }
+            })
+    };
+
+    const plusDrawByTeam = (team) => {
+        Axios.post('/api/record/drawTeam', { team })
+            .then(response => {
+                if(response.data.success) {
+                    //window.location.reload();
+                } else {
+                    alert('무승부 횟수 반영을 실패하였습니다.')
+                }
+            })
+    };
+
+    const plusLoseByTeam = (team) => {
+        Axios.post('/api/record/loseTeam', { team })
+            .then(response => {
+                if(response.data.success) {
+                    //window.location.reload();
+                } else {
+                    alert('패배 횟수 반영을 실패하였습니다.')
+                }
+            })
+    };
+
     let date = new Date();
 
     return (
@@ -154,15 +193,16 @@ function AttendancePage() {
                             width: '60px'
                         }}
                     >
-                        <p style={{ margin: '5px 0' }}>승: <strong>10</strong></p>
-                        <p style={{ margin: '5px 0' }}>무: <strong>5</strong></p>
-                        <p style={{ margin: '5px 0' }}>패: <strong>3</strong></p>
+                        <p style={{ margin: '5px 0' }}>승: <strong>{aResult.win}</strong></p>
+                        <p style={{ margin: '5px 0' }}>무: <strong>{aResult.draw}</strong></p>
+                        <p style={{ margin: '5px 0' }}>패: <strong>{aResult.lose}</strong></p>
                     </div>
                     <div style={{ display: 'flex', justifyContent: 'center', gap: '10px', marginTop: '10px', position: 'absolute', bottom: '2%', left: '4%' }}>
                         <Button 
                             type="primary"
                             onClick={() => {
                                 if (window.confirm('A팀 승리를 반영하시겠습니까?')) {
+                                    plusWinByTeam('A');
                                     plusWinByIds(aIds);
                                 }
                             }} 
@@ -172,6 +212,7 @@ function AttendancePage() {
                             type="primary"
                             onClick={() => {
                                 if (window.confirm('A팀 무승부를 반영하시겠습니까?')) {
+                                    plusDrawByTeam('A');
                                     plusDrawByIds(aIds);
                                 }
                             }}
@@ -181,6 +222,7 @@ function AttendancePage() {
                             type="primary"
                             onClick={() => {
                                 if (window.confirm('A팀 패배를 반영하시겠습니까?')) {
+                                    plusLoseByTeam('A');
                                     plusLoseByIds(aIds);
                                 }
                             }}
@@ -218,15 +260,16 @@ function AttendancePage() {
                             width: '60px'
                         }}
                     >
-                        <p style={{ margin: '5px 0' }}>승: <strong>10</strong></p>
-                        <p style={{ margin: '5px 0' }}>무: <strong>5</strong></p>
-                        <p style={{ margin: '5px 0' }}>패: <strong>3</strong></p>
+                        <p style={{ margin: '5px 0' }}>승: <strong>{bResult.win}</strong></p>
+                        <p style={{ margin: '5px 0' }}>무: <strong>{bResult.draw}</strong></p>
+                        <p style={{ margin: '5px 0' }}>패: <strong>{bResult.lose}</strong></p>
                     </div>
                     <div style={{ display: 'flex', justifyContent: 'center', gap: '10px', marginTop: '10px', position: 'absolute', bottom: '2%', left: '4%' }}>
                     <Button 
                             type="primary"
                             onClick={() => {
                                 if (window.confirm('B팀 승리를 반영하시겠습니까?')) {
+                                    plusWinByTeam('B');
                                     plusWinByIds(bIds);
                                 }
                             }} 
@@ -236,6 +279,7 @@ function AttendancePage() {
                             type="primary"
                             onClick={() => {
                                 if (window.confirm('B팀 무승부를 반영하시겠습니까?')) {
+                                    plusDrawByTeam('B');
                                     plusDrawByIds(bIds);
                                 }
                             }}
@@ -245,6 +289,7 @@ function AttendancePage() {
                             type="primary"
                             onClick={() => {
                                 if (window.confirm('B팀 패배를 반영하시겠습니까?')) {
+                                    plusLoseByTeam('B');
                                     plusLoseByIds(bIds);
                                 }
                             }}
@@ -282,15 +327,16 @@ function AttendancePage() {
                             width: '60px'
                         }}
                     >
-                        <p style={{ margin: '5px 0' }}>승: <strong>10</strong></p>
-                        <p style={{ margin: '5px 0' }}>무: <strong>5</strong></p>
-                        <p style={{ margin: '5px 0' }}>패: <strong>3</strong></p>
+                        <p style={{ margin: '5px 0' }}>승: <strong>{cResult.win}</strong></p>
+                        <p style={{ margin: '5px 0' }}>무: <strong>{cResult.draw}</strong></p>
+                        <p style={{ margin: '5px 0' }}>패: <strong>{cResult.lose}</strong></p>
                     </div>
                     <div style={{ display: 'flex', justifyContent: 'center', gap: '10px', marginTop: '10px', position: 'absolute', bottom: '2%', left: '4%' }}>
                     <Button 
                             type="primary"
                             onClick={() => {
                                 if (window.confirm('C팀 승리를 반영하시겠습니까?')) {
+                                    plusWinByTeam('C');
                                     plusWinByIds(cIds);
                                 }
                             }} 
@@ -300,6 +346,7 @@ function AttendancePage() {
                             type="primary"
                             onClick={() => {
                                 if (window.confirm('C팀 무승부를 반영하시겠습니까?')) {
+                                    plusDrawByTeam('C');
                                     plusDrawByIds(cIds);
                                 }
                             }}
@@ -309,6 +356,7 @@ function AttendancePage() {
                             type="primary"
                             onClick={() => {
                                 if (window.confirm('C팀 패배를 반영하시겠습니까?')) {
+                                    plusLoseByTeam('C');
                                     plusLoseByIds(cIds);
                                 }
                             }}
