@@ -118,9 +118,9 @@ function Table({ columns, data }) {
                                     </td>
                                 ))}
                                 <td style={{ padding: "12px", borderBottom: "1px solid #ddd", color: "#333", textAlign: "center" }}>
-                                    <button onClick={() => plusWinbyId(row.original.id)} style={{ fontSize: "1.8em", backgroundColor: "transparent", border: "none" }}>🥇</button>
-                                    <button onClick={() => plusDrawbyId(row.original.id)} style={{ fontSize: "1.8em", backgroundColor: "transparent", border: "none" }}>🥈</button>
-                                    <button onClick={() => plusLosebyId(row.original.id)} style={{ fontSize: "1.8em", backgroundColor: "transparent", border: "none" }}>🥉</button>
+                                    <button onClick={() => plusWinbyId([row.original.id])} style={{ fontSize: "1.8em", backgroundColor: "transparent", border: "none" }}>🥇</button>
+                                    <button onClick={() => plusDrawbyId([row.original.id])} style={{ fontSize: "1.8em", backgroundColor: "transparent", border: "none" }}>🥈</button>
+                                    <button onClick={() => plusLosebyId([row.original.id])} style={{ fontSize: "1.8em", backgroundColor: "transparent", border: "none" }}>🥉</button>
                                 </td>
                             </tr>
                         );

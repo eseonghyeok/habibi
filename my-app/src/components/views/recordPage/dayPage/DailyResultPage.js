@@ -45,7 +45,7 @@ function DailyResultPage() {
             },
         ], []
     );
-    let filteredData = Player.filter(player => player.plays > 0);
+    let filteredData = Player.filter(player => player.attendance > 0);
     let filteredIds = filteredData.map(player => player.id);
 
     let Data = filteredData.sort(function(a, b) {
