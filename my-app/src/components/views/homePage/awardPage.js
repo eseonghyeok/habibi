@@ -13,7 +13,7 @@ import Sep1 from '../../images/award/player/sep-jinho.png';
 import Sep2 from '../../images/award/player/sep-juhwan.png';
 import Oct from '../../images/award/player/oct-jinho.png';
 import Nov from '../../images/award/player/nov-jinho.png';
-import PlayerOfTheYear from '../../images/award/player/who.png';
+import PlayerOfTheYear from '../../images/award/player/jungil.png';
 
 function HallOfFamePage() {
     const imageUrls = [
