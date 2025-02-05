@@ -50,7 +50,7 @@ function YearChartTable() {
     );
 
     let Data = Player.sort(function(a, b) {
-        return b.pts - a.pts; // 내림차순 정렬
+        return b.pts - a.pts || b.plays - a.plays;
     });
     
     let playerRank = 0;
