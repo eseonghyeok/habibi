@@ -4,25 +4,25 @@
       "name": "김형철",
       "win": 0,
       "draw": 0,
-      "lose": 0,
-      "plays": 0,
+      "lose": 6,
+      "plays": 1,
       "pts": 0
     },
     {
       "name": "송효석",
-      "win": 0,
+      "win": 5,
       "draw": 0,
-      "lose": 0,
-      "plays": 0,
-      "pts": 0
+      "lose": 1,
+      "plays": 1,
+      "pts": 15
     },
     {
       "name": "박재범",
-      "win": 0,
+      "win": 5,
       "draw": 0,
-      "lose": 0,
-      "plays": 0,
-      "pts": 0
+      "lose": 1,
+      "plays": 1,
+      "pts": 15
     },
     {
       "name": "권위준",
@@ -42,11 +42,11 @@
     },
     {
       "name": "이정일",
-      "win": 0,
+      "win": 4,
       "draw": 0,
-      "lose": 0,
-      "plays": 0,
-      "pts": 0
+      "lose": 2,
+      "plays": 1,
+      "pts": 12
     },
     {
       "name": "조돈휘",
@@ -60,8 +60,8 @@
       "name": "현종권",
       "win": 0,
       "draw": 0,
-      "lose": 0,
-      "plays": 0,
+      "lose": 6,
+      "plays": 1,
       "pts": 0
     },
     {
@@ -74,11 +74,11 @@
     },
     {
       "name": "정회화",
-      "win": 0,
+      "win": 5,
       "draw": 0,
-      "lose": 0,
-      "plays": 0,
-      "pts": 0
+      "lose": 1,
+      "plays": 1,
+      "pts": 15
     },
     {
       "name": "김상명",
@@ -90,11 +90,11 @@
     },
     {
       "name": "신종윤",
-      "win": 0,
+      "win": 5,
       "draw": 0,
-      "lose": 0,
-      "plays": 0,
-      "pts": 0
+      "lose": 1,
+      "plays": 1,
+      "pts": 15
     },
     {
       "name": "임필우",
@@ -114,11 +114,11 @@
     },
     {
       "name": "강동균",
-      "win": 0,
+      "win": 5,
       "draw": 0,
-      "lose": 0,
-      "plays": 0,
-      "pts": 0
+      "lose": 1,
+      "plays": 1,
+      "pts": 15
     },
     {
       "name": "류희대",
@@ -138,43 +138,43 @@
     },
     {
       "name": "김영준",
-      "win": 0,
+      "win": 5,
       "draw": 0,
-      "lose": 0,
-      "plays": 0,
-      "pts": 0
+      "lose": 1,
+      "plays": 1,
+      "pts": 15
     },
     {
       "name": "장효준",
-      "win": 0,
+      "win": 4,
       "draw": 0,
-      "lose": 0,
-      "plays": 0,
-      "pts": 0
+      "lose": 2,
+      "plays": 1,
+      "pts": 12
     },
     {
       "name": "정기택",
       "win": 0,
       "draw": 0,
-      "lose": 0,
-      "plays": 0,
+      "lose": 6,
+      "plays": 1,
       "pts": 0
     },
     {
       "name": "김정민",
       "win": 0,
       "draw": 0,
-      "lose": 0,
-      "plays": 0,
+      "lose": 6,
+      "plays": 1,
       "pts": 0
     },
     {
       "name": "정현준",
-      "win": 0,
+      "win": 4,
       "draw": 0,
-      "lose": 0,
-      "plays": 0,
-      "pts": 0
+      "lose": 2,
+      "plays": 1,
+      "pts": 12
     },
     {
       "name": "김주환",
@@ -186,19 +186,19 @@
     },
     {
       "name": "이지철",
-      "win": 0,
+      "win": 5,
       "draw": 0,
-      "lose": 0,
-      "plays": 0,
-      "pts": 0
+      "lose": 1,
+      "plays": 1,
+      "pts": 15
     },
     {
       "name": "김진호",
-      "win": 0,
+      "win": 4,
       "draw": 0,
-      "lose": 0,
-      "plays": 0,
-      "pts": 0
+      "lose": 2,
+      "plays": 1,
+      "pts": 12
     },
     {
       "name": "박진산",
@@ -220,17 +220,17 @@
       "name": "강병준",
       "win": 0,
       "draw": 0,
-      "lose": 0,
-      "plays": 0,
+      "lose": 6,
+      "plays": 1,
       "pts": 0
     },
     {
       "name": "박찬용",
-      "win": 0,
+      "win": 4,
       "draw": 0,
-      "lose": 0,
-      "plays": 0,
-      "pts": 0
+      "lose": 2,
+      "plays": 1,
+      "pts": 12
     },
     {
       "name": "이종범",
@@ -242,11 +242,11 @@
     },
     {
       "name": "박기환",
-      "win": 0,
+      "win": 4,
       "draw": 0,
-      "lose": 0,
-      "plays": 0,
-      "pts": 0
+      "lose": 2,
+      "plays": 1,
+      "pts": 12
     },
     {
       "name": "정도식",
@@ -276,8 +276,8 @@
       "name": "이성혁",
       "win": 0,
       "draw": 0,
-      "lose": 0,
-      "plays": 0,
+      "lose": 6,
+      "plays": 1,
       "pts": 0
     },
     {
@@ -300,8 +300,8 @@
       "name": "윤한중",
       "win": 0,
       "draw": 0,
-      "lose": 0,
-      "plays": 0,
+      "lose": 6,
+      "plays": 1,
       "pts": 0
     },
     {
@@ -314,11 +314,11 @@
     },
     {
       "name": "권순국",
-      "win": 0,
+      "win": 4,
       "draw": 0,
-      "lose": 0,
-      "plays": 0,
-      "pts": 0
+      "lose": 2,
+      "plays": 1,
+      "pts": 12
     },
     {
       "name": "조대인",

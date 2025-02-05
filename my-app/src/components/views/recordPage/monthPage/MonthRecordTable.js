@@ -4,7 +4,7 @@ import Table from "../default/defaultMonthRecordTable";
 
 function MonthChartTable() {
     const [Player, setPlayer] = useState([]);
-    const [month, setMonth] = useState('1');
+    const [month, setMonth] = useState('2');
     const scrollRef = useRef(null);
     const buttonRefs = useRef({});
 
