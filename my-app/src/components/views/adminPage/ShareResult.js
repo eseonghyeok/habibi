@@ -6,9 +6,10 @@ async function captureAndShare(targetRef) {
     const canvas = await html2canvas(targetRef.current);
     canvas.toBlob(async (blob) => {
         const today = new Date().toISOString().split("T")[0];
-        const shareText = 
-`📢 오늘의 경기 결과 (${today}) 📢
-우리팀의 활약을 확인하세요!🔥`.replace(/\n/g, "");
+        const shareText = [
+            `📢 오늘의 경기 결과 (${today}) 📢`,
+            "우리팀의 활약을 확인하세요!🔥"
+        ].join("\n")
         
         const file = new File([blob], "screenshot.png", { type: "image/png" });
         if (navigator.canShare && navigator.canShare({ files: [file] })) {
