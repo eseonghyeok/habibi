@@ -1,8 +1,9 @@
-import React from "react";
+import React, { useRef } from "react";
 import Axios from 'axios';
 import { Button, Modal } from 'antd';
 import { useTable, useGlobalFilter, useSortBy } from "react-table";
 import Search from "./search";
+import captureAndShare from "../../adminPage/ShareResult";
 import chartpage from '../../../images/chartpage.jpg'
 
 function Table({ columns, data, filteredIds }) {
@@ -53,6 +54,7 @@ function Table({ columns, data, filteredIds }) {
   };   
 
   let date = new Date();
+  let resultRef = useRef(null);
 
   return (
     <div style={{ minHeight: "100vh", padding: "10px", backgroundImage: `url(${chartpage})`, backgroundSize: "cover", backgroundPosition: "center" }}>
@@ -65,7 +67,7 @@ function Table({ columns, data, filteredIds }) {
           onSubmit={setGlobalFilter} style={{ overflowX: "auto", padding: "0 30px" }}
         />
       </div>
-      <div style={{ overflowX: "auto" }}>
+      <div ref={resultRef} style={{ overflowX: "auto" }}>
         <table
           {...getTableProps()}
           style={{
@@ -125,6 +127,9 @@ function Table({ columns, data, filteredIds }) {
             })}
           </tbody>
         </table>
+      </div>
+      <div style={{ display: "flex", justifyContent: "flex-end" }}>
+        <Button type="primary" onClick={() => captureAndShare(resultRef)} style={{ background: '#30d946', width: '145px', height: '45px', borderRadius: '6px', fontSize: '13px', marginTop: '10px', color: 'black', fontWeight: 'bolder' }}>결과공유✨</Button>
       </div>
       <div style={{ display: "flex", justifyContent: "flex-end" }}>
         <Button type="primary" onClick={() => initDailyChart(filteredIds)} style={{ background: '#2a85fb', width: '145px', height: '45px', borderRadius: '6px', fontSize: '13px', marginTop: '10px' }}>경기종료(초기화)</Button>

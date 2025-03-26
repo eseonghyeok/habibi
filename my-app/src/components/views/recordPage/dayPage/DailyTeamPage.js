@@ -1,10 +1,11 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import Axios from 'axios';
 import { Button, List } from 'antd';
 import groundJpg from '../../../images/ground.png';
 import profile1 from '../../../images/profile/1.jpg';
 import profile2 from '../../../images/profile/2.jpg';
 import profile3 from '../../../images/profile/3.jpg';
+import captureAndShare from "../../adminPage/ShareResult";
 
 function DailyTeamPage() {
     const all = [
@@ -122,10 +123,11 @@ function DailyTeamPage() {
     };  
 
     let date = new Date();
+    let resultRef = useRef(null);
 
     return (
         <div style={{ textAlign: 'center', minHeight: "100vh", color: 'yellow' }}>
-            <div style={{ padding: '20px', background: `url(${groundJpg})`, backgroundSize: 'cover' }}>
+            <div ref={resultRef} style={{ padding: '20px', background: `url(${groundJpg})`, backgroundSize: 'cover' }}>
                 <div style={{ padding: "10px", color: 'white' }}>
                     <h1 style={{ fontSize: '27px', marginTop: '37px'}}>⚽ 오늘의 팀 승점기록 ⚽</h1>
                     <p>{date.toLocaleDateString()}</p>
@@ -234,7 +236,7 @@ function DailyTeamPage() {
                         <p style={{ margin: '5px 0' }}>패: <strong>{bResult.lose}</strong></p>
                     </div>
                     <div style={{ display: 'flex', justifyContent: 'center', gap: '10px', marginTop: '10px', position: 'absolute', bottom: '2%', left: '4%' }}>
-                    <Button 
+                        <Button 
                             type="primary"
                             onClick={() => {
                                 if (window.confirm('B팀 승리를 반영하시겠습니까?')) {
@@ -301,7 +303,7 @@ function DailyTeamPage() {
                         <p style={{ margin: '5px 0' }}>패: <strong>{cResult.lose}</strong></p>
                     </div>
                     <div style={{ display: 'flex', justifyContent: 'center', gap: '10px', marginTop: '10px', position: 'absolute', bottom: '2%', left: '4%' }}>
-                    <Button 
+                        <Button 
                             type="primary"
                             onClick={() => {
                                 if (window.confirm('C팀 승리를 반영하시겠습니까?')) {
@@ -332,6 +334,9 @@ function DailyTeamPage() {
                             style={{ background: '#dc3545', width: '65px', height: '40px', borderRadius: '6px', fontSize: '13px', marginTop: '10px' }}>패
                         </Button>
                     </div>
+                </div>
+                <div style={{ display: "flex", justifyContent: "flex-end" }}>
+                    <Button type="primary" onClick={() => captureAndShare(resultRef)} style={{ background: '#30d946', width: '145px', height: '45px', borderRadius: '6px', fontSize: '13px', marginTop: '10px', color: 'black', fontWeight: 'bolder' }}>결과공유✨</Button>
                 </div>
             </div>
         </div>
