@@ -57,7 +57,7 @@ function Table({ columns, data, filteredIds }) {
   let resultRef = useRef(null);
 
   return (
-    <div style={{ minHeight: "100vh", padding: "10px", backgroundImage: `url(${chartpage})`, backgroundSize: "cover", backgroundPosition: "center" }}>
+    <div ref={resultRef} style={{ minHeight: "100vh", padding: "10px", backgroundImage: `url(${chartpage})`, backgroundSize: "cover", backgroundPosition: "center" }}>
       <div style={{ marginBottom: "20px", textAlign: "center" }}>
         <h1 style={{ marginBottom: "10px", color: "#fff", fontSize: "25px" }}>🏆경기 최종 결과🏆</h1>
         <p style={{ fontSize: '11px', color: "#fff" }}>💡{date.toLocaleDateString()} 출석자 개인 기록입니다.</p>
@@ -67,7 +67,7 @@ function Table({ columns, data, filteredIds }) {
           onSubmit={setGlobalFilter} style={{ overflowX: "auto", padding: "0 30px" }}
         />
       </div>
-      <div ref={resultRef} style={{ overflowX: "auto" }}>
+      <div style={{ overflowX: "auto" }}>
         <table
           {...getTableProps()}
           style={{
