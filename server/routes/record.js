@@ -9,15 +9,16 @@ const dailyTeamPath = './server/data/day/daily_team_2025.json';
 
 //달마다 month 변경
 const dailyChart = require('../data/day/player_day_chart_2025.json');
-const monthChart = require('../data/month/player_chart_3_2025.json');
+const monthChart = require('../data/month/player_chart_4_2025.json');
 const yearChart = require('../data/year/player_chart_2025.json');
 const dailyChartPath = './server/data/day/player_day_chart_2025.json';
-const monthChartPath = './server/data/month/player_chart_3_2025.json';
+const monthChartPath = './server/data/month/player_chart_4_2025.json';
 const yearChartPath = './server/data/year/player_chart_2025.json';
 
 //과거 월간차트
 const JanChart = require('../data/month/player_chart_1_2025.json');
 const FebChart = require('../data/month/player_chart_2_2025.json');
+const MarChart = require('../data/month/player_chart_3_2025.json');
 
 function updateTeamFile() {
     let success = 1;
@@ -254,7 +255,7 @@ router.get("/getDaily", (req, res) => {
 });
 
 // Get month chart
-router.get("/getMonth/3", (req, res) => {
+router.get("/getMonth/4", (req, res) => {
     if (!monthChart) return res.status(400).send();
     res.status(200).json({ success: true, monthChart })
 });
@@ -270,7 +271,11 @@ router.get("/getMonth/2", (req, res) => {
     if (!otherChart) return res.status(400).send();
     res.status(200).json({ success: true, otherChart })
 });
-
+router.get("/getmonth/3", (req, res) => {
+    otherChart = MarChart
+    if (!otherChart) return res.status(400).send();
+    res.status(200).json({ success: true, otherChart })
+});
 // router.get("/getmonth/3", (req, res) => {
 //     otherChart = MarChart
 //     if (!otherChart) return res.status(400).send();
