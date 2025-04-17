@@ -12,13 +12,13 @@ function AttendancePage() {
     const all = [
         { id: 0, name: "김형철" }, { id: 1, name: "송효석" }, { id: 2, name: "박재범" }, { id: 3, name: "권위준" }, { id: 4, name: "신종은" },
         { id: 5, name: "이정일" }, { id: 6, name: "조돈휘" }, { id: 7, name: "현종권" }, { id: 8, name: "곽영래" }, { id: 9, name: "정회화" },
-        { id: 10, name: "김상명" }, { id: 11, name: "신종윤" }, { id: 12, name: "임필우" }, { id: 13, name: "이병철" },
+        { id: 10, name: "김상명" }, { id: 11, name: "신종윤" }, { id: 12, name: "황성진" }, { id: 13, name: "이병철" },
         { id: 14, name: "강동균" }, { id: 15, name: "류희대" }, { id: 16, name: "여성진" }, { id: 17, name: "김영준" }, { id: 18, name: "장효준" },
         { id: 19, name: "정기택" }, { id: 20, name: "김정민" }, { id: 21, name: "정현준" }, { id: 22, name: "김주환" }, { id: 23, name: "이지철" }, 
         { id: 24, name: "김진호" }, { id: 25, name: "박진산" }, { id: 26, name: "임다훈" }, { id: 27, name: "강병준" }, { id: 28, name: "박찬용" },
-        { id: 29, name: "이종범" }, { id: 30, name: "박기환" }, { id: 31, name: "정도식" }, { id: 32, name: "이주은" }, { id: 33, name: "권현택" },
-        { id: 34, name: "이성혁" }, { id: 35, name: "이상욱" }, { id: 36, name: "박준영" },
-        { id: 37, name: "윤한중" }, { id: 38, name: "전지민" }, { id: 39, name: "권순국" }, { id: 40, name: "조대인" }
+        { id: 29, name: "이종범" }, { id: 30, name: "박기환" }, { id: 31, name: "이주은" }, { id: 32, name: "권현택" },
+        { id: 33, name: "이성혁" }, { id: 34, name: "이상욱" }, { id: 35, name: "박준영" },
+        { id: 36, name: "윤한중" }, { id: 37, name: "전지민" }, { id: 38, name: "권순국" }, { id: 39, name: "조대인" }
     ];
 
     const [members, setMembers] = useState(all);

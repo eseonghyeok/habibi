@@ -15,9 +15,9 @@ function DailyTeamPage() {
         { id: 14, name: "강동균" }, { id: 15, name: "류희대" }, { id: 16, name: "여성진" }, { id: 17, name: "김영준" }, { id: 18, name: "장효준" },
         { id: 19, name: "정기택" }, { id: 20, name: "김정민" }, { id: 21, name: "정현준" }, { id: 22, name: "김주환" }, { id: 23, name: "이지철" }, 
         { id: 24, name: "김진호" }, { id: 25, name: "박진산" }, { id: 26, name: "임다훈" }, { id: 27, name: "강병준" }, { id: 28, name: "박찬용" },
-        { id: 29, name: "이종범" }, { id: 30, name: "박기환" }, { id: 31, name: "정도식" }, { id: 32, name: "이주은" }, { id: 33, name: "권현택" },
-        { id: 34, name: "이성혁" }, { id: 35, name: "이상욱" }, { id: 36, name: "박준영" },
-        { id: 37, name: "윤한중" }, { id: 38, name: "전지민" }, { id: 39, name: "권순국" }, { id: 40, name: "조대인" }
+        { id: 29, name: "이종범" }, { id: 30, name: "박기환" }, { id: 31, name: "이주은" }, { id: 32, name: "권현택" },
+        { id: 33, name: "이성혁" }, { id: 34, name: "이상욱" }, { id: 35, name: "박준영" },
+        { id: 36, name: "윤한중" }, { id: 37, name: "전지민" }, { id: 38, name: "권순국" }, { id: 39, name: "조대인" }
     ];
 
     const [aTeam, setATeam] = useState([]);
