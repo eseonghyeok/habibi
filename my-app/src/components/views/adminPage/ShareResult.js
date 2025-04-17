@@ -9,8 +9,8 @@ async function captureAndShare(targetRef) {
         const shareText = [
             `📢 오늘의 경기 결과 (${today}) 📢`,
             "우리팀의 활약을 확인하세요!🔥",
-            "▼ 이 달의 랭킹🥈 확인하기",
             "",
+            "▼ 이 달의 랭킹🥈 확인하기 ▼",
             "https://hbbfc-eseonghyeok.koyeb.app/record/month"
         ].join("\n")
         
