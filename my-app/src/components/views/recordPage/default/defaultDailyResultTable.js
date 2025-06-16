@@ -61,7 +61,7 @@ function Table({ columns, data, filteredIds }) {
       <div style={{ marginBottom: "20px", textAlign: "center" }}>
         <h1 style={{ marginBottom: "10px", color: "#fff", fontSize: "25px" }}>🏆경기 최종 결과🏆</h1>
         <p style={{ fontSize: '11px', color: "#fff" }}>💡{date.toLocaleDateString()} 출석자 개인 기록입니다.</p>
-        <p style={{ fontSize: '10px', color: "#fff" }}>💡기록이 오기입된 경우 매니저에게 문의해주세요.</p>
+        <p style={{ fontSize: '10px', color: "#fff" }}>💡기록이 오기입된 경우 매니저에게 문의해주세요!</p>
         <p style={{ fontSize: '10px', color: "#fff" }}>💡승:3점 / 무:1점 / 패:0점</p>
         <Search
           onSubmit={setGlobalFilter} style={{ overflowX: "auto", padding: "0 30px" }}
