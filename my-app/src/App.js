@@ -7,6 +7,7 @@ import yearChartTable from "./components/views/chartPage/yearPage/YearChartTable
 import dailyChartTable from "./components/views/chartPage/dayPage/DailyChartTable"
 import minusChartTable from "./components/views/chartPage/dayPage/MinusChartTable"
 import awardPage from "./components/views/homePage/awardPage"
+import groupingPage from "./components/views/adminPage/groupingPage"
 import attendancePage from "./components/views/adminPage/attendancePage"
 import notiPage from "./components/views/homePage/notiPage"
 import Footer from "./components/views/homePage/footer"
@@ -33,6 +34,7 @@ function App() {
           <Route exact path="/chart/daily" Component={dailyChartTable} />
           <Route exact path="/chart/minus" Component={minusChartTable} />
           <Route exact path="/award" Component={awardPage} />
+          <Route exact path="/grouping" Component={groupingPage} />
           <Route exact path="/attendance" Component={attendancePage} />
           <Route exact path="/notification" Component={notiPage} />
           <Route exact path="/record/month" Component={monthRecordTable} />

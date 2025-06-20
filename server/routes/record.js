@@ -80,11 +80,25 @@ function initDailyTeam() {
     updateTeamFile();
 }
 
+function initPlayers() {
+    dailyTeam.Players = [];
+    updateTeamFile();
+    for (let id = 0; id < dailyChart.players.length; id++) {
+        dailyChart.players[id].poll = 0;
+    }
+    updateChartFile();
+}
+
 function editTeam(a, b, c, other) {
     dailyTeam.A = a;
     dailyTeam.B = b;
     dailyTeam.C = c;
     dailyTeam.Others = other;
+    updateTeamFile();
+}
+
+function editPlayers(players) {
+    dailyTeam.Players = players;
     updateTeamFile();
 }
 
@@ -126,6 +140,13 @@ function plusPlaysByAttend(ids) {
 function checkAttendance(ids) {
     ids.forEach(id => {
         dailyChart.players[id].attendance = 1;
+        updateChartFile();
+    });
+}
+
+function checkPlayers(ids) {
+    ids.forEach(id => {
+        dailyChart.players[id].poll = 1;
         updateChartFile();
     });
 }
@@ -242,6 +263,11 @@ router.post("/initDailyTeam", (req, res) => {
     res.status(200).json({ success: true })
     initDailyTeam();
 });
+router.post("/initPlayers", (req, res) => {
+    if (!dailyTeam) return res.status(400).send();
+    res.status(200).json({ success: true })
+    initPlayers();
+});
 
 // replace default daily chart
 router.post("/initDaily", (req, res) => {
@@ -317,6 +343,15 @@ router.post("/submitTeams", (req, res) => {
     res.status(200).json({ success: true })
     checkAttendance(ids);
     editTeam(A, B, C, Others);
+});
+router.post("/submitPlayers", (req, res) => { 
+    const { Players } = req.body;
+    const ids = [...Players];
+    
+    if (!dailyChart) return res.status(400).send();
+    res.status(200).json({ success: true })
+    checkPlayers(ids);
+    editPlayers(Players);
 });
 router.post("/minusPlays", (req, res) => {
     const { id } = req.body;

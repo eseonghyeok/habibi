@@ -56,6 +56,11 @@ function HomePage() {
             {isLoggedIn ? (
                 <div>
                     <div style={{ marginBottom: '20px' }}>
+                        <Button type="primary" href="/grouping" size="large" style={buttonStyle}>
+                            랜덤 팀 짜기 <p style={{ fontSize: '35px', marginRight: '-30px'}}>🎲</p>
+                        </Button>
+                    </div>
+                    <div style={{ marginBottom: '20px' }}>
                         <Button type="primary" href="/attendance" size="large" style={buttonStyle}>
                             팀 나누기 <p style={{ fontSize: '35px', marginRight: '-30px'}}>🎭</p>
                         </Button>
