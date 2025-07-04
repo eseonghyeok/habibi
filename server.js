@@ -25,6 +25,9 @@ app.get('/', function(req, res){
 
 app.use('/api/chart', require('./server/routes/chart'));
 app.use('/api/record', require('./server/routes/record'));
+app.use('/api/players', require('./server/routes/players'));
+app.use('/api/records', require('./server/routes/records'));
+app.use('/api/teams', require('./server/routes/teams'));
 
 
 
