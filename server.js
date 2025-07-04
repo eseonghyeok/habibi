@@ -2,10 +2,13 @@ const express =require('express')
 const app = express()
 const path = require('path')
 const cors = require('cors');
+const dotenv = require('dotenv');
+
+dotenv.config();
 
 //build 후 server와 연동할 때
-app.listen(8080, function(){
-    console.log('listening on 8080')
+app.listen(process.env.WEB_PORT, function(){
+    console.log(`listening on ${process.env.WEB_PORT}`)
 })
 
 
