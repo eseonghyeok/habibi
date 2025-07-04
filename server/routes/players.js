@@ -8,15 +8,10 @@ router.get('/', async (req, res) => {
 	try {
 		const players = await Player.findAll();
 
-		res.json({
-			success: true,
-			value: players
-		});
+		res.json(players);
 	} catch (err) {
-		res.json({
-			success: false,
-			value: err.message
-		});
+		console.log(err);
+		res.sendStatus(500);
 	}
 });
 router.get('/:id', async (req, res) => {
@@ -27,15 +22,10 @@ router.get('/:id', async (req, res) => {
 			}
 		});
 
-		res.json({
-			success: true,
-			value: player
-		});
+		res.json(player);
 	} catch (err) {
-		res.json({
-			success: false,
-			value: err.message
-		});
+		console.log(err);
+		res.sendStatus(500);
 	}
 });
 
@@ -58,15 +48,10 @@ router.post('/', async (req, res) => {
 			{ transaction: t });
 		});
 
-		res.json({
-			success: true,
-			value: {}
-		});
+		res.sendStatus(204);
 	} catch (err) {
-		res.json({
-			success: false,
-			value: err.message
-		});
+		console.log(err);
+		res.sendStatus(500);
 	}
 });
 
@@ -80,15 +65,10 @@ router.delete('/', async (req, res) => {
 			});
 		});
 
-		res.json({
-			success: true,
-			value: {}
-		});
+		res.sendStatus(204);
 	} catch (err) {
-		res.json({
-			success: false,
-			value: err.message
-		});
+		console.log(err);
+		res.sendStatus(500);
 	}
 });
 router.delete('/:id', async (req, res) => {
@@ -102,15 +82,10 @@ router.delete('/:id', async (req, res) => {
 			});
 		});
 
-		res.json({
-			success: true,
-			value: {}
-		});
+		res.sendStatus(204);
 	} catch (err) {
-		res.json({
-			success: false,
-			value: err.message
-		});
+		console.log(err);
+		res.sendStatus(500);
 	}
 });
 
@@ -125,15 +100,10 @@ router.patch('/:id/name', async (req, res) => {
 			return player.save({ transaction: t });
 		});
 
-		res.json({
-			success: true,
-			value: {}
-		});
+		res.sendStatus(204);
 	} catch (err) {
-		res.json({
-			success: false,
-			value: err.message
-		});
+		console.log(err);
+		res.sendStatus(500);
 	}
 });
 
@@ -148,15 +118,10 @@ router.patch('/:id/description', async (req, res) => {
 			return player.save({ transaction: t });
 		});
 
-		res.json({
-			success: true,
-			value: {}
-		});
+		res.sendStatus(204);
 	} catch (err) {
-		res.json({
-			success: false,
-			value: err.message
-		});
+		console.log(err);
+		res.sendStatus(500);
 	}
 });
 
@@ -171,15 +136,10 @@ router.patch('/:id/info', async (req, res) => {
 			await player.save({ transaction: t });
 		});
 
-		res.json({
-			success: true,
-			value: {}
-		});
+		res.sendStatus(204);
 	} catch (err) {
-		res.json({
-			success: false,
-			value: err.message
-		});
+		console.log(err);
+		res.sendStatus(500);
 	}
 });
 
@@ -197,15 +157,10 @@ router.patch('/:id/record', async (req, res) => {
 			await player.save({ transaction: t });
 		});
 
-		res.json({
-			success: true,
-			value: {}
-		});
+		res.sendStatus(204);
 	} catch (err) {
-		res.json({
-			success: false,
-			value: err.message
-		});
+		console.log(err);
+		res.sendStatus(500);
 	}
 });
 
@@ -224,15 +179,10 @@ router.patch('/record/reset', async (req, res) => {
 			}));
 		});
 
-		res.json({
-			success: true,
-			value: {}
-		});
+		res.sendStatus(204);
 	} catch (err) {
-		res.json({
-			success: false,
-			value: err.message
-		});
+		console.log(err);
+		res.sendStatus(500);
 	}
 });
 router.patch('/:id/record/reset', async (req, res) => {
@@ -247,15 +197,10 @@ router.patch('/:id/record/reset', async (req, res) => {
 			await player.save({ transaction: t });
 		});
 
-		res.json({
-			success: true,
-			value: {}
-		});
+		res.sendStatus(204);
 	} catch (err) {
-		res.json({
-			success: false,
-			value: err.message
-		});
+		console.log(err);
+		res.sendStatus(500);
 	}
 });
 
@@ -269,15 +214,10 @@ router.patch('/:id/team', async (req, res) => {
 			await player.setTeam(team, { transaction: t });
 		});
 
-		res.json({
-			success: true,
-			value: {}
-		});
+		res.sendStatus(204);
 	} catch (err) {
-		res.json({
-			success: false,
-			value: err.message
-		});
+		console.log(err);
+		res.sendStatus(500);
 	}
 });
 

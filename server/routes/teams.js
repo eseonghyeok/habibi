@@ -8,15 +8,10 @@ router.get('/', async (req, res) => {
 	try {
 		const teams = await Team.findAll();
 
-		res.json({
-			success: true,
-			value: teams
-		});
+		res.json(teams);
 	} catch (err) {
-		res.json({
-			success: false,
-			value: err.message
-		});
+		console.log(err);
+		res.sendStatus(500);
 	}
 });
 router.get('/:name', async (req, res) => {
@@ -27,15 +22,10 @@ router.get('/:name', async (req, res) => {
 			}
 		});
 
-		res.json({
-			success: true,
-			value: team
-		});
+		res.json(team);
 	} catch (err) {
-		res.json({
-			success: false,
-			value: err.message
-		});
+		console.log(err);
+		res.sendStatus(500);
 	}
 });
 
@@ -59,15 +49,10 @@ router.post('/', async (req, res) => {
 			{ transaction: t });
 		})
 
-		res.json({
-			success: true,
-			value: {}
-		});
+		res.sendStatus(204);
 	} catch (err) {
-		res.json({
-			success: false,
-			value: err.message
-		});
+		console.log(err);
+		res.sendStatus(500);
 	}
 });
 
@@ -81,15 +66,10 @@ router.delete('/', async (req, res) => {
 			});
 		});
 
-		res.json({
-			success: true,
-			value: {}
-		});
+		res.sendStatus(204);
 	} catch (err) {
-		res.json({
-			success: false,
-			value: err.message
-		});
+		console.log(err);
+		res.sendStatus(500);
 	}
 });
 router.delete('/:name', async (req, res) => {
@@ -103,15 +83,10 @@ router.delete('/:name', async (req, res) => {
 			});
 		});
 
-		res.json({
-			success: true,
-			value: {}
-		});
+		res.sendStatus(204);
 	} catch (err) {
-		res.json({
-			success: false,
-			value: err.message
-		});
+		console.log(err);
+		res.sendStatus(500);
 	}
 });
 
@@ -121,15 +96,10 @@ router.get('/:name/players', async (req, res) => {
 		const team = await Team.findByPk(req.params.name);
 		const players = await team.getPlayers();
 
-		res.json({
-			success: true,
-			value: players
-		});
+		res.json(players);
 	} catch (err) {
-		res.json({
-			success: false,
-			value: err.message
-		});
+		console.log(err);
+		res.sendStatus(500);
 	}
 });
 
@@ -144,15 +114,10 @@ router.patch('/:name/players', async (req, res) => {
 			await team.removePlayer(remove, { transaction: t });
 		});
 
-		res.json({
-			success: true,
-			value: {}
-		});
+		res.sendStatus(204);
 	} catch (err) {
-		res.json({
-			success: false,
-			value: err.message
-		});
+		console.log(err);
+		res.sendStatus(500);
 	}
 });
 
@@ -166,15 +131,10 @@ router.patch('/players/reset', async (req, res) => {
 			}
 		});
 
-		res.json({
-			success: true,
-			value: {}
-		});
+		res.sendStatus(204);
 	} catch (err) {
-		res.json({
-			success: false,
-			value: err.message
-		});
+		console.log(err);
+		res.sendStatus(500);
 	}
 });
 router.patch('/:name/players/reset', async (req, res) => {
@@ -184,15 +144,10 @@ router.patch('/:name/players/reset', async (req, res) => {
 			await team.setPlayers([], { transaction: t });
 		});
 
-		res.json({
-			success: true,
-			value: {}
-		});
+		res.sendStatus(204);
 	} catch (err) {
-		res.json({
-			success: false,
-			value: err.message
-		});
+		console.log(err);
+		res.sendStatus(500);
 	}
 });
 
@@ -211,15 +166,10 @@ router.patch('/:name/record', async (req, res) => {
 			await team.save({ transaction: t });
 		});
 
-		res.json({
-			success: true,
-			value: {}
-		});
+		res.sendStatus(204);
 	} catch (err) {
-		res.json({
-			success: false,
-			value: err.message
-		});
+		console.log(err);
+		res.sendStatus(500);
 	}
 });
 
@@ -239,15 +189,10 @@ router.patch('/record/reset', async (req, res) => {
 			}));
 		});
 
-		res.json({
-			success: true,
-			value: {}
-		});
+		res.sendStatus(204);
 	} catch (err) {
-		res.json({
-			success: false,
-			value: err.message
-		});
+		console.log(err);
+		res.sendStatus(500);
 	}
 });
 router.patch('/:name/record/reset', async (req, res) => {
@@ -263,15 +208,10 @@ router.patch('/:name/record/reset', async (req, res) => {
 			await team.save({ transaction: t });
 		});
 
-		res.json({
-			success: true,
-			value: {}
-		});
+		res.sendStatus(204);
 	} catch (err) {
-		res.json({
-			success: false,
-			value: err.message
-		});
+		console.log(err);
+		res.sendStatus(500);
 	}
 });
 

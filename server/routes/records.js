@@ -8,15 +8,10 @@ router.get('/', async (req, res) => {
 	try {
 		const records = await Record.findAll();
 
-		res.json({
-			success: true,
-			value: records
-		});
+		res.json(records);
 	} catch (err) {
-		res.json({
-			success: false,
-			value: err.message
-		});
+		console.log(err);
+		res.sendStatus(500);
 	}
 });
 router.get('/:date', async (req, res) => {
@@ -27,15 +22,10 @@ router.get('/:date', async (req, res) => {
 			}
 		});
 
-		res.json({
-			success: true,
-			value: record
-		});
+		res.json(record);
 	} catch (err) {
-		res.json({
-			success: false,
-			value: err.message
-		});
+		console.log(err);
+		res.sendStatus(500);
 	}
 });
 
@@ -54,15 +44,10 @@ router.post('/', async (req, res) => {
 			{ transaction: t });
 		});
 
-		res.json({
-			success: true,
-			value: {}
-		});
+		res.sendStatus(204);
 	} catch (err) {
-		res.json({
-			success: false,
-			value: err.message
-		});
+		console.log(err);
+		res.sendStatus(500);
 	}
 });
 
@@ -76,15 +61,10 @@ router.delete('/', async (req, res) => {
 			});
 		});
 
-		res.json({
-			success: true,
-			value: {}
-		});
+		res.sendStatus(204);
 	} catch (err) {
-		res.json({
-			success: false,
-			value: err.message
-		});
+		console.log(err);
+		res.sendStatus(500);
 	}
 });
 router.delete('/:date', async (req, res) => {
@@ -98,15 +78,10 @@ router.delete('/:date', async (req, res) => {
 			});
 		});
 
-		res.json({
-			success: true,
-			value: {}
-		});
+		res.sendStatus(204);
 	} catch (err) {
-		res.json({
-			success: false,
-			value: err.message
-		});
+		console.log(err);
+		res.sendStatus(500);
 	}
 });
 
@@ -121,15 +96,10 @@ router.patch('/:date/info', async (req, res) => {
 			await record.save({ transaction: t });
 		});
 
-		res.json({
-			success: true,
-			value: {}
-		});
+		res.sendStatus(204);
 	} catch (err) {
-		res.json({
-			success: false,
-			value: err.message
-		});
+		console.log(err);
+		res.sendStatus(500);
 	}
 });
 
@@ -144,15 +114,10 @@ router.patch('/:date/info', async (req, res) => {
 			await record.save({ transaction: t });
 		});
 
-		res.json({
-			success: true,
-			value: {}
-		});
+		res.sendStatus(204);
 	} catch (err) {
-		res.json({
-			success: false,
-			value: err.message
-		});
+		console.log(err);
+		res.sendStatus(500);
 	}
 });
 
@@ -207,15 +172,10 @@ router.post('/:type', async (req, res) => {
 			{ transaction: t });
 		});
 
-		res.json({
-			success: true,
-			value: {}
-		});
+		res.sendStatus(204);
 	} catch (err) {
-		res.json({
-			success: false,
-			value: err.message
-		});
+		console.log(err);
+		res.sendStatus(500);
 	}
 });
 
