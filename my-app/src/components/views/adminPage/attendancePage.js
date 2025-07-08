@@ -18,7 +18,7 @@ import profile4 from '../../images/profile/4.jpg';
     const [activeTeam, setActiveTeam] = useState('A');
 
     useEffect(() => {
-        async function fetchData() {
+        async function groupPlayers() {
             setLoading(true);
             try {
                 const teamNames = [ "A", "B", "C", "Others" ];
@@ -48,7 +48,7 @@ import profile4 from '../../images/profile/4.jpg';
                 setLoading(false);
             }
         }
-        fetchData();
+        groupPlayers();
     }, []);
 
     const handleTeamAdd = (member) => {
