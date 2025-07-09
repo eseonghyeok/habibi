@@ -14,7 +14,7 @@ router.get('/', async (req, res) => {
     res.sendStatus(500);
   }
 });
-router.get('/:date', async (req, res) => {
+router.get('/date/:date', async (req, res) => {
   try {
     const record = await Record.findOne({
       where: {
@@ -67,7 +67,7 @@ router.delete('/', async (req, res) => {
     res.sendStatus(500);
   }
 });
-router.delete('/:date', async (req, res) => {
+router.delete('/date/:date', async (req, res) => {
   try {
     await sequelize.transaction((t) => {
       return Record.destroy({
@@ -86,7 +86,7 @@ router.delete('/:date', async (req, res) => {
 });
 
 // 기록 날짜 변경
-router.patch('/:date/info', async (req, res) => {
+router.patch('/date/:date/info', async (req, res) => {
   try {
     const { date } = req.body;
 
@@ -104,7 +104,7 @@ router.patch('/:date/info', async (req, res) => {
 });
 
 // 기록 내용 변경
-router.patch('/:date/info', async (req, res) => {
+router.patch('/date/:date/info', async (req, res) => {
   try {
     const { result } = req.body;
 
@@ -122,7 +122,7 @@ router.patch('/:date/info', async (req, res) => {
 });
 
 // 월, 년 기록 생성
-router.post('/:type', async (req, res) => {
+router.post('/type/:type', async (req, res) => {
   try {
     const { date } = req.body;
 

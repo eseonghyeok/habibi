@@ -14,7 +14,7 @@ router.get('/', async (req, res) => {
     res.sendStatus(500);
   }
 });
-router.get('/:id', async (req, res) => {
+router.get('/id/:id', async (req, res) => {
   try {
     const player = await Player.findOne({
       where: {
@@ -71,7 +71,7 @@ router.delete('/', async (req, res) => {
     res.sendStatus(500);
   }
 });
-router.delete('/:id', async (req, res) => {
+router.delete('/id/:id', async (req, res) => {
   try {
     await sequelize.transaction((t) => {
       return Player.destroy({
@@ -90,7 +90,7 @@ router.delete('/:id', async (req, res) => {
 });
 
 // 선수 이름 변경
-router.patch('/:id/name', async (req, res) => {
+router.patch('/id/:id/name', async (req, res) => {
   try {
     const { name = null } = req.body;
 
@@ -108,7 +108,7 @@ router.patch('/:id/name', async (req, res) => {
 });
 
 // 선수 소개 변경
-router.patch('/:id/description', async (req, res) => {
+router.patch('/id/:id/description', async (req, res) => {
   try {
     const { description = null } = req.body;
 
@@ -126,7 +126,7 @@ router.patch('/:id/description', async (req, res) => {
 });
 
 // 선수 프로필 변경
-router.patch('/:id/info', async (req, res) => {
+router.patch('/id/:id/info', async (req, res) => {
   try {
     const { info } = req.body;
 
@@ -144,7 +144,7 @@ router.patch('/:id/info', async (req, res) => {
 });
 
 // 선수 기록 변경
-router.patch('/:id/record', async (req, res) => {
+router.patch('/id/:id/record', async (req, res) => {
   try {
     const { score = 0, count = 0 } = req.body;
 
@@ -185,7 +185,7 @@ router.patch('/record/reset', async (req, res) => {
     res.sendStatus(500);
   }
 });
-router.patch('/:id/record/reset', async (req, res) => {
+router.patch('/id/:id/record/reset', async (req, res) => {
   try {
     await sequelize.transaction(async (t) => {
       const player = await Player.findByPk(req.params.id);
@@ -205,7 +205,7 @@ router.patch('/:id/record/reset', async (req, res) => {
 });
 
 // 선수 팀 변경
-router.patch('/:id/team', async (req, res) => {
+router.patch('/id/:id/team', async (req, res) => {
   try {
     const { team = null } = req.body;
 

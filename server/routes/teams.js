@@ -14,7 +14,7 @@ router.get('/', async (req, res) => {
     res.sendStatus(500);
   }
 });
-router.get('/:name', async (req, res) => {
+router.get('/name/:name', async (req, res) => {
   try {
     const team = await Team.findOne({
       where: {
@@ -72,7 +72,7 @@ router.delete('/', async (req, res) => {
     res.sendStatus(500);
   }
 });
-router.delete('/:name', async (req, res) => {
+router.delete('/name/:name', async (req, res) => {
   try {
     await sequelize.transaction((t) => {
       return Team.destroy({
@@ -91,7 +91,7 @@ router.delete('/:name', async (req, res) => {
 });
 
 // 팀원 조회
-router.get('/:name/players', async (req, res) => {
+router.get('/name/:name/players', async (req, res) => {
   try {
     const team = await Team.findByPk(req.params.name);
     const players = await team.getPlayers();
@@ -139,7 +139,7 @@ router.patch('/players/reset', async (req, res) => {
     res.sendStatus(500);
   }
 });
-router.patch('/:name/players/reset', async (req, res) => {
+router.patch('/name/:name/players/reset', async (req, res) => {
   try {
     await sequelize.transaction(async (t) => {
       const team = await Team.findByPk(req.params.name);
@@ -154,7 +154,7 @@ router.patch('/:name/players/reset', async (req, res) => {
 });
 
 // 팀 기록 변경
-router.patch('/:name/record', async (req, res) => {
+router.patch('/name/:name/record', async (req, res) => {
   try {
     const { win = 0, draw = 0, lose = 0 } = req.body;
 
@@ -197,7 +197,7 @@ router.patch('/record/reset', async (req, res) => {
     res.sendStatus(500);
   }
 });
-router.patch('/:name/record/reset', async (req, res) => {
+router.patch('/name/:name/record/reset', async (req, res) => {
   try {
     await sequelize.transaction(async (t) => {
       const team = await Team.findByPk(req.params.name);
