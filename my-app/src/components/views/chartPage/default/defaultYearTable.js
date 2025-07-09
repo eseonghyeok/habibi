@@ -20,7 +20,7 @@ function Table({ columns, data }) {
     <div style={{ minHeight: "100vh", padding: "10px", backgroundImage: `url(${chartpage})`, backgroundSize: "cover", backgroundPosition: "center" }}>
       <div style={{ marginBottom: "20px", textAlign: "center" }}>
         <h1 style={{ marginBottom: "10px", color: "#fff", fontSize: "25px" }}>🏆{year}년 HABIBI RANKING🏆</h1>
-        <p style={{ fontSize: '11px', color: "#fff" }}>💡올해의 랭킹 페이지에서는 선수들의 올해 랭킹차트를 확인할 수 있습니다.</p>
+        <p style={{ fontSize: '11px', color: "#fff" }}>💡연간 랭킹 페이지에서는 선수들의 올해 랭킹차트를 확인할 수 있습니다.</p>
         <p style={{ fontSize: '10px', color: "#fff" }}>💡2024년 3월 기록부터 누적된 데이터입니다.</p>
         <Search
           onSubmit={setGlobalFilter} style={{ overflowX: "auto", padding: "0 30px" }}

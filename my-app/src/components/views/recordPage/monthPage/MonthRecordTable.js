@@ -4,28 +4,43 @@ import Table from "../default/defaultMonthRecordTable";
 
 function MonthChartTable() {
     const [Player, setPlayer] = useState([]);
-    const [month, setMonth] = useState('6');
+    const [year, setYear] = useState(null);
+    const [month, setMonth] = useState(null);
     const scrollRef = useRef(null);
     const buttonRefs = useRef({});
 
-    useEffect(() => { 
-        Axios.get(`/api/record/getMonth/${month}`)
-        .then(response => {
-            if(response.data.success) {
-                if (response.data.monthChart) {
-                    setPlayer(response.data.monthChart.players);
-                } else {
-                    setPlayer(response.data.otherChart.players);
-                }
-            } else {
+    useEffect(() => {
+        async function checkDate() {
+            try {
+                const lastDate = await Axios.get('/api/records/last');
+                const [lastYear, lastMonth] = lastDate.data.date.split('-');
+                setYear(lastYear);
+                setMonth(String(Number(lastMonth)));
+            } catch (err) {
+                alert('기록이 존재하지 않습니다.');
+                window.location.reload();
+            }
+        }
+        checkDate();
+    }, []);
+
+    useEffect(() => {
+        async function getRecord() {
+            if (!month) return;
+            try {
+                const record = await Axios.get(`/api/records/date/${year}-${month.padStart(2, '0')}`);
+                setPlayer(record.data.result);
+            } catch (err) {
                 alert('월간차트 가져오기를 실패하였습니다.');
                 window.location.reload();
             }
-        })  
-    }, [month]);
+        }
+        getRecord();
+    }, [year, month]);
 
     useEffect(() => {
         // 해당 월 버튼을 스크롤 컨테이너의 중앙에 가깝게 위치시킵니다.
+        if (!month) return;
         if (buttonRefs.current[month]) {
             buttonRefs.current[month].scrollIntoView({ inline: 'center', behavior: 'smooth' });
         }

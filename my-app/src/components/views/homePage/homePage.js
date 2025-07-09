@@ -45,12 +45,12 @@ function HomePage() {
             </div>
             <div style={{ marginBottom: '20px' }}>
                 <Button type="primary" href="/record/year" size="large" style={buttonStyle}>
-                    올해의 랭킹 <p style={{ fontSize: '40px', marginRight: '-30px'}}>🥇</p>
+                    연간 랭킹 <p style={{ fontSize: '40px', marginRight: '-30px'}}>🥇</p>
                 </Button>
             </div>
             <div style={{ marginBottom: '20px' }}>
                 <Button type="primary" href="/record/month" size="large" style={buttonStyle}>
-                    이달의 랭킹 <p style={{ fontSize: '40px', marginRight: '-30px'}}>🥈</p>
+                    월간 랭킹 <p style={{ fontSize: '40px', marginRight: '-30px'}}>🥈</p>
                 </Button>
             </div>
             {isLoggedIn ? (
