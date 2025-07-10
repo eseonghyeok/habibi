@@ -1,14 +1,12 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import Axios from 'axios';
-import { Button, List, Modal } from 'antd';
+import { Button, List, Modal, Radio } from 'antd';
+import Table from "../recordPage/default/defaultGroupingTable";
 import groundJpg from '../../images/ground.png';
 import list from '../../images/playerlist.jpg';
-import profile1 from '../../images/profile/1.jpg';
-import profile2 from '../../images/profile/2.jpg';
-import profile3 from '../../images/profile/3.jpg';
 import profile4 from '../../images/profile/4.jpg';
 
-function AttendancePage() {
+function GroupingPage() {
     const all = [
         { id: 0, name: "김형철" }, { id: 1, name: "송효석" }, { id: 2, name: "박재범" }, { id: 3, name: "권위준" }, { id: 4, name: "신종은" },
         { id: 5, name: "이정일" }, { id: 6, name: "조돈휘" }, { id: 7, name: "현종권" }, { id: 8, name: "곽영래" }, { id: 9, name: "정회화" },
@@ -21,28 +19,43 @@ function AttendancePage() {
         { id: 36, name: "윤한중" }, { id: 37, name: "전지민" }, { id: 38, name: "권순국" }, { id: 39, name: "조대인" }
     ];
 
+    const [step, setStep] = useState(1);
     const [members, setMembers] = useState(all);
     const [players, setPlayers] = useState([]);
+    const [polls, setPolls] = useState([]);
+    const [yearPts, setYearPts] = useState([]);
+    const [teamCount, setTeamCount] = useState(3);
 
-    useEffect(() => { 
-        Axios.get('/api/record/getDailyTeam')
-        .then(response => {
-            console.log(response.data)
-            if(response.data.success) {
+    useEffect(() => {
+        Axios.get('/api/record/getDailyTeam').then(response => {
+            if (response.data.success) {
                 const { Players } = response.data.dailyTeam;
                 const players = [...Players];
                 const notPlayers = all.filter(member => !players.includes(member.id));
-                const mapMembersWithProfile = (ids, profileImage) => 
+                const mapMembersWithProfile = (ids, profileImage) =>
                     all.filter(member => ids.includes(member.id))
                         .map(member => ({ ...member, image: profileImage }));
 
                 setPlayers(mapMembersWithProfile(players, profile4));
                 setMembers(notPlayers);
-            } else {
-                alert('오늘의 팀 정보 가져오기를 실패하였습니다.')
             }
-        })  
-    }, [])
+        });
+        Axios.get('/api/record/getDaily').then(response => {
+            if (response.data.success) {
+                setPolls(response.data.dailyChart.players);
+            } else {
+                alert('일간차트 가져오기를 실패하였습니다.')
+            }
+        });
+        Axios.get('/api/record/getYear')
+        .then(response => {
+            if(response.data.success) {
+                setYearPts(response.data.yearChart.players)
+            } else {
+                alert('연간차트 가져오기를 실패하였습니다.')
+            }
+        })
+    }, []);
 
     const addPlayers = (member) => {
         setPlayers([...players, { ...member, image: profile4 }]);
@@ -57,110 +70,149 @@ function AttendancePage() {
     const initPlayers = () => {
         Modal.confirm({
             title: '투표자 명단 초기화',
-            content: (
-                <div>
-                    <p>정말 초기화하시겠습니까?</p>
-                    <p>종료하시면 명단이 초기화됩니다.</p>
-                </div>
-            ),
-            okText: '확인',
-            cancelText: '취소',
+            content: <>정말 초기화하시겠습니까?</>,
             onOk() {
-                Axios.post('/api/record/initPlayers')
-                .then(response => {
-                    if(response.data.success) {
-                        window.location.reload();
-                    } else {
-                        alert('명단 초기화에 실패하였습니다.')
-                    }
-                })
-            },
-            onCancel() {
-                console.log('취소됨');
-            },
+                Axios.post('/api/record/initPlayers').then(response => {
+                    if (response.data.success) window.location.reload();
+                });
+            }
         });
     };
 
-    const submitPalyers = () => {
+    const submitPlayers = () => {
         Modal.confirm({
             title: '투표자 명단 제출',
             content: (
-                <div>
-                    <p>A팀 인원: {players.length}명</p>
+                <>
+                    <p>투표 인원: {players.length}명</p>
                     <p>정말 등록하시겠습니까?</p>
-                    <p>수정 후 재등록도 가능합니다.</p>
-                </div>
+                </>
             ),
             okText: '등록',
             cancelText: '취소',
             onOk() {
-                console.log('투표자 명단 제출:', { players: players });
                 Axios.post('/api/record/submitPlayers', {
                     Players: players.map(member => member.id)
-                })
-                .then(response => {
-                    if (response.data.success) {
-                        console.log('명단 등록에 성공하였습니다.'); 
-                    } else {
+                }).then(response => {
+                    if (!response.data.success) {
                         alert('명단 등록에 실패하였습니다.');
+                    } else {
+                        console.log('명단 등록에 성공하였습니다.');
+                        window.location.reload();
                     }
                 });
-            },
-            onCancel() {
-                console.log('취소됨');
-            },
+            }
         });
     };
 
-    let date = new Date();
+    const handleTeamChange = e => {
+        setTeamCount(e.target.value);
+        console.log('선택된 팀 수:', e.target.value);
+    };
+
+    const columns = useMemo(() => [
+        { accessor: "rank", Header: "RANK" },
+        { accessor: "name", Header: "NAME" },
+        { accessor: "plays", Header: "P" },
+        { accessor: "pts", Header: "PTS" },
+        { accessor: "avgPts", Header: "AVG PTS" },
+    ], []);
+
+    const filteredData = polls.filter(p => p.poll > 0).sort((a, b) => b.pts - a.pts);
+    const filteredIds = filteredData.map(p => p.id);
+    const filteredYearData = filteredIds.map(id => yearPts[id]);
+    const dataWithAvg = filteredYearData.map(player => ({
+        ...player,
+        avgPts: player.plays > 0 ? +(player.pts / player.plays).toFixed(2) : 0,
+    }));
+
+    let playerRank = 0;
+    const indexedData = dataWithAvg
+        .sort((a, b) => b.avgPts - a.avgPts)
+        .map((item, index, array) => {
+            if (index > 0 && item.avgPts === array[index - 1].avgPts) {
+                return { ...item, rank: playerRank };
+            } else {
+                playerRank++;
+                return { ...item, rank: playerRank };
+            }
+        });
+
+    const date = new Date();
 
     return (
-        <div style={{ textAlign: 'center', minHeight: "100vh" }}>
-            <div style={{ backgroundImage: `url(${list})` }}>
-                <div style={{ padding: "10px", color: 'white' }}>
-                    <h1>🎲랜덤 팀 짜기🎲</h1>
-                    <p> {date.toLocaleDateString()} </p>
-                    <p>💡 기록을 측정하는 메인 경기에 참석하는 회원들을 모두 선택하세요.</p>
-                </div>
-                <div>
-                    <List
-                        grid={{ gutter: 10, column: 5 }}
-                        dataSource={members}
-                        renderItem={(member) => (
-                            <List.Item>
-                                <Button
-                                    onClick={() => addPlayers(member)}
-                                    style={{ borderRadius: '3px', fontSize: '15px', padding: '0px 15px' }}
-                                >
-                                    {member.name}
-                                </Button>
-                            </List.Item>
-                        )}
-                    />
-                </div>
-            </div>
+        <div style={{ textAlign: 'center', minHeight: "100vh", padding: '20px' }}>
+            <h1>🎯 Step {step}</h1>
 
-            <div style={{ padding: '20px', background: `url(${groundJpg})`, backgroundSize: 'cover', position: 'relative', overflow: 'hidden' }}>
-                <h2 style={{ color: 'white' }}>투표자</h2>
-                <List
-                    grid={{ gutter: 10, column: 5 }}
-                    dataSource={players}
-                    renderItem={(member) => (
-                        <List.Item>
-                            <div style={{ textAlign: 'center' }} onClick={() => removePlayers(member)}>
-                                <img src={member.image} alt={member.name} style={{ width: '50px', height: '50px', borderRadius: '50%' }} />
-                                <p style={{ color: 'white' }}>{member.name}</p>
-                            </div>
-                        </List.Item>
-                    )}
-                />
-                <div style={{ marginTop: '70px' }}>
-                    <Button type="primary" onClick={initPlayers} style={{ background: '#d9363e', width: '120px', height: '50px', borderRadius: '6px', fontSize: '16px', position: 'absolute', bottom: '1%', left: '4%' }}>초기화</Button>
-                    <Button type="primary" onClick={submitPalyers} style={{ background: '#2a85fb', width: '120px', height: '50px', borderRadius: '6px', fontSize: '16px', position: 'absolute', bottom: '1%', right: '4%'  }}>저장</Button>
+            {step === 1 && (
+                <>
+                    <div style={{ backgroundImage: `url(${list})` }}>
+                        <div style={{ padding: "10px", color: 'white' }}>
+                            <h2>🎲 랜덤 팀 짜기</h2>
+                            <p>{date.toLocaleDateString()}</p>
+                            <p>💡 메인 경기에 참석하는 회원들을 선택하세요.</p>
+                        </div>
+                        <List
+                            grid={{ gutter: 10, column: 5 }}
+                            dataSource={members}
+                            renderItem={(member) => (
+                                <List.Item>
+                                    <Button onClick={() => addPlayers(member)}>
+                                        {member.name}
+                                    </Button>
+                                </List.Item>
+                            )}
+                        />
+                    </div>
+
+                    <div style={{ padding: '20px', background: `url(${groundJpg})`, backgroundSize: 'cover' }}>
+                        <h2 style={{ color: 'white' }}>투표자</h2>
+                        <List
+                            grid={{ gutter: 10, column: 5 }}
+                            dataSource={players}
+                            renderItem={(member) => (
+                                <List.Item>
+                                    <div onClick={() => removePlayers(member)} style={{ textAlign: 'center' }}>
+                                        <img src={member.image} alt={member.name} style={{ width: '50px', height: '50px', borderRadius: '50%' }} />
+                                        <p style={{ color: 'white' }}>{member.name}</p>
+                                    </div>
+                                </List.Item>
+                            )}
+                        />
+                        <div style={{ marginTop: '20px' }}>
+                            <Button onClick={initPlayers} danger style={{ marginRight: '10px' }}>초기화</Button>
+                            <Button type="primary" onClick={submitPlayers}>저장</Button>
+                        </div>
+                        <p style={{ color: 'white' }}>💡 투표자 명단을 우선 저장한 후에</p>
+                        <p style={{ color: 'white' }}>💡 총 몇 팀으로 나누어야 하는지 선택하세요.</p>
+                        <Radio.Group
+                            onChange={handleTeamChange}
+                            value={teamCount}
+                            optionType="button"
+                            buttonStyle="solid"
+                            style={{ marginBottom: '1rem' }}
+                        >
+                            <Radio.Button value={2}>2팀</Radio.Button>
+                            <Radio.Button value={3}>3팀</Radio.Button>
+                        </Radio.Group>
+                        <div style={{ marginTop: '20px' }}>
+                            <Button onClick={() => setStep(2)}>다음</Button>
+                        </div>
+                    </div>
+                </>
+            )}
+
+            {step === 2 && (
+                <div>
+                    <h2>📊 일간 차트</h2>
+                    <Table columns={columns} data={indexedData} teamCount={teamCount}/>
+                    <div style={{ marginTop: '20px' }}>
+                        <Button onClick={() => setStep(1)}>이전</Button>
+                    </div>
                 </div>
-            </div>
+            )}
         </div>
     );
 }
 
-export default AttendancePage;
+export default GroupingPage;
