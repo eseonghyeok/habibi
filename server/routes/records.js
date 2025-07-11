@@ -49,14 +49,78 @@ router.post('/', async (req, res) => {
   try {
     const { date, result } = req.body;
 
-    await sequelize.transaction((t) => {
-      return Record.create({
+    function addValue(result, input) {
+      const keys = ['plays', 'matches', 'win', 'draw', 'lose', 'pts'];
+      keys.forEach(key => result[key] += input[key]);
+      result.avgPts = Number((result.pts / result.matches).toFixed(2));
+    }
+
+    const players = await Player.findAll();
+    const initResult = {}
+    for (const { id, name } of players) {
+      initResult[id] = {
+        name,
+        plays: 0,
+        matches: 0,
+        win: 0,
+        draw: 0,
+        lose: 0,
+        pts: 0,
+        avgPts: 0
+      };
+    }
+
+    await sequelize.transaction(async (t) => {
+      const day = await Record.create({
         date,
         type: 'day',
-        result,
+        result: initResult,
         metadata: {}
       },
       { transaction: t });
+
+      let month = await Record.findOne({
+        where: {
+          date: date.substring(0, 7)
+        }
+      });
+      if (!month) {
+        month = await Record.create({
+          date: date.substring(0, 7),
+          type: 'month',
+          result: initResult,
+          metadata: {}
+        },
+        { transaction: t });
+      }
+
+      let year = await Record.findOne({
+        where: {
+          date: date.substring(0, 4)
+        }
+      });
+      if (!year) {
+        year = await Record.create({
+          date: date.substring(0, 4),
+          type: 'year',
+          result: initResult,
+          metadata: {}
+        },
+        { transaction: t });
+      }
+
+      for (const [id, value] of Object.entries(result)) {
+        addValue(day.result[id], value);
+        addValue(month.result[id], value);
+        addValue(year.result[id], value);
+      }
+
+      day.changed('result', true);
+      await day.save({ transaction: t });
+      month.changed('result', true);
+      await month.save({ transaction: t });
+      year.changed('result', true);
+      await year.save({ transaction: t });
     });
 
     res.sendStatus(204);
@@ -100,26 +164,8 @@ router.delete('/date/:date', async (req, res) => {
   }
 });
 
-// 기록 날짜 변경
-router.patch('/date/:date/info', async (req, res) => {
-  try {
-    const { date } = req.body;
-
-    await sequelize.transaction(async (t) => {
-      const record = await Record.findByPk(req.params.date);
-      record.date = date;
-      await record.save({ transaction: t });
-    });
-
-    res.sendStatus(204);
-  } catch (err) {
-    console.log(err);
-    res.sendStatus(500);
-  }
-});
-
 // 기록 내용 변경
-router.patch('/date/:date/info', async (req, res) => {
+router.patch('/date/:date/result', async (req, res) => {
   try {
     const { result } = req.body;
 

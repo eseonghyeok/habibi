@@ -79,9 +79,7 @@ function MonthChartTable() {
         ], []
     );
 
-    let Data = Player.sort(function(a, b) {
-        return b.pts - a.pts || b.plays - a.plays;
-    });
+    let Data = Object.values(Player).sort((a, b) => b.score - a.score);
 
     let playerRank = 0;
     let indexedData = Data.map((item, index, array) => {
