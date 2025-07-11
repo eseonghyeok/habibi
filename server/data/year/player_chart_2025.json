@@ -2,35 +2,35 @@
   "players": [
     {
       "name": "김형철",
-      "win": 50,
+      "win": 56,
       "draw": 27,
       "lose": 39,
-      "plays": 19,
-      "pts": 177
+      "plays": 20,
+      "pts": 195
     },
     {
       "name": "송효석",
-      "win": 33,
-      "draw": 9,
-      "lose": 24,
-      "plays": 11,
-      "pts": 108
+      "win": 34,
+      "draw": 10,
+      "lose": 28,
+      "plays": 12,
+      "pts": 112
     },
     {
       "name": "박재범",
-      "win": 44,
-      "draw": 22,
-      "lose": 56,
-      "plays": 20,
-      "pts": 154
+      "win": 45,
+      "draw": 23,
+      "lose": 60,
+      "plays": 21,
+      "pts": 158
     },
     {
       "name": "권위준",
-      "win": 39,
+      "win": 45,
       "draw": 16,
       "lose": 37,
-      "plays": 15,
-      "pts": 133
+      "plays": 16,
+      "pts": 151
     },
     {
       "name": "신종은",
@@ -42,11 +42,11 @@
     },
     {
       "name": "이정일",
-      "win": 43,
-      "draw": 28,
-      "lose": 51,
-      "plays": 20,
-      "pts": 157
+      "win": 44,
+      "draw": 29,
+      "lose": 55,
+      "plays": 21,
+      "pts": 161
     },
     {
       "name": "조돈휘",
@@ -58,19 +58,19 @@
     },
     {
       "name": "현종권",
-      "win": 45,
-      "draw": 28,
-      "lose": 56,
-      "plays": 21,
-      "pts": 163
+      "win": 46,
+      "draw": 29,
+      "lose": 60,
+      "plays": 22,
+      "pts": 167
     },
     {
       "name": "곽영래",
-      "win": 34,
-      "draw": 21,
-      "lose": 49,
-      "plays": 17,
-      "pts": 123
+      "win": 35,
+      "draw": 22,
+      "lose": 53,
+      "plays": 18,
+      "pts": 127
     },
     {
       "name": "정회화",
@@ -90,27 +90,27 @@
     },
     {
       "name": "신종윤",
-      "win": 54,
+      "win": 60,
       "draw": 24,
       "lose": 45,
-      "plays": 20,
-      "pts": 186
+      "plays": 21,
+      "pts": 204
     },
     {
       "name": "황성진",
-      "win": 21,
-      "draw": 8,
-      "lose": 13,
-      "plays": 7,
-      "pts": 71
+      "win": 22,
+      "draw": 9,
+      "lose": 17,
+      "plays": 8,
+      "pts": 75
     },
     {
       "name": "이병철",
-      "win": 25,
-      "draw": 12,
-      "lose": 19,
-      "plays": 9,
-      "pts": 87
+      "win": 26,
+      "draw": 13,
+      "lose": 23,
+      "plays": 10,
+      "pts": 91
     },
     {
       "name": "강동균",
@@ -138,11 +138,11 @@
     },
     {
       "name": "김영준",
-      "win": 47,
+      "win": 53,
       "draw": 26,
       "lose": 31,
-      "plays": 17,
-      "pts": 167
+      "plays": 18,
+      "pts": 185
     },
     {
       "name": "장효준",
@@ -154,11 +154,11 @@
     },
     {
       "name": "정기택",
-      "win": 23,
-      "draw": 10,
-      "lose": 33,
-      "plays": 11,
-      "pts": 79
+      "win": 24,
+      "draw": 11,
+      "lose": 37,
+      "plays": 12,
+      "pts": 83
     },
     {
       "name": "김정민",
@@ -194,19 +194,19 @@
     },
     {
       "name": "김진호",
-      "win": 58,
-      "draw": 22,
-      "lose": 47,
-      "plays": 21,
-      "pts": 196
+      "win": 59,
+      "draw": 23,
+      "lose": 51,
+      "plays": 22,
+      "pts": 200
     },
     {
       "name": "박진산",
-      "win": 28,
-      "draw": 16,
-      "lose": 28,
-      "plays": 12,
-      "pts": 100
+      "win": 29,
+      "draw": 17,
+      "lose": 32,
+      "plays": 13,
+      "pts": 104
     },
     {
       "name": "임다훈",
@@ -218,19 +218,19 @@
     },
     {
       "name": "강병준",
-      "win": 42,
+      "win": 48,
       "draw": 19,
       "lose": 35,
-      "plays": 16,
-      "pts": 145
+      "plays": 17,
+      "pts": 163
     },
     {
       "name": "박찬용",
-      "win": 31,
+      "win": 37,
       "draw": 14,
       "lose": 23,
-      "plays": 11,
-      "pts": 107
+      "plays": 12,
+      "pts": 125
     },
     {
       "name": "이종범",
@@ -306,11 +306,11 @@
     },
     {
       "name": "권순국",
-      "win": 34,
-      "draw": 23,
-      "lose": 39,
-      "plays": 16,
-      "pts": 125
+      "win": 35,
+      "draw": 24,
+      "lose": 43,
+      "plays": 17,
+      "pts": 129
     },
     {
       "name": "조대인",
