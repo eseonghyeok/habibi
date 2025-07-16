@@ -1,46 +1,42 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import Axios from 'axios';
 import { Button, List, Modal } from 'antd';
 import groundJpg from '../../images/ground.png';
 import list from '../../images/playerlist.jpg';
+
 import profile1 from '../../images/profile/1.jpg';
 import profile2 from '../../images/profile/2.jpg';
 import profile3 from '../../images/profile/3.jpg';
 import profile4 from '../../images/profile/4.jpg';
+const profiles = [profile1, profile2, profile3, profile4];
 
- function AttendancePage() {
+const TEAM_NAMES = ['A', 'B', 'C', 'Others'];
+const TEAM_ALIAS = ['A', 'B', 'C', '일반'];
+
+function AttendancePage() {
     const [loading, setLoading] = useState(true);
+    const [teams, setTeams] = useState({});
+    const [activeTeam, setActiveTeam] = useState(null);
     const [members, setMembers] = useState([]);
-    const [aTeam, setATeam] = useState([]);
-    const [bTeam, setBTeam] = useState([]);
-    const [cTeam, setCTeam] = useState([]);
-    const [generalTeam, setGeneralTeam] = useState([]);
-    const [activeTeam, setActiveTeam] = useState('A');
+    const checkSubmit = useRef(false);
 
     useEffect(() => {
         async function groupPlayers() {
             setLoading(true);
             try {
-                const teamNames = [ "A", "B", "C", "Others" ];
-                const teams = {}
-                for (const teamName of teamNames) {
-                    const team = (await Axios.get(`/api/teams/${teamName}/players`)).data;
-                    teams[teamName] = team.map(player => player.id);
+                checkSubmit.current = ((await Axios.get('/api/teams')).data.length) ? true : false;
+                const teamsTemp = {}
+                for (const index in TEAM_NAMES) {
+                    teamsTemp[TEAM_NAMES[index]] = {
+                        alias: TEAM_ALIAS[index],
+                        image: profiles[index],
+                        members: (await Axios.get(`/api/teams/name/${TEAM_NAMES[index]}/players`)).data
+                    };
                 }
 
-                const allPlayers = (await Axios.get('/api/players')).data;
-                const players = [...teams.A, ...teams.B, ...teams.C, ...teams.Others];
-                const benchPlayers = allPlayers.filter(member => !players.includes(member.id));
-
-                const mapMembersWithProfile = (ids, profileImage) => 
-                    allPlayers.filter(member => ids.includes(member.id))
-                        .map(member => ({ ...member, image: profileImage }));
-
-                setATeam(mapMembersWithProfile(teams.A, profile1)); 
-                setBTeam(mapMembersWithProfile(teams.B, profile2)); 
-                setCTeam(mapMembersWithProfile(teams.C, profile3)); 
-                setGeneralTeam(mapMembersWithProfile(teams.Others, profile4));
-                setMembers(benchPlayers);
+                setTeams(teamsTemp);
+                setActiveTeam(Object.keys(teamsTemp)[0]);
+                setMembers((await Axios.get('/api/players')).data);
             } catch (err) {
                 alert('오늘의 팀 정보 가져오기를 실패하였습니다.')
                 throw err;
@@ -52,24 +48,17 @@ import profile4 from '../../images/profile/4.jpg';
     }, []);
 
     const handleTeamAdd = (member) => {
-        const profileImage = activeTeam === 'A' ? profile1 : activeTeam === 'B' ? profile2 : activeTeam === 'C' ? profile3 : profile4;
-        const memberWithImage = { ...member, image: profileImage };
-
-        if (activeTeam === 'A') {
-            setATeam([...aTeam, memberWithImage]);
-        } else if (activeTeam === 'B') {
-            setBTeam([...bTeam, memberWithImage]);
-        } else if (activeTeam === 'C') {
-            setCTeam([...cTeam, memberWithImage]);
-        } else if (activeTeam === '일반') {
-            setGeneralTeam([...generalTeam, memberWithImage]);
-        }
+        const teamsTemp = structuredClone(teams);
+        teamsTemp[activeTeam].members.push(member);
+        setTeams(teamsTemp);
         setMembers(members.filter((m) => m !== member));
     };
 
-    const removeFromTeam = (member, teamSetter, team) => {
-        teamSetter(team.filter((m) => m !== member));
-        setMembers([...members, { id: member.id, name: member.name }]); // Remove image when returning to member list
+    const removeFromTeam = (member, name) => {
+        const teamsTemp = structuredClone(teams);
+        teamsTemp[name].members = teams[name].members.filter((m) => m !== member);
+        setTeams(teamsTemp);
+        setMembers([...members, member]);
     };
 
     const initDailyTeam = () => {
@@ -86,7 +75,7 @@ import profile4 from '../../images/profile/4.jpg';
             async onOk() {
                 setLoading(true);
                 try {
-                    await Axios.patch('/api/teams/players/reset');
+                    await Axios.delete('/api/teams');
                     window.location.reload();
                 } catch (err) {
                     alert('팀 초기화에 실패하였습니다.');
@@ -106,10 +95,7 @@ import profile4 from '../../images/profile/4.jpg';
             title: '명단 제출',
             content: (
                 <div>
-                    <p>A팀 인원: {aTeam.length}명</p>
-                    <p>B팀 인원: {bTeam.length}명</p>
-                    <p>C팀 인원: {cTeam.length}명</p>
-                    <p>일반 인원: {generalTeam.length}명</p>
+                    {Object.values(teams).map(v => <p key={v}>{v.alias}팀 인원: {v.members.length}명</p>)}
                     <p>정말 등록하시겠습니까?</p>
                     <p>수정 후 재등록도 가능합니다.</p>
                 </div>
@@ -117,18 +103,15 @@ import profile4 from '../../images/profile/4.jpg';
             okText: '등록',
             cancelText: '취소',
             async onOk() {
-                console.log('출석 명단 제출:', { A: aTeam, B: bTeam, C: cTeam, 일반: generalTeam });
                 setLoading(true);
                 try {
-                    await Axios.patch('/api/teams/players', {
-                        teams: {
-                            A: aTeam.map(member => member.id),
-                            B: bTeam.map(member => member.id),
-                            C: cTeam.map(member => member.id),
-                            Others: generalTeam.map(member => member.id),
-                        }
-                    });
-                    console.log('명단 등록에 성공하였습니다.'); 
+                    if (checkSubmit.current) {
+                        await Axios.patch('/api/teams', { teams });
+                    } else {
+                        await Axios.post('/api/teams', { teams });
+                    }
+                    console.log('명단 등록에 성공하였습니다.');
+                    window.location.reload();
                 } catch (err) {
                     alert('명단 등록에 실패하였습니다.');
                     throw err;
@@ -152,16 +135,16 @@ import profile4 from '../../images/profile/4.jpg';
                 <div style={{ padding: "10px", color: 'white' }}>
                     <h1>🔴 팀 나누기 🔵</h1>
                     <p> {date.toLocaleDateString()} </p>
-                    <p>💡 A, B, C, 일반 팀을 선택하고 회원을 추가하세요.</p>
-                    <p>💡 일반팀은 후반 2시간 참여인원으로 출석처리만 반영됩니다.</p>
+                    <p>💡 {Object.values(teams).map(v => v.alias).join(', ')} 팀을 선택하고 회원을 추가하세요.</p>
+                    <p>💡 {Object.values(teams).at(-1).alias}팀은 후반 2시간 참여인원으로 출석처리만 반영됩니다.</p>
                     <div style={{ display: 'flex', justifyContent: 'center', gap: '10px', marginBottom: '10px' }}>
-                        {['A', 'B', 'C', '일반'].map((team) => (
+                        {Object.keys(teams).map(name => (
                             <Button
-                                key={team}
-                                type={activeTeam === team ? 'primary' : 'default'}
-                                onClick={() => setActiveTeam(team)}
+                                key={name}
+                                type={activeTeam === name ? 'primary' : 'default'}
+                                onClick={() => setActiveTeam(name)}
                             >
-                                {team}
+                                {teams[name].alias}
                             </Button>
                         ))}
                     </div>
@@ -186,17 +169,17 @@ import profile4 from '../../images/profile/4.jpg';
             </div>
 
             <div style={{ padding: '20px', background: `url(${groundJpg})`, backgroundSize: 'cover', position: 'relative', overflow: 'hidden' }}>
-                {['A', 'B', 'C', '일반'].map((team) => (
-                    <div key={team} style={{ marginBottom: '20px' }}>
-                        <h2 style={{ color: 'white' }}>{team}</h2>
+                {Object.keys(teams).map(name => (
+                    <div key={name} style={{ marginBottom: '20px' }}>
+                        <h2 style={{ color: 'white' }}>{name}</h2>
                         <List
                             grid={{ gutter: 10, column: 5 }}
-                            dataSource={team === 'A' ? aTeam : team === 'B' ? bTeam : team === 'C' ? cTeam : generalTeam}
+                            dataSource={teams[name].members}
                             renderItem={(member) => (
                                 <List.Item>
-                                    <div style={{ textAlign: 'center' }} onClick={() => removeFromTeam(member, team === 'A' ? setATeam : team === 'B' ? setBTeam : team === 'C' ? setCTeam : setGeneralTeam, team === 'A' ? aTeam : team === 'B' ? bTeam : team === 'C' ? cTeam : generalTeam)}>
-                                        <img src={member.image} alt={member.name} style={{ width: '50px', height: '50px', borderRadius: '50%' }} />
-                                        <p style={{ color: 'white' }}>{member.name}</p>
+                                    <div style={{ textAlign: 'center' }} onClick={() => removeFromTeam(member, name)}>
+                                        <img src={teams[name].image} alt={teams[name].members.name} style={{ width: '50px', height: '50px', borderRadius: '50%' }} />
+                                        <p style={{ color: 'white' }}>{teams[name].members.name}</p>
                                     </div>
                                 </List.Item>
                             )}

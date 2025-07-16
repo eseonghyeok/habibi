@@ -1,5 +1,6 @@
 const express = require('express');
 const router = express.Router();
+const utils = require('../../common/utils');
 const { sequelize, Team } = require('../../common/models/index');
 
 
@@ -32,21 +33,22 @@ router.get('/name/:name', async (req, res) => {
 // 팀 추가
 router.post('/', async (req, res) => {
   try {
-    const { name, playerId } = req.body;
+    const { teams } = req.body;
 
-    await sequelize.transaction((t) => {
-      return Team.create({
-        name,
-        playerId,
-        result: {
-          scroe: 0,
-          win: 0,
-          draw: 0,
-          lose: 0
+    await sequelize.transaction(async (t) => {
+      await Promise.all(Object.keys(teams).map(async name => {
+        const team = await Team.create({
+          name,
+          record: {
+            win: [],
+            draw: [],
+            lose: []
+          },
+          metadata: {}
         },
-        metadata: {}
-      },
-      { transaction: t });
+        { transaction: t });
+        await team.addPlayers(teams[name].members.map(memeber => memeber.id), { transaction: t });
+      }));
     })
 
     res.sendStatus(204);
@@ -90,33 +92,33 @@ router.delete('/name/:name', async (req, res) => {
   }
 });
 
-// 팀원 조회
-router.get('/name/:name/players', async (req, res) => {
+// 팀 변경
+router.patch('/', async (req, res) => {
   try {
-    const team = await Team.findByPk(req.params.name);
-    const players = await team.getPlayers();
+    const { teams } = req.body;
 
-    res.json(players);
+    await sequelize.transaction((t) => {
+      return Promise.all(Object.keys(teams).map(async name => {
+        const team = await Team.findByPk(name);
+        await team.setPlayers([], { transaction: t });
+        await team.addPlayers(teams[name].members.map(memeber => memeber.id), { transaction: t });
+      }));
+    })
+
+    res.sendStatus(204);
   } catch (err) {
     console.log(err);
     res.sendStatus(500);
   }
 });
 
-// 팀원 변경
-router.patch('/players', async (req, res) => {
+// 팀원 조회
+router.get('/name/:name/players', async (req, res) => {
   try {
-    const { teams } = req.body;
+    const team = await Team.findByPk(req.params.name);
+    const players = team ? await team.getPlayers() : [];
 
-    await sequelize.transaction(async (t) => {
-      for (const [ name, players ] of Object.entries(teams)) {
-        const team = await Team.findByPk(name);
-        await team.setPlayers([], { transaction: t });
-        await team.addPlayers(players, { transaction: t });
-      }
-    });
-
-    res.sendStatus(204);
+    res.json(players);
   } catch (err) {
     console.log(err);
     res.sendStatus(500);
@@ -156,14 +158,13 @@ router.patch('/name/:name/players/reset', async (req, res) => {
 // 팀 기록 변경
 router.patch('/name/:name/record', async (req, res) => {
   try {
-    const { win = 0, draw = 0, lose = 0 } = req.body;
+    const { win = [], draw = [], lose = [] } = req.body;
 
     await sequelize.transaction(async (t) => {
       const team = await Team.findByPk(req.params.name);
-      team.record.score += win * 3 + draw * 1;
-      team.record.win += win;
-      team.record.draw += draw;
-      team.record.lose += lose;
+      team.record.win = win;
+      team.record.draw = draw;
+      team.record.lose = lose;
       team.changed('record', true);
       await team.save({ transaction: t });
     });
@@ -182,10 +183,9 @@ router.patch('/record/reset', async (req, res) => {
       const teams = await Team.findAll();
       await Promise.all(teams.map(async (team) => {
         team.record = {
-          score: 0,
-          win: 0,
-          draw: 0,
-          lose: 0
+          win: [],
+          draw: [],
+          lose: []
         }
         return team.save({ transaction: t });
       }));
@@ -202,36 +202,11 @@ router.patch('/name/:name/record/reset', async (req, res) => {
     await sequelize.transaction(async (t) => {
       const team = await Team.findByPk(req.params.name);
       team.record = {
-        score: 0,
-        win: 0,
-        draw: 0,
-        lose: 0
+        win: [],
+        draw: [],
+        lose: []
       }
       await team.save({ transaction: t });
-    });
-
-    res.sendStatus(204);
-  } catch (err) {
-    console.log(err);
-    res.sendStatus(500);
-  }
-});
-
-// 팀 전체 초기화
-router.patch('/reset', async (req, res) => {
-  try {
-    await sequelize.transaction(async (t) => {
-      const teams = await Team.findAll();
-      await Promise.all(teams.map(async (team) => {
-        team.record = {
-          score: 0,
-          win: 0,
-          draw: 0,
-          lose: 0
-        }
-        await team.setPlayers([], { transaction: t });
-        return team.save({ transaction: t });
-      }));
     });
 
     res.sendStatus(204);
