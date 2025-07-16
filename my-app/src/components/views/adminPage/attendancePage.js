@@ -171,15 +171,15 @@ function AttendancePage() {
             <div style={{ padding: '20px', background: `url(${groundJpg})`, backgroundSize: 'cover', position: 'relative', overflow: 'hidden' }}>
                 {Object.keys(teams).map(name => (
                     <div key={name} style={{ marginBottom: '20px' }}>
-                        <h2 style={{ color: 'white' }}>{name}</h2>
+                        <h2 style={{ color: 'white' }}>{teams[name].alias}</h2>
                         <List
                             grid={{ gutter: 10, column: 5 }}
                             dataSource={teams[name].members}
                             renderItem={(member) => (
                                 <List.Item>
                                     <div style={{ textAlign: 'center' }} onClick={() => removeFromTeam(member, name)}>
-                                        <img src={teams[name].image} alt={teams[name].members.name} style={{ width: '50px', height: '50px', borderRadius: '50%' }} />
-                                        <p style={{ color: 'white' }}>{teams[name].members.name}</p>
+                                        <img src={teams[name].image} alt={member.name} style={{ width: '50px', height: '50px', borderRadius: '50%' }} />
+                                        <p style={{ color: 'white' }}>{member.name}</p>
                                     </div>
                                 </List.Item>
                             )}
