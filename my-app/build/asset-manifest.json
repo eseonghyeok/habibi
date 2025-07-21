@@ -1,7 +1,7 @@
 {
   "files": {
     "main.css": "/static/css/main.f855e6bc.css",
-    "main.js": "/static/js/main.0f2c2755.js",
+    "main.js": "/static/js/main.cea3636b.js",
     "static/js/453.ed3810f9.chunk.js": "/static/js/453.ed3810f9.chunk.js",
     "static/media/awardpage.jpg": "/static/media/awardpage.e4ade615e94b183de001.jpg",
     "static/media/ground.png": "/static/media/ground.de301432d2b74273131b.png",
@@ -21,16 +21,17 @@
     "static/media/jan-juhwan.png": "/static/media/jan-juhwan.75c92f4a6a441eca2787.png",
     "static/media/noti.jpg": "/static/media/noti.3920db002a21f61887e2.jpg",
     "static/media/chartpage.jpg": "/static/media/chartpage.ca4ed4e5f1e1ad615e54.jpg",
+    "static/media/backgroud.jpg": "/static/media/backgroud.f101c855dcd2cf1e2ec6.jpg",
     "static/media/logo.png": "/static/media/logo.9806feb7d5f7a67700a8.png",
     "static/media/homepage.png": "/static/media/homepage.7a4e4d79e24dc418b68f.png",
     "static/media/playerlist.jpg": "/static/media/playerlist.18a29affb5c5c4a8188b.jpg",
     "index.html": "/index.html",
     "main.f855e6bc.css.map": "/static/css/main.f855e6bc.css.map",
-    "main.0f2c2755.js.map": "/static/js/main.0f2c2755.js.map",
+    "main.cea3636b.js.map": "/static/js/main.cea3636b.js.map",
     "453.ed3810f9.chunk.js.map": "/static/js/453.ed3810f9.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.f855e6bc.css",
-    "static/js/main.0f2c2755.js"
+    "static/js/main.cea3636b.js"
   ]
 }

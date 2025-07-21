@@ -107,7 +107,7 @@ function Table({ columns, data, teamCount }) {
             {rows.map((row, i) => {
               prepareRow(row);
               const groupIndex = Math.floor(i / teamCount);
-              const bgColor = groupIndex % 2 === 0 ? "#100995e6" : "#1a107db3";
+              const bgColor = groupIndex % 2 === 0 ? "#16143be6" : "#100995e6";
               return (
                 <tr {...row.getRowProps()} style={{ backgroundColor: bgColor }}>
                   {row.cells.map((cell) => (

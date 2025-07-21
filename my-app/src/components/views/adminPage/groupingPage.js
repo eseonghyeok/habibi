@@ -5,6 +5,7 @@ import Table from "../recordPage/default/defaultGroupingTable";
 import groundJpg from '../../images/ground.png';
 import list from '../../images/playerlist.jpg';
 import profile4 from '../../images/profile/4.jpg';
+import background from '../../images/backgroud.jpg';
 
 function GroupingPage() {
     const all = [
@@ -141,7 +142,7 @@ function GroupingPage() {
     const date = new Date();
 
     return (
-        <div style={{ textAlign: 'center', minHeight: "100vh", padding: '20px' }}>
+        <div style={{ textAlign: 'center', minHeight: "100vh", padding: '20px', backgroundImage: `url(${background})` }}>
             <h1>🎯 Step {step}</h1>
 
             {step === 1 && (
@@ -183,7 +184,7 @@ function GroupingPage() {
                             <Button onClick={initPlayers} danger style={{ marginRight: '10px' }}>초기화</Button>
                             <Button type="primary" onClick={submitPlayers}>저장</Button>
                         </div>
-                        <p style={{ color: 'white' }}>💡 투표자 명단을 우선 저장한 후에</p>
+                        <p style={{ color: 'white' }}>💡 투표자 명단을 우선 저장한 후</p>
                         <p style={{ color: 'white' }}>💡 총 몇 팀으로 나누어야 하는지 선택하세요.</p>
                         <Radio.Group
                             onChange={handleTeamChange}
