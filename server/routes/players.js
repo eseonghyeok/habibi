@@ -1,5 +1,6 @@
 const express = require('express');
 const router = express.Router();
+const utils = require('../../common/utils');
 const { sequelize, Player } = require('../../common/models/index');
 
 
@@ -38,11 +39,7 @@ router.post('/', async (req, res) => {
       return Player.create({
         name,
         info,
-        record: {
-          score: 0,
-          avg: 0,
-          num: 0
-        },
+        record: utils.initValue(),
         metadata: {}
       },
       { transaction: t });
@@ -146,13 +143,11 @@ router.patch('/id/:id/info', async (req, res) => {
 // 선수 기록 변경
 router.patch('/id/:id/record', async (req, res) => {
   try {
-    const { score = 0, count = 0 } = req.body;
+    const { win = 0, draw = 0, lose = 0 } = req.body;
 
     await sequelize.transaction(async (t) => {
       const player = await Player.findByPk(req.params.id);
-      player.record.score += score;
-      player.record.count += count;
-      player.record.avg = (player.record.score / player.record.count).toFixed(2);
+      utils.addValue(player.record, { win, draw, lose });
       player.changed('record', true);
       await player.save({ transaction: t });
     });
@@ -170,11 +165,7 @@ router.patch('/record/reset', async (req, res) => {
     await sequelize.transaction(async (t) => {
       const players = await Player.findAll();
       await Promise.all(players.map(async (player) => {
-        player.record = {
-          score: 0,
-          count: 0,
-          avg: 0
-        }
+        player.record = utils.initValue();
         return player.save({ transaction: t });
       }));
     });
@@ -189,11 +180,7 @@ router.patch('/id/:id/record/reset', async (req, res) => {
   try {
     await sequelize.transaction(async (t) => {
       const player = await Player.findByPk(req.params.id);
-      player.record = {
-        score: 0,
-        count: 0,
-        avg: 0
-      }
+      player.record = utils.initValue();
       await player.save({ transaction: t });
     });
 

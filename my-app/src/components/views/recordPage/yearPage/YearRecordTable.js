@@ -1,48 +1,52 @@
 import React, { useEffect, useState, useMemo, useRef } from 'react'
+import { useNavigate } from 'react-router-dom';
 import Axios from 'axios';
 import Table from "../default/defaultYearRecordTable";
 
 function YearChartTable() {
-    const [Player, setPlayer] = useState([]);
+    const navigate = useNavigate();
+    const [loading, setLoading] = useState(true);
+    const [result, setResult] = useState([]);
     const [year, setYear] = useState(null);
-    const years = useRef(['2025']);
+    const years = useRef([]);
     const scrollRef = useRef(null);
     const buttonRefs = useRef({});
 
     useEffect(() => {
         async function checkDate() {
+            setLoading(true);
             try {
-                const records = (await Axios.get('/api/records/type/year'));
-                years.current = records.data.map((record) => record.date);
+                const records = (await Axios.get('/api/records/type/year')).data;
+                years.current = records.map((record) => record.date);
                 setYear(years.current.at(-1));
             } catch (err) {
                 alert('기록이 존재하지 않습니다.');
-                window.location.reload();
+                navigate('/');
+                return;
+            } finally {
+                setLoading(false);
             }
         }
         checkDate();
-    }, []);
+    }, [navigate]);
 
     useEffect(() => {
         async function getRecord() {
             if (!year) return;
+
             try {
+                if (buttonRefs.current[year]) {
+                    buttonRefs.current[year].scrollIntoView({ inline: 'center', behavior: 'smooth' });
+                }
+
                 const record = await Axios.get(`/api/records/date/${year}`);
-                setPlayer(record.data.result);
+                setResult(record.data.result);
             } catch (err) {
                 alert('연간차트 가져오기를 실패하였습니다.');
                 window.location.reload();
             }
         }
         getRecord();
-    }, [year]);
-
-    useEffect(() => {
-        // 해당 월 버튼을 스크롤 컨테이너의 중앙에 가깝게 위치시킵니다.
-        if (!year) return;
-        if (buttonRefs.current[year]) {
-            buttonRefs.current[year].scrollIntoView({ inline: 'center', behavior: 'smooth' });
-        }
     }, [year]);
 
     const columns = useMemo(
@@ -75,10 +79,14 @@ function YearChartTable() {
                 accessor: "pts",
                 Header: "PTS",
             },
+            {
+                accessor: "avg",
+                Header: "AVG",
+            },
         ], []
     );
 
-    let Data = Object.values(Player).sort((a, b) => b.score - a.score);
+    let Data = Object.values(result).sort((a, b) => (b.pts - a.pts) || (b.avg - a.avg) || (b.plays - a.plays) || a.name.localeCompare(b.name));
     
     let playerRank = 0;
     let indexedData = Data.map((item, index, array) => {
@@ -107,6 +115,8 @@ function YearChartTable() {
         backgroundColor: 'yellow',
         padding: '10px 0'
     };
+
+    if (loading) return <p>⏳ loading...</p>;
 
     return (
         <div>

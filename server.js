@@ -5,7 +5,7 @@ const cors = require('cors');
 const dotenv = require('dotenv');
 const cron = require('node-cron');
 const utils = require('./common/utils');
-const { sequelize, Player, Record } = require('./common/models/index');
+const { sequelize, Player, Record, Team } = require('./common/models/index');
 
 dotenv.config();
 
@@ -16,11 +16,11 @@ process.on('SIGINT', async () => {
   process.exit(0);
 });
 
-cron.schedule('0 0 0 * * *', async () => {
+cron.schedule('0 1 0 * * *', async () => {
 
-  const now = new Date();
-  const nowYear = String(now.getFullYear());
-  const nowMonth = String(now.getMonth() + 1).padStart(2, '0');
+  const date = new Date();
+  const nowYear = String(date.getFullYear());
+  const nowMonth = String(date.getMonth() + 1).padStart(2, '0');
 
   try {
     await sequelize.transaction(async (t) => {
@@ -63,6 +63,26 @@ cron.schedule('0 0 0 * * *', async () => {
         { transaction: t });
       }
     });
+
+    await sequelize.transaction(async (t) => {
+      date.setDate(date.getDate() - 1);
+      const record = await Record.findByPk(`${String(date.getFullYear())}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`);
+      if (record) {
+        if (Object.keys(record.metadata.log).length === 0) {
+          await record.destroy({ transaction: t });
+        } else {
+          utils.setResult(record.date, record.metadata.log);
+        }
+      }
+    });
+
+    await sequelize.transaction(async (t) => {
+      await Team.destroy({
+        where: {},
+        transaction: t
+      });
+    });
+
     console.log("HealthCheck Success");
   } catch (err) {
     console.log(err);

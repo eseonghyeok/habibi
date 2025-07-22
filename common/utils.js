@@ -1,5 +1,7 @@
 'use strict';
 
+const { Sequelize, sequelize, Player, Record, Team } = require('./models/index');
+
 function addValue(result, input) {
   const { win, draw, lose } = input;
 
@@ -9,7 +11,7 @@ function addValue(result, input) {
   result.draw += draw;
   result.lose += lose;
   result.pts += win * 3 + draw;
-  result.avgPts = Number((result.pts / result.matches).toFixed(2));
+  result.avg = Number((result.pts / result.matches).toFixed(2));
 }
 
 function initValue() {
@@ -20,11 +22,53 @@ function initValue() {
     draw: 0,
     lose: 0,
     pts: 0,
-    avgPts: 0
+    avg: 0
   }
+}
+
+async function setResult(date, log) {
+  const result = {}
+  const dayResult = {}
+  const players = await Player.findAll();
+  for (const matchLog of Object.values(log)) {
+    for (const record of Object.values(matchLog)) {
+      for (const id of record.playersId) {
+        if (!Object.hasOwn(result, id)) {
+          result[id] = initValue();
+          dayResult[id] = {
+            name: players.find(player => player.id === id).name,
+            ...initValue()
+          }
+        }
+        result[id][record.type]++;
+      }
+    }
+  }
+
+  const monthRecord = await Record.findByPk(date.slice(0, 7));
+  const yearRecord = await Record.findByPk(date.slice(0, 4));
+  for (const id of Object.keys(result)) {
+    addValue(dayResult[id], result[id]);
+    addValue(monthRecord.result[id], result[id]);
+    addValue(yearRecord.result[id], result[id]);
+  }
+
+  await sequelize.transaction(async (t) => {
+    const dayRecord = await Record.findByPk(date);
+    dayRecord.result = dayResult;
+
+    dayRecord.changed('result', true);
+    monthRecord.changed('result', true);
+    yearRecord.changed('result', true);
+
+    await dayRecord.save({ transaction: t });
+    await monthRecord.save({ transaction: t });
+    await yearRecord.save({ transaction: t });
+  });
 }
 
 module.exports = {
 	addValue,
-	initValue
+	initValue,
+  setResult
 }

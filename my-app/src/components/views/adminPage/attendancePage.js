@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import Axios from 'axios';
 import { Button, List, Modal } from 'antd';
+import dayjs from 'dayjs';
 import groundJpg from '../../images/ground.png';
 import list from '../../images/playerlist.jpg';
 
@@ -12,6 +13,7 @@ const profiles = [profile1, profile2, profile3, profile4];
 
 const TEAM_NAMES = ['A', 'B', 'C', 'Others'];
 const TEAM_ALIAS = ['A', 'B', 'C', '일반'];
+const EXCLUDE_TEAM_NAMES = ['Others'];
 
 function AttendancePage() {
     const [loading, setLoading] = useState(true);
@@ -19,32 +21,34 @@ function AttendancePage() {
     const [activeTeam, setActiveTeam] = useState(null);
     const [members, setMembers] = useState([]);
     const checkSubmit = useRef(false);
+    const now = dayjs().format('YYYY-MM-DD');
 
     useEffect(() => {
-        async function groupPlayers() {
+        async function getTeams() {
             setLoading(true);
             try {
                 checkSubmit.current = ((await Axios.get('/api/teams')).data.length) ? true : false;
                 const teamsTemp = {}
                 for (const index in TEAM_NAMES) {
                     teamsTemp[TEAM_NAMES[index]] = {
+                        index: EXCLUDE_TEAM_NAMES.includes(TEAM_NAMES[index]) ? null : index,
                         alias: TEAM_ALIAS[index],
                         image: profiles[index],
                         members: (await Axios.get(`/api/teams/name/${TEAM_NAMES[index]}/players`)).data
-                    };
+                    }
                 }
 
                 setTeams(teamsTemp);
                 setActiveTeam(Object.keys(teamsTemp)[0]);
                 setMembers((await Axios.get('/api/players')).data);
             } catch (err) {
-                alert('오늘의 팀 정보 가져오기를 실패하였습니다.')
+                alert('오늘의 팀 정보 가져오기를 실패하였습니다.');
                 throw err;
             } finally {
                 setLoading(false);
             }
         }
-        groupPlayers();
+        getTeams();
     }, []);
 
     const handleTeamAdd = (member) => {
@@ -75,13 +79,14 @@ function AttendancePage() {
             async onOk() {
                 setLoading(true);
                 try {
+                    await Axios.delete(`/api/records/date/${now}`);
                     await Axios.delete('/api/teams');
-                    window.location.reload();
                 } catch (err) {
                     alert('팀 초기화에 실패하였습니다.');
                     throw err;
                 } finally {
                     setLoading(false);
+                    window.location.reload();
                 }
             },
             onCancel() {
@@ -95,7 +100,9 @@ function AttendancePage() {
             title: '명단 제출',
             content: (
                 <div>
-                    {Object.values(teams).map(v => <p key={v}>{v.alias}팀 인원: {v.members.length}명</p>)}
+                    {Object.keys(teams).map(name => 
+                        <p key={name}>{teams[name].alias}팀 인원: {teams[name].members.length}명</p>
+                    )}
                     <p>정말 등록하시겠습니까?</p>
                     <p>수정 후 재등록도 가능합니다.</p>
                 </div>
@@ -108,15 +115,16 @@ function AttendancePage() {
                     if (checkSubmit.current) {
                         await Axios.patch('/api/teams', { teams });
                     } else {
+                        await Axios.post(`/api/records/date/${now}`);
                         await Axios.post('/api/teams', { teams });
                     }
                     console.log('명단 등록에 성공하였습니다.');
-                    window.location.reload();
                 } catch (err) {
                     alert('명단 등록에 실패하였습니다.');
                     throw err;
                 } finally {
                     setLoading(false);
+                    window.location.reload();
                 }
             },
             onCancel() {
