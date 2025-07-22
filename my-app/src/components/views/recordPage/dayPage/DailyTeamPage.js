@@ -47,9 +47,9 @@ function DailyTeamPage() {
                 }
 
                 const recordData = (await Axios.get(`/api/records/date/${now}`)).data;
-                for (const log of Object.values(recordData.metadata.log)) {
-                    for (const name of Object.keys(log)) {
-                        recordTemp[name][log[name].type]++;
+                for (const matchLog of Object.values(recordData.metadata.log)) {
+                    for (const name of Object.keys(matchLog)) {
+                        recordTemp[name][matchLog[name].type]++;
                     }
                     match.current++;
                 }
@@ -66,7 +66,7 @@ function DailyTeamPage() {
         getPlayers();
     }, [navigate, now]);
 
-    const setLog = async (name, type) => {
+    const setLog = (name, type) => {
         const secondTeamType = (type === 'win') ? 'lose' : (type === 'draw') ? 'draw' : 'win';
         Modal.info({
             title: `${(type === 'win') ? '패배' : (type === 'draw') ? '무승부' : '승리'}한 팀을 선택해 주세요.`,
@@ -83,11 +83,11 @@ function DailyTeamPage() {
                                         log: {
                                             [name]: {
                                                 type,
-                                                players: teams[name].players.map(player => player.id)
+                                                playersId: teams[name].players.map(player => player.id)
                                             },
                                             [secondTeamName]: {
                                                 type: secondTeamType,
-                                                players: teams[secondTeamName].players.map(player => player.id)
+                                                playersId: teams[secondTeamName].players.map(player => player.id)
                                             },
                                         }
                                     });
@@ -100,6 +100,7 @@ function DailyTeamPage() {
                                     Modal.destroyAll();
                                 } catch (err) {
                                     alert('결과 반영에 실패하였습니다.');
+                                    throw err;
                                 } finally {
                                     setLoading(false);
                                 }
@@ -107,7 +108,7 @@ function DailyTeamPage() {
                             icon={<img src={teams[secondTeamName].image} alt={secondTeamName} style={{ width: '50px', height: '50px', borderRadius: '50%' }} />}
                             style={{background: 'transparent', border: 'none', padding: 0}}
                         >
-                            {secondTeamName}
+                            <span style={{ fontWeight: 'bold' }}>{secondTeamName}</span>
                         </Button>
                     )}
                 </div>
@@ -116,7 +117,7 @@ function DailyTeamPage() {
         });
     };
 
-    const deleteRecord = async () => {
+    const deleteLog = async () => {
         setLoading(true);
         try {
             if (match.current === 1) {
@@ -153,6 +154,75 @@ function DailyTeamPage() {
                         setRecord(recordTemp);
                     } catch (err) {
                         alert('결과 반영에 실패하였습니다.');
+                        throw err;
+                    } finally {
+                        setLoading(false);
+                    }
+                },
+                onCancel() {
+                    setLoading(false);
+                }
+            });
+        } catch (err) {
+            alert('결과 반영에 실패하였습니다.');
+            throw err;
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    const finishPlay = () => {
+        setLoading(true);
+        try {
+            if (match.current === 1) {
+                alert('기록이 존재하지 않습니다.');
+                setLoading(false);
+                return;
+            }
+
+            Modal.confirm({
+                title: '경기 결과 반영',
+                content: (
+                    <div>
+                        {Object.keys(record).map(name => 
+                            <div key={name}>
+                                <img
+                                    src={teams[name].image} alt={name} style={{ width: '50px', height: '50px', borderRadius: '50%' }}
+                                />
+                                <span style={{ fontWeight: 'bold' }}>{name}</span>
+                                <p>승리: {record[name].win}, 무승부: {record[name].draw}, 패배: {record[name].lose}</p>
+                            </div>,
+                        )}
+                        <br />
+                        <p>정말 종료하시겠습니까?</p>
+                        <p>종료하시면 차트가 초기화되며 경기 결과가 반영됩니다.</p>
+                        <p>당일 최종 반영할 때 사용을 권장합니다.</p>
+                    </div>
+                ),
+                okText: '반영',
+                cancelText: '취소',
+                async onOk() {
+                    setLoading(true);
+                    try {
+                        await Axios.patch(`/api/records/date/${now}`);
+                        await Axios.delete('/api/teams');
+
+                        Modal.confirm({
+                            title: '경기 결과 공유',
+                            content: '경기 결과를 공유하시겠습니까?',
+                            okText: '공유',
+                            cancelText: '취소',
+                            onOk() {
+                                captureAndShare(recordRef);
+                                navigate('/');
+                            },
+                            onCancel() {
+                                navigate('/');
+                            }
+                        })
+                    } catch (err) {
+                        alert('결과 반영에 실패하였습니다.');
+                        throw err;
                     } finally {
                         setLoading(false);
                     }
@@ -238,8 +308,8 @@ function DailyTeamPage() {
                 ))}
 
                 <div style={{ display: "flex", justifyContent: "space-between" }}>
-                    <Button type="primary" onClick={() => deleteRecord()} style={{ background: '#dc3545', width: '145px', height: '45px', borderRadius: '6px', fontSize: '13px', marginTop: '10px', color: 'black', fontWeight: 'bolder' }}>최근기록삭제✖️</Button>
-                    <Button type="primary" onClick={() => captureAndShare(recordRef)} style={{ background: '#30d946', width: '145px', height: '45px', borderRadius: '6px', fontSize: '13px', marginTop: '10px', color: 'black', fontWeight: 'bolder' }}>결과공유✨</Button>
+                    <Button type="primary" onClick={() => deleteLog()} style={{ background: '#dc3545', width: '145px', height: '45px', borderRadius: '6px', fontSize: '13px', marginTop: '10px', color: 'black', fontWeight: 'bolder' }}>최근기록삭제✖️</Button>
+                    <Button type="primary" onClick={() => finishPlay()} style={{ background: '#30d946', width: '145px', height: '45px', borderRadius: '6px', fontSize: '13px', marginTop: '10px', color: 'black', fontWeight: 'bolder' }}>경기종료🔔</Button>
                 </div>
             </div>
         </div>

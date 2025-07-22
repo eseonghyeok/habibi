@@ -77,21 +77,19 @@ function AttendancePage() {
             okText: '확인',
             cancelText: '취소',
             async onOk() {
-                setLoading(true);
                 try {
-                    await Axios.delete(`/api/records/date/${now}`);
+                    const recordData = (await Axios.get(`/api/records/date/${now}`)).data;
+                    if (Object.keys(recordData.result).length === 0) {
+                        await Axios.delete(`/api/records/date/${now}`);
+                    }
                     await Axios.delete('/api/teams');
                 } catch (err) {
                     alert('팀 초기화에 실패하였습니다.');
                     throw err;
                 } finally {
-                    setLoading(false);
                     window.location.reload();
                 }
-            },
-            onCancel() {
-                console.log('취소됨');
-            },
+            }
         });
     };
 
@@ -110,7 +108,6 @@ function AttendancePage() {
             okText: '등록',
             cancelText: '취소',
             async onOk() {
-                setLoading(true);
                 try {
                     if (checkSubmit.current) {
                         await Axios.patch('/api/teams', { teams });
@@ -118,18 +115,13 @@ function AttendancePage() {
                         await Axios.post(`/api/records/date/${now}`);
                         await Axios.post('/api/teams', { teams });
                     }
-                    console.log('명단 등록에 성공하였습니다.');
                 } catch (err) {
                     alert('명단 등록에 실패하였습니다.');
                     throw err;
                 } finally {
-                    setLoading(false);
                     window.location.reload();
                 }
-            },
-            onCancel() {
-                console.log('취소됨');
-            },
+            }
         });
     };
 

@@ -100,14 +100,8 @@ router.delete('/date/:date', async (req, res) => {
 // 기록 내용 변경
 router.patch('/date/:date', async (req, res) => {
   try {
-    const { match, result } = req.body;
-
-    await sequelize.transaction(async (t) => {
-      const record = await Record.findByPk(req.params.date);
-      record.result[match] = result;
-      record.changed('result', true);
-      await record.save({ transaction: t });
-    });
+    const record = await Record.findByPk(req.params.date);
+    utils.setResult(record.date, record.metadata.log);
 
     res.sendStatus(204);
   } catch (err) {
