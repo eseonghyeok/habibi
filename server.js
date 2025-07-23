@@ -2,10 +2,96 @@ const express =require('express')
 const app = express()
 const path = require('path')
 const cors = require('cors');
+const dotenv = require('dotenv');
+const cron = require('node-cron');
+const utils = require('./common/utils');
+const { sequelize, Player, Record, Team } = require('./common/models/index');
+
+dotenv.config();
+
+process.on('SIGINT', async () => {
+  if (sequelize) {
+    await sequelize.close();
+  }
+  process.exit(0);
+});
+
+cron.schedule('0 1 0 * * *', async () => {
+
+  const date = new Date();
+  const nowYear = String(date.getFullYear());
+  const nowMonth = String(date.getMonth() + 1).padStart(2, '0');
+
+  try {
+    await sequelize.transaction(async (t) => {
+      const players = await Player.findAll();
+      const initResult = {}
+      for (const { id, name } of players) {
+        initResult[id] = {
+          name,
+          ...utils.initValue()
+        };
+      }
+
+      const month = await Record.findOne({
+        where: {
+          date: `${nowYear}-${nowMonth}`
+        }
+      });
+      if (!month) {
+        await Record.create({
+          date: `${nowYear}-${nowMonth}`,
+          type: 'month',
+          result: initResult,
+          metadata: {}
+        },
+        { transaction: t });
+      }
+
+      const year = await Record.findOne({
+        where: {
+          date: nowYear
+        }
+      });
+      if (!year) {
+        await Record.create({
+          date: nowYear,
+          type: 'year',
+          result: initResult,
+          metadata: {}
+        },
+        { transaction: t });
+      }
+    });
+
+    await sequelize.transaction(async (t) => {
+      date.setDate(date.getDate() - 1);
+      const record = await Record.findByPk(`${String(date.getFullYear())}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`);
+      if (record) {
+        if (Object.keys(record.metadata.log).length === 0) {
+          await record.destroy({ transaction: t });
+        } else {
+          utils.setResult(record.date, record.metadata.log);
+        }
+      }
+    });
+
+    await sequelize.transaction(async (t) => {
+      await Team.destroy({
+        where: {},
+        transaction: t
+      });
+    });
+
+    console.log("HealthCheck Success");
+  } catch (err) {
+    console.log(err);
+  }
+});
 
 //build 후 server와 연동할 때
-app.listen(8080, function(){
-    console.log('listening on 8080')
+app.listen(process.env.WEB_PORT, function(){
+    console.log(`listening on ${process.env.WEB_PORT}`)
 })
 
 
@@ -22,6 +108,9 @@ app.get('/', function(req, res){
 
 app.use('/api/chart', require('./server/routes/chart'));
 app.use('/api/record', require('./server/routes/record'));
+app.use('/api/players', require('./server/routes/players'));
+app.use('/api/records', require('./server/routes/records'));
+app.use('/api/teams', require('./server/routes/teams'));
 
 
 

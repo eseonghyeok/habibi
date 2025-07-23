@@ -45,12 +45,17 @@ function HomePage() {
             </div>
             <div style={{ marginBottom: '20px' }}>
                 <Button type="primary" href="/record/year" size="large" style={buttonStyle}>
-                    올해의 랭킹 <p style={{ fontSize: '40px', marginRight: '-30px'}}>🥇</p>
+                    연간 랭킹 <p style={{ fontSize: '40px', marginRight: '-30px'}}>🥇</p>
                 </Button>
             </div>
             <div style={{ marginBottom: '20px' }}>
                 <Button type="primary" href="/record/month" size="large" style={buttonStyle}>
-                    이달의 랭킹 <p style={{ fontSize: '40px', marginRight: '-30px'}}>🥈</p>
+                    월간 랭킹 <p style={{ fontSize: '40px', marginRight: '-30px'}}>🥈</p>
+                </Button>
+            </div>
+            <div style={{ marginBottom: '20px' }}>
+                <Button type="primary" href="/record/day" size="large" style={buttonStyle}>
+                    경기 결과 <p style={{ fontSize: '35px', marginRight: '-30px'}}>✅</p>
                 </Button>
             </div>
             {isLoggedIn ? (
@@ -63,11 +68,6 @@ function HomePage() {
                     <div style={{ marginBottom: '20px' }}>
                         <Button type="primary" href="/record/teams" size="large" style={buttonStyle}>
                             승점 체크 <p style={{ fontSize: '35px', marginRight: '-30px'}}>📊</p>
-                        </Button>
-                    </div>
-                    <div style={{ marginBottom: '20px' }}>
-                        <Button type="primary" href="/record/result" size="large" style={buttonStyle}>
-                            오늘의 결과 <p style={{ fontSize: '35px', marginRight: '-30px'}}>✅</p>
                         </Button>
                     </div>
                     <div style={{ marginBottom: '20px' }}>

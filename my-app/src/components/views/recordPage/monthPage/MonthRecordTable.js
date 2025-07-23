@@ -1,35 +1,58 @@
 import React, { useEffect, useState, useMemo, useRef } from 'react';
+import { useNavigate } from 'react-router-dom';
+import dayjs from 'dayjs';
 import Axios from 'axios';
 import Table from "../default/defaultMonthRecordTable";
 
 function MonthChartTable() {
-    const [Player, setPlayer] = useState([]);
-    const [month, setMonth] = useState('7');
+    const navigate = useNavigate();
+    const [loading, setLoading] = useState(true);
+    const [reulst, setResult] = useState([]);
+    const [year, setYear] = useState(null);
+    const [month, setMonth] = useState(null);
+    const months = useRef([]);
     const scrollRef = useRef(null);
     const buttonRefs = useRef({});
-
-    useEffect(() => { 
-        Axios.get(`/api/record/getMonth/${month}`)
-        .then(response => {
-            if(response.data.success) {
-                if (response.data.monthChart) {
-                    setPlayer(response.data.monthChart.players);
-                } else {
-                    setPlayer(response.data.otherChart.players);
-                }
-            } else {
-                alert('월간차트 가져오기를 실패하였습니다.');
-                window.location.reload();
-            }
-        })  
-    }, [month]);
+    const now = dayjs().format('YYYY');
 
     useEffect(() => {
-        // 해당 월 버튼을 스크롤 컨테이너의 중앙에 가깝게 위치시킵니다.
-        if (buttonRefs.current[month]) {
-            buttonRefs.current[month].scrollIntoView({ inline: 'center', behavior: 'smooth' });
+        async function getDate() {
+            setLoading(true);
+            try {
+                const recordsData = (await Axios.get(`/api/records/type/month/date/${now}`)).data;
+                const yearTemp = recordsData.at(-1).date.slice(0, 4);
+                months.current = recordsData.map((record) => String(Number(record.date.slice(5, 7))));
+                setYear(yearTemp);
+                setMonth(months.current.at(-1));
+            } catch (err) {
+                alert('기록이 존재하지 않습니다.');
+                navigate('/');
+                return;
+            } finally {
+                setLoading(false);
+            }
         }
-    }, [month]);
+        getDate();
+    }, [navigate, now]);
+
+    useEffect(() => {
+        async function getResult() {
+            if (!month) return;
+
+            try {
+                if (buttonRefs.current[month]) {
+                    buttonRefs.current[month].scrollIntoView({ inline: 'center', behavior: 'smooth' });
+                }
+
+                const recordData = (await Axios.get(`/api/records/date/${year}-${month.padStart(2, '0')}`)).data;
+                setResult(recordData.result);
+            } catch (err) {
+                alert('월간차트 가져오기를 실패하였습니다.');
+                throw err;
+            }
+        }
+        getResult();
+    }, [year, month]);
 
     const columns = useMemo(
         () => [
@@ -61,12 +84,14 @@ function MonthChartTable() {
                 accessor: "pts",
                 Header: "PTS",
             },
+            {
+                accessor: "avg",
+                Header: "AVG",
+            },
         ], []
     );
 
-    let Data = Player.sort(function(a, b) {
-        return b.pts - a.pts || b.plays - a.plays;
-    });
+    let Data = Object.values(reulst).sort((a, b) => (b.pts - a.pts) || (b.avg - a.avg) || (b.plays - a.plays) || a.name.localeCompare(b.name));
 
     let playerRank = 0;
     let indexedData = Data.map((item, index, array) => {
@@ -96,10 +121,12 @@ function MonthChartTable() {
         padding: '10px 0'
     };
 
+    if (loading) return <p>⏳ loading...</p>;
+
     return (
         <div>
             <div style={scrollContainerStyle} ref={scrollRef}>
-                {['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12'].map((m) => (
+                {months.current.map((m) => (
                     <button
                         key={m}
                         style={buttonStyle(month === m)}
