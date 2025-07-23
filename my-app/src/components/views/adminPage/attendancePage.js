@@ -24,7 +24,7 @@ function AttendancePage() {
     const now = dayjs().format('YYYY-MM-DD');
 
     useEffect(() => {
-        async function getTeams() {
+        async function getPlayers() {
             setLoading(true);
             try {
                 checkSubmit.current = ((await Axios.get('/api/teams')).data.length) ? true : false;
@@ -48,7 +48,7 @@ function AttendancePage() {
                 setLoading(false);
             }
         }
-        getTeams();
+        getPlayers();
     }, []);
 
     const handleTeamAdd = (member) => {

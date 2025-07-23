@@ -53,6 +53,11 @@ function HomePage() {
                     월간 랭킹 <p style={{ fontSize: '40px', marginRight: '-30px'}}>🥈</p>
                 </Button>
             </div>
+            <div style={{ marginBottom: '20px' }}>
+                <Button type="primary" href="/record/day" size="large" style={buttonStyle}>
+                    경기 결과 <p style={{ fontSize: '35px', marginRight: '-30px'}}>✅</p>
+                </Button>
+            </div>
             {isLoggedIn ? (
                 <div>
                     <div style={{ marginBottom: '20px' }}>
@@ -63,11 +68,6 @@ function HomePage() {
                     <div style={{ marginBottom: '20px' }}>
                         <Button type="primary" href="/record/teams" size="large" style={buttonStyle}>
                             승점 체크 <p style={{ fontSize: '35px', marginRight: '-30px'}}>📊</p>
-                        </Button>
-                    </div>
-                    <div style={{ marginBottom: '20px' }}>
-                        <Button type="primary" href="/record/result" size="large" style={buttonStyle}>
-                            오늘의 결과 <p style={{ fontSize: '35px', marginRight: '-30px'}}>✅</p>
                         </Button>
                     </div>
                     <div style={{ marginBottom: '20px' }}>

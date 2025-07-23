@@ -1,20 +1,10 @@
 const express = require('express');
 const router = express.Router();
 const utils = require('../../common/utils');
-const { sequelize, Record, Team } = require('../../common/models/index');
+const { Sequelize, sequelize, Record, Team } = require('../../common/models/index');
 
 
 // 기록 조회
-router.get('/', async (req, res) => {
-  try {
-    const records = await Record.findAll();
-
-    res.json(records);
-  } catch (err) {
-    console.log(err);
-    res.sendStatus(500);
-  }
-});
 router.get('/date/:date', async (req, res) => {
   try {
     const record = await Record.findByPk(req.params.date);
@@ -32,6 +22,39 @@ router.get('/type/:type', async (req, res) => {
         type: req.params.type
       },
       order: [[ "date", 'ASC' ]]
+    });
+
+    res.json(record);
+  } catch (err) {
+    console.log(err);
+    res.sendStatus(500);
+  }
+});
+router.get('/type/:type/date/:date', async (req, res) => {
+  try {
+    const record = await Record.findAll({
+      where: {
+        type: req.params.type,
+        date: {
+          [Sequelize.Op.like]: `${req.params.date}%`
+        }
+      },
+      order: [[ "date", 'ASC' ]]
+    });
+
+    res.json(record);
+  } catch (err) {
+    console.log(err);
+    res.sendStatus(500);
+  }
+});
+router.get('/last', async (req, res) => {
+  try {
+    const record = await Record.findOne({
+      where: {
+        type: 'day'
+      },
+      order: [[ "date", 'DESC' ]]
     });
 
     res.json(record);
@@ -64,21 +87,6 @@ router.post('/date/:date', async (req, res) => {
 });
 
 // 기록 삭제
-router.delete('/', async (req, res) => {
-  try {
-    await sequelize.transaction((t) => {
-      return Record.destroy({
-        where: {},
-        transaction: t
-      });
-    });
-
-    res.sendStatus(204);
-  } catch (err) {
-    console.log(err);
-    res.sendStatus(500);
-  }
-});
 router.delete('/date/:date', async (req, res) => {
   try {
     await sequelize.transaction((t) => {
@@ -102,23 +110,6 @@ router.patch('/date/:date', async (req, res) => {
   try {
     const record = await Record.findByPk(req.params.date);
     utils.setResult(record.date, record.metadata.log);
-
-    res.sendStatus(204);
-  } catch (err) {
-    console.log(err);
-    res.sendStatus(500);
-  }
-});
-router.patch('/date/:date/delete', async (req, res) => {
-  try {
-    const { match } = req.body;
-
-    await sequelize.transaction(async (t) => {
-      const record = await Record.findByPk(req.params.date);
-      delete record.result[match];
-      record.changed('result', true);
-      await record.save({ transaction: t });
-    });
 
     res.sendStatus(204);
   } catch (err) {
@@ -153,35 +144,6 @@ router.patch('/date/:date/log/delete', async (req, res) => {
       record.changed('metadata', true);
       await record.save({ transaction: t });
     });
-
-    res.sendStatus(204);
-  } catch (err) {
-    console.log(err);
-    res.sendStatus(500);
-  }
-});
-router.patch('/date/:date/result', async (req, res) => {
-  try {
-    const { result } = req.body;
-
-    await sequelize.transaction(async (t) => {
-      const record = await Record.findByPk(req.params.date);
-      record.result = result;
-      await record.save({ transaction: t });
-    });
-
-    for (const [id, value] of Object.entries(result)) {
-      utils.addValue(day.result[id], value);
-      utils.addValue(month.result[id], value);
-      utils.addValue(year.result[id], value);
-    }
-
-    day.changed('result', true);
-    await day.save({ transaction: t });
-    month.changed('result', true);
-    await month.save({ transaction: t });
-    year.changed('result', true);
-    await year.save({ transaction: t });
 
     res.sendStatus(204);
   } catch (err) {

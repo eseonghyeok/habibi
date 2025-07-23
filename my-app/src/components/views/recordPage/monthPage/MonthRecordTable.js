@@ -1,5 +1,6 @@
 import React, { useEffect, useState, useMemo, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
+import dayjs from 'dayjs';
 import Axios from 'axios';
 import Table from "../default/defaultMonthRecordTable";
 
@@ -9,17 +10,20 @@ function MonthChartTable() {
     const [reulst, setResult] = useState([]);
     const [year, setYear] = useState(null);
     const [month, setMonth] = useState(null);
+    const months = useRef([]);
     const scrollRef = useRef(null);
     const buttonRefs = useRef({});
+    const now = dayjs().format('YYYY');
 
     useEffect(() => {
-        async function checkDate() {
+        async function getDate() {
             setLoading(true);
             try {
-                const records = (await Axios.get('/api/records/type/day')).data;
-                const [lastYear, lastMonth] = records.at(-1).date.split('-');
-                setYear(lastYear);
-                setMonth(String(Number(lastMonth)));
+                const recordsData = (await Axios.get(`/api/records/type/month/date/${now}`)).data;
+                const yearTemp = recordsData.at(-1).date.slice(0, 4);
+                months.current = recordsData.map((record) => String(Number(record.date.slice(5, 7))));
+                setYear(yearTemp);
+                setMonth(months.current.at(-1));
             } catch (err) {
                 alert('기록이 존재하지 않습니다.');
                 navigate('/');
@@ -28,11 +32,11 @@ function MonthChartTable() {
                 setLoading(false);
             }
         }
-        checkDate();
-    }, [navigate]);
+        getDate();
+    }, [navigate, now]);
 
     useEffect(() => {
-        async function getRecord() {
+        async function getResult() {
             if (!month) return;
 
             try {
@@ -40,14 +44,14 @@ function MonthChartTable() {
                     buttonRefs.current[month].scrollIntoView({ inline: 'center', behavior: 'smooth' });
                 }
 
-                const record = await Axios.get(`/api/records/date/${year}-${month.padStart(2, '0')}`);
-                setResult(record.data.result);
+                const recordData = (await Axios.get(`/api/records/date/${year}-${month.padStart(2, '0')}`)).data;
+                setResult(recordData.result);
             } catch (err) {
                 alert('월간차트 가져오기를 실패하였습니다.');
-                window.location.reload();
+                throw err;
             }
         }
-        getRecord();
+        getResult();
     }, [year, month]);
 
     const columns = useMemo(
@@ -122,7 +126,7 @@ function MonthChartTable() {
     return (
         <div>
             <div style={scrollContainerStyle} ref={scrollRef}>
-                {['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12'].map((m) => (
+                {months.current.map((m) => (
                     <button
                         key={m}
                         style={buttonStyle(month === m)}

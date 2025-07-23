@@ -20,7 +20,7 @@ function DailyTeamPage() {
     const now = dayjs().format('YYYY-MM-DD');
 
     useEffect(() => { 
-        async function getPlayers() {
+        async function getTeams() {
             setLoading(true);
             try {
                 const teamsData = (await Axios.get('/api/teams')).data;
@@ -63,11 +63,12 @@ function DailyTeamPage() {
                 setLoading(false);
             }
         }
-        getPlayers();
+        getTeams();
     }, [navigate, now]);
 
     const setLog = (name, type) => {
         const secondTeamType = (type === 'win') ? 'lose' : (type === 'draw') ? 'draw' : 'win';
+
         Modal.info({
             title: `${(type === 'win') ? '패배' : (type === 'draw') ? '무승부' : '승리'}한 팀을 선택해 주세요.`,
             content: (
@@ -128,6 +129,7 @@ function DailyTeamPage() {
 
             const recordData = (await Axios.get(`/api/records/date/${now}`)).data;
             const lastRecord = recordData.metadata.log[match.current - 1];
+
             Modal.confirm({
                 title: '최근 기록 삭제',
                 content: (
@@ -186,9 +188,7 @@ function DailyTeamPage() {
                     <div>
                         {Object.keys(record).map(name => 
                             <div key={name}>
-                                <img
-                                    src={teams[name].image} alt={name} style={{ width: '50px', height: '50px', borderRadius: '50%' }}
-                                />
+                                <img src={teams[name].image} alt={name} style={{ width: '50px', height: '50px', borderRadius: '50%' }}/>
                                 <span style={{ fontWeight: 'bold' }}>{name}</span>
                                 <p>승리: {record[name].win}, 무승부: {record[name].draw}, 패배: {record[name].lose}</p>
                             </div>,
@@ -308,7 +308,7 @@ function DailyTeamPage() {
                 ))}
 
                 <div style={{ display: "flex", justifyContent: "space-between" }}>
-                    <Button type="primary" onClick={() => deleteLog()} style={{ background: '#dc3545', width: '145px', height: '45px', borderRadius: '6px', fontSize: '13px', marginTop: '10px', color: 'black', fontWeight: 'bolder' }}>최근기록삭제✖️</Button>
+                    <Button type="primary" onClick={async () => await deleteLog()} style={{ background: '#dc3545', width: '145px', height: '45px', borderRadius: '6px', fontSize: '13px', marginTop: '10px', color: 'black', fontWeight: 'bolder' }}>최근기록삭제✖️</Button>
                     <Button type="primary" onClick={() => finishPlay()} style={{ background: '#30d946', width: '145px', height: '45px', borderRadius: '6px', fontSize: '13px', marginTop: '10px', color: 'black', fontWeight: 'bolder' }}>경기종료🔔</Button>
                 </div>
             </div>

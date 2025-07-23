@@ -13,11 +13,11 @@ function YearChartTable() {
     const buttonRefs = useRef({});
 
     useEffect(() => {
-        async function checkDate() {
+        async function getDate() {
             setLoading(true);
             try {
-                const records = (await Axios.get('/api/records/type/year')).data;
-                years.current = records.map((record) => record.date);
+                const recordsData = (await Axios.get('/api/records/type/year')).data;
+                years.current = recordsData.map((record) => record.date);
                 setYear(years.current.at(-1));
             } catch (err) {
                 alert('기록이 존재하지 않습니다.');
@@ -27,11 +27,11 @@ function YearChartTable() {
                 setLoading(false);
             }
         }
-        checkDate();
+        getDate();
     }, [navigate]);
 
     useEffect(() => {
-        async function getRecord() {
+        async function getResult() {
             if (!year) return;
 
             try {
@@ -39,14 +39,14 @@ function YearChartTable() {
                     buttonRefs.current[year].scrollIntoView({ inline: 'center', behavior: 'smooth' });
                 }
 
-                const record = await Axios.get(`/api/records/date/${year}`);
-                setResult(record.data.result);
+                const recordData = (await Axios.get(`/api/records/date/${year}`)).data;
+                setResult(recordData.result);
             } catch (err) {
                 alert('연간차트 가져오기를 실패하였습니다.');
-                window.location.reload();
+                throw err;
             }
         }
-        getRecord();
+        getResult();
     }, [year]);
 
     const columns = useMemo(

@@ -12,6 +12,7 @@ import notiPage from "./components/views/homePage/notiPage"
 import Footer from "./components/views/homePage/footer"
 //2025 new version
 import pastHabibiPage from "./components/views/homePage/pastHabibiPage"
+import dailyRecordTable from "./components/views/recordPage/dayPage/DailyRecordTable"
 import monthRecordTable from "./components/views/recordPage/monthPage/MonthRecordTable"
 import yearRecordTable from "./components/views/recordPage/yearPage/YearRecordTable"
 import dailyTeamPage from "./components/views/recordPage/dayPage/DailyTeamPage"
@@ -35,6 +36,7 @@ function App() {
           <Route exact path="/award" Component={awardPage} />
           <Route exact path="/attendance" Component={attendancePage} />
           <Route exact path="/notification" Component={notiPage} />
+          <Route exact path="/record/day" Component={dailyRecordTable} />
           <Route exact path="/record/month" Component={monthRecordTable} />
           <Route exact path="/record/year" Component={yearRecordTable} />
           <Route exact path="/record/teams" Component={dailyTeamPage} />
