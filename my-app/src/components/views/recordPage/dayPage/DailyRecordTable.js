@@ -2,7 +2,7 @@ import React, { useEffect, useState, useMemo, useRef } from 'react'
 import { useNavigate } from 'react-router-dom';
 import Axios from 'axios';
 import { Button, Modal } from 'antd'
-import Table from "../default/defaultYearRecordTable";
+import Table from "../default/defaultResultTable";
 
 function YearChartTable() {
     const navigate = useNavigate();

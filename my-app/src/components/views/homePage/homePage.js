@@ -70,7 +70,7 @@ function HomePage() {
                             승점 체크 <p style={{ fontSize: '35px', marginRight: '-30px'}}>📊</p>
                         </Button>
                     </div>
-                    <div style={{ marginBottom: '20px' }}>
+                    {/* <div style={{ marginBottom: '20px' }}>
                         <Button type="primary" href="/record/plus" size="large" style={buttonStyle}>
                             기록 증가 <p style={{ fontSize: '35px', marginRight: '-30px'}}>➕</p>
                         </Button>
@@ -79,7 +79,7 @@ function HomePage() {
                         <Button type="primary" href="/record/minus" size="large" style={buttonStyle}>
                             기록 차감 <p style={{ fontSize: '35px', marginRight: '-30px'}}>➖</p>
                         </Button>
-                    </div>
+                    </div> */}
                     <div style={{ marginBottom: '20px' }}>
                         <Button type="primary" size="large" onClick={logoutSuccess} style={buttonStyle}>
                             로그아웃 <p style={{ fontSize: '35px', marginRight: '-30px'}}>🔒</p>
