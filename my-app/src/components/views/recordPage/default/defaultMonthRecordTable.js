@@ -1,6 +1,8 @@
 import React from "react";
 import { useTable, useGlobalFilter, useSortBy } from "react-table";
+import { Modal } from 'antd';
 import Search from "./search";
+import { playerInfo } from '../../../utils';
 import chartpage from '../../../images/chartpage.jpg'
 
 function Table({ columns, data }) {
@@ -12,6 +14,16 @@ function Table({ columns, data }) {
     prepareRow,
     setGlobalFilter,
   } = useTable({ columns, data }, useGlobalFilter, useSortBy);
+
+  const getPlayer = async (player) => {
+    Modal.info({
+      title: '선수 정보',
+      content: (
+        playerInfo(player)
+      ),
+      okText: '확인'
+    });
+  }
 
   return (
     <div style={{ minHeight: "100vh", padding: "10px", backgroundImage: `url(${chartpage})`, backgroundSize: "cover", backgroundPosition: "center" }}>
@@ -75,6 +87,7 @@ function Table({ columns, data }) {
                         textAlign: "center",
                         fontSize: '12px'
                       }}
+                      onClick={() => getPlayer(cell.row.original)}
                     >
                       {cell.render("Cell")}
                     </td>

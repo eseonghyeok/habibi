@@ -11,6 +11,7 @@ function YearChartTable() {
     const years = useRef([]);
     const scrollRef = useRef(null);
     const buttonRefs = useRef({});
+    const players = useRef([]);
 
     useEffect(() => {
         async function getDate() {
@@ -19,6 +20,15 @@ function YearChartTable() {
                 const recordsData = (await Axios.get('/api/records/type/year')).data;
                 years.current = recordsData.map((record) => record.date);
                 setYear(years.current.at(-1));
+
+                const playersData = (await Axios.get('/api/players')).data;
+                players.current = playersData.reduce((ret, player) => {
+                    ret[player.id] = {
+                        name: player.name,
+                        info: player.info
+                    }
+                    return ret;
+                }, {});
             } catch (err) {
                 alert('기록이 존재하지 않습니다.');
                 navigate('/');
@@ -86,7 +96,14 @@ function YearChartTable() {
         ], []
     );
 
-    let Data = Object.values(result).sort((a, b) => (b.pts - a.pts) || (b.avg - a.avg) || (b.plays - a.plays) || a.name.localeCompare(b.name));
+  let Data = Object.keys(result)
+      .filter(id => players.current[id])
+      .map(id => ({
+          name: players.current[id].name,
+          info: players.current[id].info,
+          ...result[id]
+      }))
+      .sort((a, b) => (b.pts - a.pts) || (b.avg - a.avg) || (b.plays - a.plays) || a.name.localeCompare(b.name));
     
     let playerRank = 0;
     let indexedData = Data.map((item, index, array) => {

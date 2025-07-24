@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import Axios from 'axios';
 import { Button, List, Modal } from 'antd';
 import dayjs from 'dayjs';
+import { playerInfo } from '../../utils';
 import groundJpg from '../../images/ground.png';
 import list from '../../images/playerlist.jpg';
 
@@ -52,17 +53,44 @@ function AttendancePage() {
     }, []);
 
     const handleTeamAdd = (member) => {
-        const teamsTemp = structuredClone(teams);
-        teamsTemp[activeTeam].members.push(member);
-        setTeams(teamsTemp);
-        setMembers(members.filter((m) => m !== member));
+        Modal.confirm({
+            title: '선수 등록',
+            content: (
+                <div>
+                    {playerInfo(member)}
+                    <br />
+                    <p><span style={{ fontWeight: 'bolder' }}>{activeTeam}</span>팀에 선수를 등록하겠습니까?</p>
+                </div>
+            ),
+            okText: '등록',
+            cancelText: '취소',
+            onOk() {
+                const teamsTemp = structuredClone(teams);
+                teamsTemp[activeTeam].members.push(member);
+                setTeams(teamsTemp);
+                setMembers(members.filter((m) => m !== member));
+            }
+        });
     };
 
     const removeFromTeam = (member, name) => {
-        const teamsTemp = structuredClone(teams);
-        teamsTemp[name].members = teams[name].members.filter((m) => m !== member);
-        setTeams(teamsTemp);
-        setMembers([...members, member]);
+        Modal.confirm({
+            title: '선수 제외',
+            content: (
+                <div>
+                    <p><span style={{ fontWeight: 'bolder' }}>{activeTeam}</span>팀에서 <span style={{ fontWeight: 'bolder' }}>{member.name}</span>선수를 제외하겠습니까?</p>
+                    {playerInfo(member)}
+                </div>
+            ),
+            okText: '제외',
+            cancelText: '취소',
+            onOk() {
+                const teamsTemp = structuredClone(teams);
+                teamsTemp[name].members = teams[name].members.filter((m) => m !== member);
+                setTeams(teamsTemp);
+                setMembers([...members, member]);
+            }
+        });
     };
 
     const initDailyTeam = () => {
@@ -79,7 +107,7 @@ function AttendancePage() {
             async onOk() {
                 try {
                     const recordData = (await Axios.get(`/api/records/date/${now}`)).data;
-                    if (Object.keys(recordData.result).length === 0) {
+                    if (recordData) {
                         await Axios.delete(`/api/records/date/${now}`);
                     }
                     await Axios.delete('/api/teams');

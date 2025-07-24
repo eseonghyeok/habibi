@@ -1,6 +1,5 @@
 const express = require('express');
 const router = express.Router();
-const utils = require('../../common/utils');
 const { Sequelize, sequelize, Team } = require('../../common/models/index');
 
 

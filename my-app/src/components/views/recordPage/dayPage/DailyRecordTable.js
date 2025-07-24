@@ -14,6 +14,7 @@ function YearChartTable() {
     const days = useRef([]);
     const scrollRef = useRef(null);
     const buttonRefs = useRef({});
+    const players = useRef([]);
 
     useEffect(() => {
         async function getDate() {
@@ -24,6 +25,15 @@ function YearChartTable() {
                 const lastDateData = (await Axios.get('/api/records/last')).data;
                 if (!lastDateData) throw new Error(null);
                 setYear(lastDateData.date.slice(0, 4));
+
+                const playersData = (await Axios.get('/api/players')).data;
+                players.current = playersData.reduce((ret, player) => {
+                    ret[player.id] = {
+                        name: player.name,
+                        info: player.info
+                    }
+                    return ret;
+                }, {});
             } catch {
                 alert('기록이 존재하지 않습니다.');
                 navigate('/');
@@ -72,23 +82,15 @@ function YearChartTable() {
     }, [day]);
 
     const getPlayers = async (log) => {
-        const playersData = (await Axios.get('/api/players')).data;
-        const players = playersData.reduce((ret, player) => {
-            ret[player.id] = {
-                name: player.name,
-                info: player.info
-            }
-            return ret;
-        }, {});
-
         Modal.info({
+            icon: null,
             content: (
                 <div>
                     {Object.keys(log).map(name => 
                         <div key={name}>
                             <p style={{ fontWeight: 'bold' }}>{name}팀 명단</p>
                             {log[name].playersId.map(id => {
-                                if (players[id]) return <p>{players[id].name}, {players[id].info.alias}({players[id].info.number})</p>
+                                if (players.current[id]) return <p>{players.current[id].name}, {players.current[id].info.alias}({players.current[id].info.number})</p>
                                 else return '알 수 없음'
                             })}
                         </div>
@@ -172,7 +174,14 @@ function YearChartTable() {
         ], []
     );
 
-    let Data = Object.values(result).sort((a, b) => (b.pts - a.pts) || (b.avg - a.avg) || (b.plays - a.plays) || a.name.localeCompare(b.name));
+    let Data = Object.keys(result)
+      .filter(id => players.current[id])
+      .map(id => ({
+          name: players.current[id].name,
+          info: players.current[id].info,
+          ...result[id]
+      }))
+      .sort((a, b) => (b.pts - a.pts) || (b.avg - a.avg) || (b.plays - a.plays) || a.name.localeCompare(b.name));
     
     let playerRank = 0;
     let indexedData = Data.map((item, index, array) => {

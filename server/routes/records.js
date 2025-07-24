@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const utils = require('../../common/utils');
-const { Sequelize, sequelize, Record, Team } = require('../../common/models/index');
+const { Sequelize, sequelize, Record } = require('../../common/models/index');
 
 
 // 기록 조회

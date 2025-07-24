@@ -7,12 +7,13 @@ import Table from "../default/defaultMonthRecordTable";
 function MonthChartTable() {
     const navigate = useNavigate();
     const [loading, setLoading] = useState(true);
-    const [reulst, setResult] = useState([]);
+    const [result, setResult] = useState([]);
     const [year, setYear] = useState(null);
     const [month, setMonth] = useState(null);
     const months = useRef([]);
     const scrollRef = useRef(null);
     const buttonRefs = useRef({});
+    const players = useRef([]);
     const now = dayjs().format('YYYY');
 
     useEffect(() => {
@@ -24,6 +25,15 @@ function MonthChartTable() {
                 months.current = recordsData.map((record) => String(Number(record.date.slice(5, 7))));
                 setYear(yearTemp);
                 setMonth(months.current.at(-1));
+
+                const playersData = (await Axios.get('/api/players')).data;
+                players.current = playersData.reduce((ret, player) => {
+                    ret[player.id] = {
+                        name: player.name,
+                        info: player.info
+                    }
+                    return ret;
+                }, {});
             } catch (err) {
                 alert('기록이 존재하지 않습니다.');
                 navigate('/');
@@ -91,7 +101,14 @@ function MonthChartTable() {
         ], []
     );
 
-    let Data = Object.values(reulst).sort((a, b) => (b.pts - a.pts) || (b.avg - a.avg) || (b.plays - a.plays) || a.name.localeCompare(b.name));
+    let Data = Object.keys(result)
+      .filter(id => players.current[id])
+      .map(id => ({
+          name: players.current[id].name,
+          info: players.current[id].info,
+          ...result[id]
+      }))
+      .sort((a, b) => (b.pts - a.pts) || (b.avg - a.avg) || (b.plays - a.plays) || a.name.localeCompare(b.name));
 
     let playerRank = 0;
     let indexedData = Data.map((item, index, array) => {

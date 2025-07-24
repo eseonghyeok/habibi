@@ -35,10 +35,7 @@ async function setResult(date, log) {
       for (const id of record.playersId) {
         if (!Object.hasOwn(result, id)) {
           result[id] = initValue();
-          dayResult[id] = {
-            name: players.find(player => player.id === id).name,
-            ...initValue()
-          }
+          dayResult[id] = initValue();
         }
         result[id][record.type]++;
       }
