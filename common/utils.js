@@ -29,7 +29,6 @@ function initValue() {
 async function setResult(date, log) {
   const result = {}
   const dayResult = {}
-  const players = await Player.findAll();
   for (const matchLog of Object.values(log)) {
     for (const record of Object.values(matchLog)) {
       for (const id of record.playersId) {
@@ -42,15 +41,38 @@ async function setResult(date, log) {
     }
   }
 
+  const updatePlayers = [];
+  const teams = await Team.findAll({
+  where: {
+    metadata: {
+      index: null
+    }
+  }
+  });
+  for (const team of teams) {
+    const players = await team.getPlayers();
+    players.forEach(player => player.record.plays++);
+    updatePlayers.push(...players);
+  }
   const monthRecord = await Record.findByPk(date.slice(0, 7));
   const yearRecord = await Record.findByPk(date.slice(0, 4));
+
   for (const id of Object.keys(result)) {
+    const player = await Player.findByPk(id);
+    addValue(player.record, result[id]);
+    updatePlayers.push(player);
+
     addValue(dayResult[id], result[id]);
     addValue(monthRecord.result[id], result[id]);
     addValue(yearRecord.result[id], result[id]);
   }
 
   await sequelize.transaction(async (t) => {
+    await Promise.all(updatePlayers.map(async updatePlayer => {
+      updatePlayer.changed('record', true);
+      return updatePlayer.save({ transaction: t });
+    }));
+
     const dayRecord = await Record.findByPk(date);
     dayRecord.result = dayResult;
 

@@ -88,10 +88,10 @@ function YearChartTable() {
                 <div>
                     {Object.keys(log).map(name => 
                         <div key={name}>
-                            <p style={{ fontWeight: 'bold' }}>{name}팀 명단</p>
+                            <p style={{ marginTop: '30px', marginBottom: '20px', fontWeight: 'bold' }}>{name}팀 명단</p>
                             {log[name].playersId.map(id => {
-                                if (players.current[id]) return <p>{players.current[id].name}, {players.current[id].info.alias}({players.current[id].info.number})</p>
-                                else return '알 수 없음'
+                                if (players.current[id]) return <p><span style={{ fontWeight: 'bold' }}>{players.current[id].name}</span>, {players.current[id].info.alias}({players.current[id].info.number})</p>
+                                else return <p>알 수 없음</p>
                             })}
                         </div>
                     )}
@@ -228,10 +228,10 @@ function YearChartTable() {
               ))}
             </div>
             <div style={{ display: 'flex', justifyContent: 'space-between', backgroundColor: 'yellow', padding: '5px' }}>
-                  <button
-                      onClick={() => getDetail()}
-                  >
-                      상세보기
+                <button
+                    onClick={() => getDetail()}
+                >
+                    상세보기
                 </button>
 
                 <select

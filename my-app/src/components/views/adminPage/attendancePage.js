@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
+import { useNavigate } from 'react-router-dom';
 import Axios from 'axios';
 import { Button, List, Modal } from 'antd';
 import dayjs from 'dayjs';
@@ -17,6 +18,7 @@ const TEAM_ALIAS = ['A', 'B', 'C', '일반'];
 const EXCLUDE_TEAM_NAMES = ['Others'];
 
 function AttendancePage() {
+    const navigate = useNavigate();
     const [loading, setLoading] = useState(true);
     const [teams, setTeams] = useState({});
     const [activeTeam, setActiveTeam] = useState(null);
@@ -28,6 +30,13 @@ function AttendancePage() {
         async function getPlayers() {
             setLoading(true);
             try {
+                const recordData = (await Axios.get(`/api/records/date/${now}`)).data;
+                if (recordData && (Object.keys(recordData.result).length > 0)) {
+                    alert('이미 오늘 경기를 종료하였습니다.');
+                    navigate('/record/day');
+                    return;
+                }
+
                 checkSubmit.current = ((await Axios.get('/api/teams')).data.length) ? true : false;
                 const teamsTemp = {}
                 for (const index in TEAM_NAMES) {
@@ -50,7 +59,7 @@ function AttendancePage() {
             }
         }
         getPlayers();
-    }, []);
+    }, [navigate, now]);
 
     const handleTeamAdd = (member) => {
         Modal.confirm({
@@ -59,7 +68,7 @@ function AttendancePage() {
                 <div>
                     {playerInfo(member)}
                     <br />
-                    <p><span style={{ fontWeight: 'bolder' }}>{activeTeam}</span>팀에 선수를 등록하겠습니까?</p>
+                    <p><span style={{ fontWeight: 'bolder' }}>{teams[activeTeam].alias}</span>팀에 선수를 등록하겠습니까?</p>
                 </div>
             ),
             okText: '등록',
@@ -78,7 +87,7 @@ function AttendancePage() {
             title: '선수 제외',
             content: (
                 <div>
-                    <p><span style={{ fontWeight: 'bolder' }}>{activeTeam}</span>팀에서 <span style={{ fontWeight: 'bolder' }}>{member.name}</span>선수를 제외하겠습니까?</p>
+                    <p><span style={{ fontWeight: 'bolder' }}>{teams[activeTeam].alias}</span>팀에서 <span style={{ fontWeight: 'bolder' }}>{member.name}</span>선수를 제외하겠습니까?</p>
                     {playerInfo(member)}
                 </div>
             ),
@@ -93,7 +102,7 @@ function AttendancePage() {
         });
     };
 
-    const initDailyTeam = () => {
+    const initDailyTeam = async () => {
         Modal.confirm({
             title: '팀 초기화',
             content: (
@@ -107,15 +116,14 @@ function AttendancePage() {
             async onOk() {
                 try {
                     const recordData = (await Axios.get(`/api/records/date/${now}`)).data;
-                    if (recordData) {
+                    if (recordData && (Object.keys(recordData.result).length === 0)) {
                         await Axios.delete(`/api/records/date/${now}`);
                     }
                     await Axios.delete('/api/teams');
+                    window.location.reload();
                 } catch (err) {
                     alert('팀 초기화에 실패하였습니다.');
                     throw err;
-                } finally {
-                    window.location.reload();
                 }
             }
         });
@@ -143,11 +151,10 @@ function AttendancePage() {
                         await Axios.post(`/api/records/date/${now}`);
                         await Axios.post('/api/teams', { teams });
                     }
+                    window.location.reload();
                 } catch (err) {
                     alert('명단 등록에 실패하였습니다.');
                     throw err;
-                } finally {
-                    window.location.reload();
                 }
             }
         });
