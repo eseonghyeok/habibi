@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useMemo, useRef } from 'react';
+import { useEffect, useState, useMemo, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import dayjs from 'dayjs';
 import Axios from 'axios';
@@ -102,7 +102,7 @@ function MonthChartTable() {
     );
 
     let Data = Object.keys(result)
-      .filter(id => players.current[id])
+      .filter(id => players.current[id] ? true : false)
       .map(id => ({
           name: players.current[id].name,
           info: players.current[id].info,

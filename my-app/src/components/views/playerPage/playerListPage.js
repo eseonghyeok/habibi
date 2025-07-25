@@ -1,10 +1,8 @@
-import { useState, useEffect, useRef } from 'react';
-import { useNavigate } from 'react-router-dom';
+import React, { useState, useEffect, useRef } from 'react';
 import Axios from 'axios';
 import { Button, List, Modal } from 'antd';
 import dayjs from 'dayjs';
-import { playerInfo } from '../../utils';
-import groundJpg from '../../images/ground.png';
+import playerpageImage from '../../images/playerpage.png';
 import list from '../../images/playerlist.jpg';
 
 import profile1 from '../../images/profile/1.jpg';
@@ -18,7 +16,6 @@ const TEAM_ALIAS = ['A', 'B', 'C', '일반'];
 const EXCLUDE_TEAM_NAMES = ['Others'];
 
 function AttendancePage() {
-    const navigate = useNavigate();
     const [loading, setLoading] = useState(true);
     const [teams, setTeams] = useState({});
     const [activeTeam, setActiveTeam] = useState(null);
@@ -30,13 +27,6 @@ function AttendancePage() {
         async function getPlayers() {
             setLoading(true);
             try {
-                const recordData = (await Axios.get(`/api/records/date/${now}`)).data;
-                if (recordData && (Object.keys(recordData.result).length > 0)) {
-                    alert('이미 오늘 경기를 종료하였습니다.');
-                    navigate('/record/day');
-                    return;
-                }
-
                 checkSubmit.current = ((await Axios.get('/api/teams')).data.length) ? true : false;
                 const teamsTemp = {}
                 for (const index in TEAM_NAMES) {
@@ -50,7 +40,7 @@ function AttendancePage() {
 
                 setTeams(teamsTemp);
                 setActiveTeam(Object.keys(teamsTemp)[0]);
-                setMembers((await Axios.get('/api/players')).data.sort((a, b) => a.name.localeCompare(b.name)));
+                setMembers((await Axios.get('/api/players')).data);
             } catch (err) {
                 alert('오늘의 팀 정보 가져오기를 실패하였습니다.');
                 throw err;
@@ -59,50 +49,23 @@ function AttendancePage() {
             }
         }
         getPlayers();
-    }, [navigate, now]);
+    }, []);
 
     const handleTeamAdd = (member) => {
-        Modal.confirm({
-            title: '선수 등록',
-            content: (
-                <div>
-                    {playerInfo(member)}
-                    <br />
-                    <p><span style={{ fontWeight: 'bolder' }}>{teams[activeTeam].alias}</span>팀에 선수를 등록하겠습니까?</p>
-                </div>
-            ),
-            okText: '등록',
-            cancelText: '취소',
-            onOk() {
-                const teamsTemp = structuredClone(teams);
-                teamsTemp[activeTeam].members.push(member);
-                setTeams(teamsTemp);
-                setMembers(members.filter((m) => m !== member).sort((a, b) => a.name.localeCompare(b.name)));
-            }
-        });
+        const teamsTemp = structuredClone(teams);
+        teamsTemp[activeTeam].members.push(member);
+        setTeams(teamsTemp);
+        setMembers(members.filter((m) => m !== member));
     };
 
     const removeFromTeam = (member, name) => {
-        Modal.confirm({
-            title: '선수 제외',
-            content: (
-                <div>
-                    <p><span style={{ fontWeight: 'bolder' }}>{teams[activeTeam].alias}</span>팀에서 <span style={{ fontWeight: 'bolder' }}>{member.name}</span>선수를 제외하겠습니까?</p>
-                    {playerInfo(member)}
-                </div>
-            ),
-            okText: '제외',
-            cancelText: '취소',
-            onOk() {
-                const teamsTemp = structuredClone(teams);
-                teamsTemp[name].members = teams[name].members.filter((m) => m !== member);
-                setTeams(teamsTemp);
-                setMembers([...members, member].sort((a, b) => a.name.localeCompare(b.name)));
-            }
-        });
+        const teamsTemp = structuredClone(teams);
+        teamsTemp[name].members = teams[name].members.filter((m) => m !== member);
+        setTeams(teamsTemp);
+        setMembers([...members, member]);
     };
 
-    const initDailyTeam = async () => {
+    const initDailyTeam = () => {
         Modal.confirm({
             title: '팀 초기화',
             content: (
@@ -116,7 +79,7 @@ function AttendancePage() {
             async onOk() {
                 try {
                     const recordData = (await Axios.get(`/api/records/date/${now}`)).data;
-                    if (recordData && (Object.keys(recordData.result).length === 0)) {
+                    if (Object.keys(recordData.result).length === 0) {
                         await Axios.delete(`/api/records/date/${now}`);
                     }
                     await Axios.delete('/api/teams');
@@ -203,7 +166,7 @@ function AttendancePage() {
                 </div>
             </div>
 
-            <div style={{ padding: '20px', background: `url(${groundJpg})`, backgroundSize: 'cover', position: 'relative', overflow: 'hidden' }}>
+            <div style={{ padding: '20px', background: `url(${playerpageImage})`, backgroundSize: 'cover', position: 'relative', overflow: 'hidden' }}>
                 {Object.keys(teams).map(name => (
                     <div key={name} style={{ marginBottom: '20px' }}>
                         <h2 style={{ color: 'white' }}>{teams[name].alias}</h2>

@@ -1,8 +1,6 @@
-import React from "react";
 import { useTable, useGlobalFilter, useSortBy } from "react-table";
-import { Modal } from 'antd';
 import Search from "./search";
-import { playerInfo } from '../../../utils';
+import { getPlayerInfo } from '../../../utils';
 import chartpage from '../../../images/chartpage.jpg'
 
 function Table({ columns, data }) {
@@ -15,23 +13,13 @@ function Table({ columns, data }) {
     setGlobalFilter,
   } = useTable({ columns, data }, useGlobalFilter, useSortBy);
 
-  const getPlayer = async (player) => {
-    Modal.info({
-      title: '선수 정보',
-      content: (
-        playerInfo(player)
-      ),
-      okText: '확인'
-    });
-  }
-
   return (
     <div style={{ minHeight: "100vh", padding: "10px", backgroundImage: `url(${chartpage})`, backgroundSize: "cover", backgroundPosition: "center" }}>
       <div style={{ marginBottom: "20px", textAlign: "center" }}>
         <h1 style={{ marginBottom: "10px", color: "#fff", fontSize: "25px" }}>📋경기 결과📋</h1>
         <p style={{ fontSize: '11px', color: "#fff" }}>💡경기 결과 페이지에서는 모든 경기에 대한 결과를 상세하게 확인할 수 있습니다.</p>
         <p style={{ fontSize: '10px', color: "#fff" }}>💡점수는 승무패 기록으로 합산됩니다.</p>
-        <p style={{ fontSize: '10px', color: "#fff" }}>💡출석은 횟수로만 기록되며 점수에 포함되지 않습니다.</p>
+        <p style={{ fontSize: '10px', color: "#fff" }}>💡선수를 누르면 선수 정보를 확인할 수 있습니다.</p>
         <Search
           onSubmit={setGlobalFilter} style={{ overflowX: "auto", padding: "0 30px" }}
         />
@@ -87,7 +75,7 @@ function Table({ columns, data }) {
                         textAlign: "center",
                         fontSize: '12px'
                       }}
-                      onClick={() => getPlayer(cell.row.original)}
+                      onClick={() => getPlayerInfo(cell.row.original)}
                     >
                       {cell.render("Cell")}
                     </td>

@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const utils = require('../../common/utils');
-const { sequelize, Player } = require('../../common/models/index');
+const { sequelize, Player, Record } = require('../../common/models/index');
 
 
 // 선수 조회
@@ -17,11 +17,7 @@ router.get('/', async (req, res) => {
 });
 router.get('/id/:id', async (req, res) => {
   try {
-    const player = await Player.findOne({
-      where: {
-        id: req.params.id
-      }
-    });
+    const player = await Player.findByPk(req.params.id);
 
     res.json(player);
   } catch (err) {
@@ -35,8 +31,8 @@ router.post('/', async (req, res) => {
   try {
     const { name, info } = req.body;
 
-    await sequelize.transaction((t) => {
-      return Player.create({
+    await sequelize.transaction(async (t) => {
+      await Player.create({
         name,
         info,
         record: utils.initValue(),
@@ -55,8 +51,8 @@ router.post('/', async (req, res) => {
 // 선수 삭제
 router.delete('/', async (req, res) => {
   try {
-    await sequelize.transaction((t) => {
-      return Player.destroy({
+    await sequelize.transaction(async (t) => {
+      await Player.destroy({
         where: {},
         transaction: t
       });
@@ -70,8 +66,8 @@ router.delete('/', async (req, res) => {
 });
 router.delete('/id/:id', async (req, res) => {
   try {
-    await sequelize.transaction((t) => {
-      return Player.destroy({
+    await sequelize.transaction(async (t) => {
+      await Player.destroy({
         where: {
           id: req.params.id
         },
@@ -94,7 +90,7 @@ router.patch('/id/:id/name', async (req, res) => {
     await sequelize.transaction(async (t) => {
       const player = await Player.findByPk(req.params.id);
       player.name = name;
-      return player.save({ transaction: t });
+      await player.save({ transaction: t });
     });
 
     res.sendStatus(204);
@@ -112,7 +108,7 @@ router.patch('/id/:id/description', async (req, res) => {
     await sequelize.transaction(async (t) => {
       const player = await Player.findByPk(req.params.id);
       player.description = description;
-      return player.save({ transaction: t });
+      await player.save({ transaction: t });
     });
 
     res.sendStatus(204);
@@ -140,16 +136,28 @@ router.patch('/id/:id/info', async (req, res) => {
   }
 });
 
-// 선수 기록 변경
-router.patch('/id/:id/record', async (req, res) => {
+// 선수 출석 변경
+router.patch('/id/:id/plays', async (req, res) => {
   try {
-    const { win = 0, draw = 0, lose = 0 } = req.body;
+    const { isPlay, date } = req.body;
 
     await sequelize.transaction(async (t) => {
       const player = await Player.findByPk(req.params.id);
-      utils.addValue(player.record, { win, draw, lose });
+      const record = await Record.findByPk(date);
+
+      if (isPlay) {
+        player.record.plays += 1;
+        record.result[player.id] = utils.initValue();
+      } else {
+        player.record.plays -= 1;
+        delete record.result[player.id];
+      }
+
       player.changed('record', true);
+      record.changed('result', true);
+
       await player.save({ transaction: t });
+      await record.save({ transaction: t });
     });
 
     res.sendStatus(204);
@@ -166,7 +174,7 @@ router.patch('/record/reset', async (req, res) => {
       const players = await Player.findAll();
       await Promise.all(players.map(async (player) => {
         player.record = utils.initValue();
-        return player.save({ transaction: t });
+        await player.save({ transaction: t });
       }));
     });
 

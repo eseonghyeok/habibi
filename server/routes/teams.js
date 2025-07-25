@@ -52,8 +52,8 @@ router.post('/', async (req, res) => {
 // 팀 삭제
 router.delete('/', async (req, res) => {
   try {
-    await sequelize.transaction((t) => {
-      return Team.destroy({
+    await sequelize.transaction(async (t) => {
+      await Team.destroy({
         where: {},
         transaction: t
       });
@@ -71,8 +71,8 @@ router.patch('/', async (req, res) => {
   try {
     const { teams } = req.body;
 
-    await sequelize.transaction((t) => {
-      return Promise.all(Object.keys(teams).map(async name => {
+    await sequelize.transaction(async (t) => {
+      await Promise.all(Object.keys(teams).map(async name => {
         const team = await Team.findByPk(name);
         await team.setPlayers([], { transaction: t });
         await team.addPlayers(teams[name].members.map(memeber => memeber.id), { transaction: t });

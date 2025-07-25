@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const utils = require('../../common/utils');
-const { Sequelize, sequelize, Record } = require('../../common/models/index');
+const { Sequelize, sequelize, Player, Record } = require('../../common/models/index');
 
 
 // 기록 조회
@@ -68,7 +68,7 @@ router.get('/last', async (req, res) => {
 router.post('/date/:date', async (req, res) => {
   try {
     await sequelize.transaction(async (t) => {
-      return Record.create({
+      await Record.create({
         date: req.params.date,
         type: 'day',
         result: {},
@@ -89,8 +89,12 @@ router.post('/date/:date', async (req, res) => {
 // 기록 삭제
 router.delete('/date/:date', async (req, res) => {
   try {
-    await sequelize.transaction((t) => {
-      return Record.destroy({
+    const record = await Record.findByPk(req.params.date);
+    await sequelize.transaction(async (t) => {
+      if (Object.keys(record.result).length > 0) {
+        await utils.setResult(t, record.date, record.metadata.log, true);
+      }
+      await Record.destroy({
         where: {
           date: req.params.date
         },
@@ -109,7 +113,9 @@ router.delete('/date/:date', async (req, res) => {
 router.patch('/date/:date', async (req, res) => {
   try {
     const record = await Record.findByPk(req.params.date);
-    utils.setResult(record.date, record.metadata.log);
+    await sequelize.transaction(async (t) => {
+      await utils.setResult(t, record.date, record.metadata.log);
+    });
 
     res.sendStatus(204);
   } catch (err) {

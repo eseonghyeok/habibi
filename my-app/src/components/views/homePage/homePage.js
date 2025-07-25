@@ -44,6 +44,11 @@ function HomePage() {
                 </Button>
             </div>
             <div style={{ marginBottom: '20px' }}>
+                <Button type="primary" href="/player/list" size="large" style={buttonStyle}>
+                    선수 명단 <p style={{ fontSize: '40px', marginRight: '-30px'}}>👕</p>
+                </Button>
+            </div>
+            <div style={{ marginBottom: '20px' }}>
                 <Button type="primary" href="/record/year" size="large" style={buttonStyle}>
                     연간 랭킹 <p style={{ fontSize: '40px', marginRight: '-30px'}}>🥇</p>
                 </Button>
@@ -70,16 +75,11 @@ function HomePage() {
                             승점 체크 <p style={{ fontSize: '35px', marginRight: '-30px'}}>📊</p>
                         </Button>
                     </div>
-                    {/* <div style={{ marginBottom: '20px' }}>
-                        <Button type="primary" href="/record/plus" size="large" style={buttonStyle}>
-                            기록 증가 <p style={{ fontSize: '35px', marginRight: '-30px'}}>➕</p>
+                    <div style={{ marginBottom: '20px' }}>
+                        <Button type="primary" href="/record/fix" size="large" style={buttonStyle}>
+                            기록 수정 <p style={{ fontSize: '35px', marginRight: '-30px'}}>🛠️</p>
                         </Button>
                     </div>
-                    <div style={{ marginBottom: '20px' }}>
-                        <Button type="primary" href="/record/minus" size="large" style={buttonStyle}>
-                            기록 차감 <p style={{ fontSize: '35px', marginRight: '-30px'}}>➖</p>
-                        </Button>
-                    </div> */}
                     <div style={{ marginBottom: '20px' }}>
                         <Button type="primary" size="large" onClick={logoutSuccess} style={buttonStyle}>
                             로그아웃 <p style={{ fontSize: '35px', marginRight: '-30px'}}>🔒</p>

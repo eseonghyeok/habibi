@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Axios from 'axios';
 import { Button, List, Modal } from 'antd';
@@ -308,7 +308,7 @@ function DailyTeamPage() {
                 ))}
 
                 <div style={{ display: "flex", justifyContent: "space-between" }}>
-                    <Button type="primary" onClick={async () => await deleteLog()} style={{ background: '#dc3545', width: '145px', height: '45px', borderRadius: '6px', fontSize: '13px', marginTop: '10px', color: 'black', fontWeight: 'bolder' }}>최근기록삭제✖️</Button>
+                    <Button type="primary" onClick={() => deleteLog()} style={{ background: '#dc3545', width: '145px', height: '45px', borderRadius: '6px', fontSize: '13px', marginTop: '10px', color: 'black', fontWeight: 'bolder' }}>최근기록삭제✖️</Button>
                     <Button type="primary" onClick={() => finishPlay()} style={{ background: '#30d946', width: '145px', height: '45px', borderRadius: '6px', fontSize: '13px', marginTop: '10px', color: 'black', fontWeight: 'bolder' }}>경기종료🔔</Button>
                 </div>
             </div>
