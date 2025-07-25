@@ -1,10 +1,10 @@
 import { useEffect, useState, useMemo, useRef } from 'react'
 import { useNavigate } from 'react-router-dom';
 import Axios from 'axios';
-import Table from '../default/defaultFixRecordTable'
+import Table from '../default/defaultAttendanceCheckTable'
 import dayjs from 'dayjs';
 
-function FixRecordPage() {
+function LineupPage() {
     const navigate = useNavigate();
     const [loading, setLoading] = useState(true);
     const [result, setResult] = useState([]);
@@ -67,7 +67,7 @@ function FixRecordPage() {
 
     if (loading) return <p>⏳ loading...</p>;
     
-    return <Table columns={columns} data={Data} now={now} />;
+    return <Table columns={columns} data={Data} date={now} />;
 }
 
-export default FixRecordPage;
+export default LineupPage;

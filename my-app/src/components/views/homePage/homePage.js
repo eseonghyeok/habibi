@@ -76,8 +76,8 @@ function HomePage() {
                         </Button>
                     </div>
                     <div style={{ marginBottom: '20px' }}>
-                        <Button type="primary" href="/record/fix" size="large" style={buttonStyle}>
-                            기록 수정 <p style={{ fontSize: '35px', marginRight: '-30px'}}>🛠️</p>
+                        <Button type="primary" href="/record/attendanceCheck" size="large" style={buttonStyle}>
+                            출석 체크 <p style={{ fontSize: '35px', marginRight: '-30px'}}>📋</p>
                         </Button>
                     </div>
                     <div style={{ marginBottom: '20px' }}>

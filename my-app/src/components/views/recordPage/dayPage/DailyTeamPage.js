@@ -9,7 +9,8 @@ import captureAndShare from "../../adminPage/ShareResult";
 import profile1 from '../../../images/profile/1.jpg';
 import profile2 from '../../../images/profile/2.jpg';
 import profile3 from '../../../images/profile/3.jpg';
-const profiles = [profile1, profile2, profile3];
+import profile4 from '../../../images/profile/4.jpg';
+const profiles = [profile1, profile2, profile3, profile4];
 
 function DailyTeamPage() {
     const navigate = useNavigate();
@@ -33,16 +34,14 @@ function DailyTeamPage() {
                 const teamsTemp = {}
                 const recordTemp = {}
                 for (const team of teamsData) {
-                    if (team.metadata.index !== null) {
-                        teamsTemp[team.name] = {
-                            image: profiles[team.metadata.index],
-                            players: (await Axios.get(`/api/teams/name/${team.name}/players`)).data
-                        }
-                        recordTemp[team.name] = {
-                          win: 0,
-                          draw: 0,
-                          lose: 0
-                        }
+                    teamsTemp[team.name] = {
+                        image: profiles[team.metadata.index],
+                        players: (await Axios.get(`/api/teams/name/${team.name}/players`)).data
+                    }
+                    recordTemp[team.name] = {
+                      win: 0,
+                      draw: 0,
+                      lose: 0
                     }
                 }
 

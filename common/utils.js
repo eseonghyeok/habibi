@@ -1,6 +1,6 @@
 'use strict';
 
-const { Player, Record, Team } = require('./models/index');
+const { Player, Record } = require('./models/index');
 
 function addValue(result, input) {
   const { win, draw, lose } = input;
@@ -28,41 +28,38 @@ function initValue() {
 
 async function setResult(transaction, date, log, isDelete = false) {
   const result = {}
-  const updatePlayers = [];
-  const teams = await Team.findAll({
-    where: {
-      metadata: {
-        index: null
+  const dayRecord = await Record.findByPk(date);
+  if (isDelete) {
+    Object.keys(dayRecord.result).forEach(id => {
+      result[id] = {
+        win: -dayRecord.result[id].win,
+        draw: -dayRecord.result[id].draw,
+        lose: -dayRecord.result[id].lose,
+      }
+    });
+  } else {
+    for (const matchLog of Object.values(log)) {
+      for (const record of Object.values(matchLog)) {
+        for (const id of record.playersId) {
+          if (!Object.hasOwn(result, id)) {
+            result[id] = initValue();
+            dayRecord.result[id] = initValue();
+          }
+          result[id][record.type]++;
+        }
       }
     }
-  });
-  for (const team of teams) {
-    const players = await team.getPlayers();
-    players.forEach(player => result[player.id] = initValue());
-    updatePlayers.push(...players);
   }
 
-  const dayRecord = await Record.findByPk(date);
+  const updatePlayers = [];
   const monthRecord = await Record.findByPk(date.slice(0, 7));
   const yearRecord = await Record.findByPk(date.slice(0, 4));
-  dayRecord.result = result;
-  for (const matchLog of Object.values(log)) {
-    for (const record of Object.values(matchLog)) {
-      for (const id of record.playersId) {
-        if (!Object.hasOwn(result, id)) {
-          result[id] = initValue();
-          dayRecord.result[id] = initValue();
-        }
-        if (isDelete) result[id][record.type]--;
-        else result[id][record.type]++;
-      }
-    }
-  }
-
   for (const id of Object.keys(result)) {
     const player = await Player.findByPk(id);
-    addValue(player.record, result[id]);
-    updatePlayers.push(player);
+    if (player) {
+      addValue(player.record, result[id]);
+      updatePlayers.push(player);
+    }
 
     addValue(dayRecord.result[id], result[id]);
     addValue(monthRecord.result[id], result[id]);
@@ -84,6 +81,7 @@ async function setResult(transaction, date, log, isDelete = false) {
   dayRecord.changed('result', true);
   monthRecord.changed('result', true);
   yearRecord.changed('result', true);
+
   await dayRecord.save({ transaction });
   await monthRecord.save({ transaction });
   await yearRecord.save({ transaction });

@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const utils = require('../../common/utils');
-const { Sequelize, sequelize, Player, Record } = require('../../common/models/index');
+const { Sequelize, sequelize, Record } = require('../../common/models/index');
 
 
 // 기록 조회
@@ -149,6 +149,40 @@ router.patch('/date/:date/log/delete', async (req, res) => {
       delete record.metadata.log[match];
       record.changed('metadata', true);
       await record.save({ transaction: t });
+    });
+
+    res.sendStatus(204);
+  } catch (err) {
+    console.log(err);
+    res.sendStatus(500);
+  }
+});
+router.patch('/date/:date/plays', async (req, res) => {
+  try {
+    const { isPlay, playerId } = req.body;
+
+    await sequelize.transaction(async (t) => {
+      const dayRecord = await Record.findByPk(req.params.date);
+      const monthRecord = await Record.findByPk(req.params.date.slice(0, 7));
+      const yearRecord = await Record.findByPk(req.params.date.slice(0, 4));
+
+      if (isPlay) {
+        dayRecord.result[playerId] = utils.initValue();
+        monthRecord.result[playerId].plays++;
+        yearRecord.result[playerId].plays++;
+      } else {
+        delete dayRecord.result[playerId];
+        monthRecord.result[playerId].plays--;
+        yearRecord.result[playerId].plays--;
+      }
+
+      dayRecord.changed('result', true);
+      monthRecord.changed('result', true);
+      yearRecord.changed('result', true);
+
+      await dayRecord.save({ transaction: t });
+      await monthRecord.save({ transaction: t });
+      await yearRecord.save({ transaction: t });
     });
 
     res.sendStatus(204);

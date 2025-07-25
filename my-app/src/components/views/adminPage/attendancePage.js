@@ -13,9 +13,7 @@ import profile3 from '../../images/profile/3.jpg';
 import profile4 from '../../images/profile/4.jpg';
 const profiles = [profile1, profile2, profile3, profile4];
 
-const TEAM_NAMES = ['A', 'B', 'C', 'Others'];
-const TEAM_ALIAS = ['A', 'B', 'C', '일반'];
-const EXCLUDE_TEAM_NAMES = ['Others'];
+const TEAM_NAMES = ['A', 'B', 'C', 'D'];
 
 function AttendancePage() {
     const navigate = useNavigate();
@@ -41,8 +39,7 @@ function AttendancePage() {
                 const teamsTemp = {}
                 for (const index in TEAM_NAMES) {
                     teamsTemp[TEAM_NAMES[index]] = {
-                        index: EXCLUDE_TEAM_NAMES.includes(TEAM_NAMES[index]) ? null : index,
-                        alias: TEAM_ALIAS[index],
+                        index: index,
                         image: profiles[index],
                         members: (await Axios.get(`/api/teams/name/${TEAM_NAMES[index]}/players`)).data
                     }
@@ -68,7 +65,7 @@ function AttendancePage() {
                 <div>
                     {playerInfo(member)}
                     <br />
-                    <p><span style={{ fontWeight: 'bolder' }}>{teams[activeTeam].alias}</span>팀에 선수를 등록하겠습니까?</p>
+                    <p><span style={{ fontWeight: 'bolder' }}>{activeTeam}</span>팀에 선수를 등록하겠습니까?</p>
                 </div>
             ),
             okText: '등록',
@@ -87,7 +84,7 @@ function AttendancePage() {
             title: '선수 제외',
             content: (
                 <div>
-                    <p><span style={{ fontWeight: 'bolder' }}>{teams[activeTeam].alias}</span>팀에서 <span style={{ fontWeight: 'bolder' }}>{member.name}</span>선수를 제외하겠습니까?</p>
+                    <p><span style={{ fontWeight: 'bolder' }}>{activeTeam}</span>팀에서 <span style={{ fontWeight: 'bolder' }}>{member.name}</span>선수를 제외하겠습니까?</p>
                     {playerInfo(member)}
                 </div>
             ),
@@ -135,7 +132,7 @@ function AttendancePage() {
             content: (
                 <div>
                     {Object.keys(teams).map(name => 
-                        <p key={name}>{teams[name].alias}팀 인원: {teams[name].members.length}명</p>
+                        <p key={name}>{name}팀 인원: {teams[name].members.length}명</p>
                     )}
                     <p>정말 등록하시겠습니까?</p>
                     <p>수정 후 재등록도 가능합니다.</p>
@@ -170,8 +167,7 @@ function AttendancePage() {
                 <div style={{ padding: "10px", color: 'white' }}>
                     <h1>🔴 팀 나누기 🔵</h1>
                     <p> {date.toLocaleDateString()} </p>
-                    <p>💡 {Object.values(teams).map(v => v.alias).join(', ')} 팀을 선택하고 회원을 추가하세요.</p>
-                    <p>💡 {Object.values(teams).at(-1).alias}팀은 후반 2시간 참여인원으로 출석처리만 반영됩니다.</p>
+                    <p>💡 {Object.keys(teams).join(', ')} 팀을 선택하고 회원을 추가하세요.</p>
                     <div style={{ display: 'flex', justifyContent: 'center', gap: '10px', marginBottom: '10px' }}>
                         {Object.keys(teams).map(name => (
                             <Button
@@ -179,7 +175,7 @@ function AttendancePage() {
                                 type={activeTeam === name ? 'primary' : 'default'}
                                 onClick={() => setActiveTeam(name)}
                             >
-                                {teams[name].alias}
+                                {name}
                             </Button>
                         ))}
                     </div>
@@ -206,7 +202,7 @@ function AttendancePage() {
             <div style={{ padding: '20px', background: `url(${groundJpg})`, backgroundSize: 'cover', position: 'relative', overflow: 'hidden' }}>
                 {Object.keys(teams).map(name => (
                     <div key={name} style={{ marginBottom: '20px' }}>
-                        <h2 style={{ color: 'white' }}>{teams[name].alias}</h2>
+                        <h2 style={{ color: 'white' }}>{name}</h2>
                         <List
                             grid={{ gutter: 10, column: 5 }}
                             dataSource={teams[name].members}

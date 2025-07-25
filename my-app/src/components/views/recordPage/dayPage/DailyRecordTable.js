@@ -239,7 +239,7 @@ function YearChartTable() {
                     ))}
                 </select>
             </div>
-            <Table columns={columns} data={indexedData} />
+            <Table columns={columns} data={indexedData} date={day} />
         </div>
     );
 }

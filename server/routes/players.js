@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const utils = require('../../common/utils');
-const { sequelize, Player, Record } = require('../../common/models/index');
+const { sequelize, Player } = require('../../common/models/index');
 
 
 // 선수 조회
@@ -143,21 +143,9 @@ router.patch('/id/:id/plays', async (req, res) => {
 
     await sequelize.transaction(async (t) => {
       const player = await Player.findByPk(req.params.id);
-      const record = await Record.findByPk(date);
-
-      if (isPlay) {
-        player.record.plays += 1;
-        record.result[player.id] = utils.initValue();
-      } else {
-        player.record.plays -= 1;
-        delete record.result[player.id];
-      }
-
+      player.record.plays += isPlay ? 1 : -1;
       player.changed('record', true);
-      record.changed('result', true);
-
       await player.save({ transaction: t });
-      await record.save({ transaction: t });
     });
 
     res.sendStatus(204);
