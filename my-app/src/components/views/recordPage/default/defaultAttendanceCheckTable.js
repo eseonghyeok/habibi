@@ -18,7 +18,6 @@ function Table({ columns, data, date }) {
   const fixPlays = async (player) => {
     const isPlay = player.isPlay === 'O' ? true : false;
     Modal.confirm({
-      title: '참불 변경',
       content: (
         <div>
           {playerInfo(player)}
@@ -39,7 +38,7 @@ function Table({ columns, data, date }) {
           });
           window.location.reload();
         } catch (err) {
-          alert('참불 변경 실패하였습니다.');
+          alert(`${isPlay ? '불참' : '참석'} 변경 실패하였습니다.`);
           throw err;
         }
       }

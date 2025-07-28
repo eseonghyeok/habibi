@@ -162,7 +162,7 @@ router.patch('/record/reset', async (req, res) => {
       const players = await Player.findAll();
       await Promise.all(players.map(async (player) => {
         player.record = utils.initValue();
-        await player.save({ transaction: t });
+        return player.save({ transaction: t });
       }));
     });
 

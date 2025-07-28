@@ -19,7 +19,6 @@ function Table({ columns, data, date }) {
 
   const deleteResult = async () => {
     Modal.confirm({
-      title: '경기 결과 삭제',
       content: '경기 결과를 삭제하시겠습니까?',
       okText: '삭제',
       cancelText: '취소',
@@ -109,7 +108,7 @@ function Table({ columns, data, date }) {
           </tbody>
         </table>
       </div>
-      {(now === date) && (
+      {(now === date) && (localStorage.getItem('isLoggedIn') === 'true') && (
         <div style={{ display: "flex", justifyContent: "flex-end" }}>
           <Button type="primary" onClick={() => deleteResult()} style={{ background: '#dc3545', width: '145px', height: '45px', borderRadius: '6px', fontSize: '13px', marginTop: '10px', color: 'black', fontWeight: 'bolder' }}>경기결과삭제✖️</Button>
         </div>

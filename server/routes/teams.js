@@ -7,12 +7,21 @@ const { Sequelize, sequelize, Team } = require('../../common/models/index');
 router.get('/', async (req, res) => {
   try {
     const teams = await Team.findAll({
-      order: [
-        [Sequelize.json('metadata.index'), 'ASC']
-      ]
+      order: [[ "name", 'ASC' ]]
     });
 
     res.json(teams);
+  } catch (err) {
+    console.log(err);
+    res.sendStatus(500);
+  }
+});
+router.get('/name/:name/players', async (req, res) => {
+  try {
+    const team = await Team.findByPk(req.params.name);
+    const players = team ? await team.getPlayers() : [];
+
+    res.json(players);
   } catch (err) {
     console.log(err);
     res.sendStatus(500);
@@ -34,12 +43,37 @@ router.post('/', async (req, res) => {
             lose: {}
           },
           metadata: {
-            index: teams[name].index
+            image: teams[name].image
           }
         },
         { transaction: t });
-        await team.addPlayers(teams[name].members.map(memeber => memeber.id), { transaction: t });
+        return team.addPlayers(teams[name].members.map(memeber => memeber.id), { transaction: t });
       }));
+    })
+
+    res.sendStatus(204);
+  } catch (err) {
+    console.log(err);
+    res.sendStatus(500);
+  }
+});
+router.post('/name/:name', async (req, res) => {
+  try {
+    const { image } = req.body;
+
+    await sequelize.transaction(async (t) => {
+      await Team.create({
+        name: req.params.name,
+        record: {
+          win: {},
+          draw: {},
+          lose: {}
+        },
+        metadata: {
+          image
+        }
+      },
+      { transaction: t });
     })
 
     res.sendStatus(204);
@@ -65,6 +99,19 @@ router.delete('/', async (req, res) => {
     res.sendStatus(500);
   }
 });
+router.delete('/name/:name', async (req, res) => {
+  try {
+    const team = await Team.findByPk(req.params.name);
+    await sequelize.transaction(async (t) => {
+      await team.destroy();
+    });
+
+    res.sendStatus(204);
+  } catch (err) {
+    console.log(err);
+    res.sendStatus(500);
+  }
+});
 
 // 팀 변경
 router.patch('/', async (req, res) => {
@@ -75,7 +122,7 @@ router.patch('/', async (req, res) => {
       await Promise.all(Object.keys(teams).map(async name => {
         const team = await Team.findByPk(name);
         await team.setPlayers([], { transaction: t });
-        await team.addPlayers(teams[name].members.map(memeber => memeber.id), { transaction: t });
+        return team.addPlayers(teams[name].members.map(memeber => memeber.id), { transaction: t });
       }));
     })
 
@@ -85,14 +132,16 @@ router.patch('/', async (req, res) => {
     res.sendStatus(500);
   }
 });
-
-// 팀원 조회
-router.get('/name/:name/players', async (req, res) => {
+router.patch('/reset', async (req, res) => {
   try {
-    const team = await Team.findByPk(req.params.name);
-    const players = team ? await team.getPlayers() : [];
+    await sequelize.transaction(async (t) => {
+      const teams = await Team.findAll();
+      await Promise.all(teams.map(async team => {
+        return team.setPlayers([], { transaction: t });
+      }));
+    })
 
-    res.json(players);
+    res.sendStatus(204);
   } catch (err) {
     console.log(err);
     res.sendStatus(500);

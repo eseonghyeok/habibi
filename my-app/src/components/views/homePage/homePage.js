@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Button } from 'antd';
+import { Button, Modal } from 'antd';
 import PasswordModal from '../adminPage/PasswordModal'
 import background from '../../images/homepage.png'
 
@@ -16,9 +16,16 @@ function HomePage() {
     };
 
     const logoutSuccess = () => {
-        localStorage.removeItem('isLoggedIn');
-        setIsLoggedIn(false);
-        window.location.href = '/';
+        Modal.confirm({
+            content: '로그아웃 하시겠습니까?',
+            okText: '확인',
+            cancelText: '취소',
+            onOk() {
+                localStorage.removeItem('isLoggedIn');
+                setIsLoggedIn(false);
+                window.location.href = '/';
+            }
+        });
     };
 
     const buttonStyle = { 

@@ -6,12 +6,6 @@ import dayjs from 'dayjs';
 import groundJpg from '../../../images/ground.png';
 import captureAndShare from "../../adminPage/ShareResult";
 
-import profile1 from '../../../images/profile/1.jpg';
-import profile2 from '../../../images/profile/2.jpg';
-import profile3 from '../../../images/profile/3.jpg';
-import profile4 from '../../../images/profile/4.jpg';
-const profiles = [profile1, profile2, profile3, profile4];
-
 function DailyTeamPage() {
     const navigate = useNavigate();
     const [loading, setLoading] = useState(true);
@@ -24,18 +18,26 @@ function DailyTeamPage() {
         async function getTeams() {
             setLoading(true);
             try {
-                const teamsData = (await Axios.get('/api/teams')).data;
-                if (teamsData.length === 0) {
+                const recordData = (await Axios.get(`/api/records/date/${now}`)).data;
+                if (!recordData) {
                     alert('팀 나누기 이후에 진행하세요.');
                     navigate('/attendance');
                     return;
                 }
 
-                const teamsTemp = {}
                 const recordTemp = {}
+                for (const matchLog of Object.values(recordData.metadata.log)) {
+                    for (const name of Object.keys(matchLog)) {
+                        recordTemp[name][matchLog[name].type]++;
+                    }
+                    match.current++;
+                }
+
+                const teamsTemp = {}
+                const teamsData = (await Axios.get('/api/teams')).data;
                 for (const team of teamsData) {
                     teamsTemp[team.name] = {
-                        image: profiles[team.metadata.index],
+                        image: team.metadata.image,
                         players: (await Axios.get(`/api/teams/name/${team.name}/players`)).data
                     }
                     recordTemp[team.name] = {
@@ -43,14 +45,6 @@ function DailyTeamPage() {
                       draw: 0,
                       lose: 0
                     }
-                }
-
-                const recordData = (await Axios.get(`/api/records/date/${now}`)).data;
-                for (const matchLog of Object.values(recordData.metadata.log)) {
-                    for (const name of Object.keys(matchLog)) {
-                        recordTemp[name][matchLog[name].type]++;
-                    }
-                    match.current++;
                 }
 
                 setTeams(teamsTemp);
@@ -204,7 +198,7 @@ function DailyTeamPage() {
                     setLoading(true);
                     try {
                         await Axios.patch(`/api/records/date/${now}`);
-                        await Axios.delete('/api/teams');
+                        await Axios.patch('/api/teams/reset');
 
                         Modal.confirm({
                             title: '경기 결과 공유',
