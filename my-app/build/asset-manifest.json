@@ -1,24 +1,9 @@
 {
   "files": {
     "main.css": "/static/css/main.f855e6bc.css",
-    "main.js": "/static/js/main.400a8c19.js",
+    "main.js": "/static/js/main.0d7794b1.js",
     "static/js/453.ed3810f9.chunk.js": "/static/js/453.ed3810f9.chunk.js",
-    "static/media/awardpage.jpg": "/static/media/awardpage.e4ade615e94b183de001.jpg",
     "static/media/ground.png": "/static/media/ground.de301432d2b74273131b.png",
-    "static/media/mar-hoihwa.png": "/static/media/mar-hoihwa.855324f949b5e99c5cc3.png",
-    "static/media/jungil.png": "/static/media/jungil.fe1b925d34a9d839f75c.png",
-    "static/media/aug-jongkwon.png": "/static/media/aug-jongkwon.63647435618ceca0b24c.png",
-    "static/media/jul-hoihwa.png": "/static/media/jul-hoihwa.fe24b73deaad2d4aa472.png",
-    "static/media/sep-juhwan.png": "/static/media/sep-juhwan.849ba1c3122295d24c30.png",
-    "static/media/may-jongkwon.png": "/static/media/may-jongkwon.708a245dc1225b350a86.png",
-    "static/media/nov-jinho.png": "/static/media/nov-jinho.6a904bba4ddbe6e6eed8.png",
-    "static/media/sep-jinho.png": "/static/media/sep-jinho.971666b99393280f1fb4.png",
-    "static/media/apr-juhwan.png": "/static/media/apr-juhwan.8de39252f49e9f63c760.png",
-    "static/media/jun-hoihwa.png": "/static/media/jun-hoihwa.1058373b220af21a4c65.png",
-    "static/media/feb-juhwan.png": "/static/media/feb-juhwan.e14d712db2ae4ac38b41.png",
-    "static/media/oct-jinho.png": "/static/media/oct-jinho.a621f7b3bfb0ca020350.png",
-    "static/media/feb-hoihwa.png": "/static/media/feb-hoihwa.34977e381b9f76f84188.png",
-    "static/media/jan-juhwan.png": "/static/media/jan-juhwan.75c92f4a6a441eca2787.png",
     "static/media/noti.jpg": "/static/media/noti.3920db002a21f61887e2.jpg",
     "static/media/chartpage.jpg": "/static/media/chartpage.ca4ed4e5f1e1ad615e54.jpg",
     "static/media/logo.png": "/static/media/logo.9806feb7d5f7a67700a8.png",
@@ -26,11 +11,11 @@
     "static/media/playerlist.jpg": "/static/media/playerlist.18a29affb5c5c4a8188b.jpg",
     "index.html": "/index.html",
     "main.f855e6bc.css.map": "/static/css/main.f855e6bc.css.map",
-    "main.400a8c19.js.map": "/static/js/main.400a8c19.js.map",
+    "main.0d7794b1.js.map": "/static/js/main.0d7794b1.js.map",
     "453.ed3810f9.chunk.js.map": "/static/js/453.ed3810f9.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.f855e6bc.css",
-    "static/js/main.400a8c19.js"
+    "static/js/main.0d7794b1.js"
   ]
 }
