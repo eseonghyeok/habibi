@@ -20,10 +20,6 @@ module.exports = function (sequelize, DataTypes) {
       type: DataTypes.JSON,
       allowNull: true
     },
-    record: {
-      type: DataTypes.JSON,
-      allowNull: true
-    },
     description: {
       type: DataTypes.TEXT,
       allowNull: true

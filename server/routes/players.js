@@ -25,7 +25,6 @@ router.post('/', async (req, res) => {
       const player = await Player.create({
         name,
         info,
-        record: utils.initValue(),
         description,
         metadata: {}
       },
@@ -71,6 +70,28 @@ router.delete('/id/:id', async (req, res) => {
         },
         transaction: t
       });
+
+      const monthRecord = await Record.findOne({
+        where: {
+          type: 'month'
+        },
+        order: [["date", 'DESC']]
+      });
+      const yearRecord = await Record.findOne({
+        where: {
+          type: 'year'
+        },
+        order: [[ "date", 'DESC' ]]
+      });
+
+      delete monthRecord.result[req.params.id];
+      delete yearRecord.result[req.params.id];
+
+      monthRecord.changed('result', true);
+      yearRecord.changed('result', true);
+
+      await monthRecord.save({ transaction: t });
+      await yearRecord.save({ transaction: t });
     });
 
     res.sendStatus(204);
@@ -90,48 +111,10 @@ router.patch('/id/:id', async (req, res) => {
       await player.update({
         name,
         info,
-        record: utils.initValue(),
         description,
         metadata: {}
       },
       { transaction: t });
-    });
-
-    res.sendStatus(204);
-  } catch (err) {
-    console.log(err);
-    res.sendStatus(500);
-  }
-});
-
-// 선수 출석 변경
-router.patch('/id/:id/plays', async (req, res) => {
-  try {
-    const { isPlay } = req.body;
-
-    await sequelize.transaction(async (t) => {
-      const player = await Player.findByPk(req.params.id);
-      player.record.plays += isPlay ? 1 : -1;
-      player.changed('record', true);
-      await player.save({ transaction: t });
-    });
-
-    res.sendStatus(204);
-  } catch (err) {
-    console.log(err);
-    res.sendStatus(500);
-  }
-});
-
-// 선수 기록 초기화
-router.patch('/record/reset', async (req, res) => {
-  try {
-    await sequelize.transaction(async (t) => {
-      const players = await Player.findAll();
-      await Promise.all(players.map(async (player) => {
-        player.record = utils.initValue();
-        return player.save({ transaction: t });
-      }));
     });
 
     res.sendStatus(204);

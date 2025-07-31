@@ -29,9 +29,6 @@ function Table({ columns, data, date }) {
       cancelText: '취소',
       async onOk() {
         try {
-          await Axios.patch(`/api/players/id/${player.id}/plays`, {
-            isPlay: !isPlay
-          });
           await Axios.patch(`/api/records/date/${date}/plays`, {
             isPlay: !isPlay,
             playerId: player.id

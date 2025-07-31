@@ -80,16 +80,6 @@ cron.schedule('0 1 0 * * *', async () => {
       }));
     });
 
-    if ((date.getMonth() === 0) && (date.getDate() === 1)) {
-      await sequelize.transaction(async (t) => {
-        const players = await Player.findAll();
-        await Promise.all(players.map(async (player) => {
-          player.record = utils.initValue();
-          return player.save({ transaction: t });
-        }));
-      });
-    }
-
     console.log("HealthCheck Success");
   } catch (err) {
     console.log(err);
