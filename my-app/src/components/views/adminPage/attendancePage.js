@@ -192,7 +192,7 @@ function AttendancePage() {
             async onOk() {
                 try {
                     const recordData = (await Axios.get(`/api/records/date/${now}`)).data;
-                    if (recordData && (Object.keys(recordData.result).length === 0)) {
+                    if (recordData) {
                         await Axios.delete(`/api/records/date/${now}`);
                     }
                     await Axios.patch('/api/teams/reset');

@@ -18,17 +18,6 @@ function Table({ columns, data, date }) {
   const now = dayjs().format('YYYY-MM-DD');
 
   const deleteResult = async () => {
-    try {
-      const recordData = (await Axios.get(`/api/records/date/${now}`)).data;
-      if (recordData && (Object.keys(recordData.result).length === 0) && (Object.keys(recordData.metadata.log).length > 0)) {
-        alert('경기 종료 이후에 진행해주세요.');
-        return;
-      }
-    } catch (err) {
-      alert('기록 가져오기를 실패하였습니다.');
-      throw err;
-    }
-
     Modal.confirm({
       content: '경기 결과를 삭제하시겠습니까?',
       okText: '삭제',
@@ -36,6 +25,7 @@ function Table({ columns, data, date }) {
       async onOk() {
         try {
           await Axios.delete(`/api/records/date/${now}`);
+          await Axios.patch('/api/teams/reset');
           window.location.reload();
         } catch (err) {
           alert('경기 결과 삭제를 실패했습니다.');
