@@ -13,7 +13,7 @@
   "main": "index.js",
   "scripts": {
     "start": "node server.js",
-    "build": "npm run build --prefix my-app",
+    "build": "npm run build --prefix common && npm run build --prefix my-app",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
