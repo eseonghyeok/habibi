@@ -1,8 +1,8 @@
 import { useEffect, useState, useMemo, useRef } from 'react'
 import { useNavigate } from 'react-router-dom';
 import Axios from 'axios';
-import Table from '../default/defaultAttendanceCheckTable'
 import dayjs from 'dayjs';
+import Table from '../default/defaultAttendanceCheckTable'
 
 function LineupPage() {
     const navigate = useNavigate();

@@ -1,7 +1,7 @@
 import { useEffect, useState, useMemo, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
-import dayjs from 'dayjs';
 import Axios from 'axios';
+import dayjs from 'dayjs';
 import Table from "../default/defaultMonthRecordTable";
 
 function MonthChartTable() {

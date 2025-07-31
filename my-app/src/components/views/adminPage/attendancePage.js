@@ -66,7 +66,7 @@ function AttendancePage() {
 
     const setTeamName = async (profile) => {
         try {
-            const newName = window.prompt('팀 이름을 10자 이하의 영문으로 입력해주세요.');
+            const newName = prompt('팀 이름을 10자 이하의 영문으로 입력해주세요.');
             if ((newName === null) || (newName.trim() === '')) {
                 return;
             } else if (!(/^[A-Za-z]{1,10}$/.test(newName))) {
@@ -258,7 +258,7 @@ function AttendancePage() {
                         ))}
                     </div>
                     <div style={{ display: 'flex', justifyContent: 'flex-end', marginBottom: '20px' }}>
-                        <Button 
+                        <Button
                             icon={<SettingOutlined />}
                             onClick={() => setTeamNames()}
                         >

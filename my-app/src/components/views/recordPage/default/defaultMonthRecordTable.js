@@ -75,7 +75,7 @@ function Table({ columns, data }) {
                         textAlign: "center",
                         fontSize: '12px'
                       }}
-                      onClick={() => getPlayerInfo(cell.row.original)}
+                      onClick={() => getPlayerInfo(row.original)}
                     >
                       {cell.render("Cell")}
                     </td>

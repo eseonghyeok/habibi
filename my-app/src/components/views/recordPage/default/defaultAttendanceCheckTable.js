@@ -101,14 +101,14 @@ function Table({ columns, data, date }) {
                     <td
                       {...cell.getCellProps()}
                       style={{
-                        backgroundColor: cell.row.original.isPlay === 'O' ? "#8000ffcc" : "#100995cc",
+                        backgroundColor: row.original.isPlay === 'O' ? "#8000ffcc" : "#100995cc",
                         padding: "8px",
                         borderBottom: "2px solid #ffffff1a",
                         color: "white",
                         textAlign: "center",
                         fontSize: '12px'
                       }}
-                      onClick={() => fixPlays(cell.row.original)}
+                      onClick={() => fixPlays(row.original)}
                     >
                       {cell.render("Cell")}
                     </td>

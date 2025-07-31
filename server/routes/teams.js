@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const { Sequelize, sequelize, Team } = require('../../common/models/index');
+const { sequelize, Team } = require('../../common/models/index');
 
 
 // 팀 조회

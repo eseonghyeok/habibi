@@ -23,17 +23,14 @@ function DailyTeamPage() {
                     alert('팀 나누기 이후에 진행하세요.');
                     navigate('/attendance');
                     return;
-                }
-
-                const recordTemp = {}
-                for (const matchLog of Object.values(recordData.metadata.log)) {
-                    for (const name of Object.keys(matchLog)) {
-                        recordTemp[name][matchLog[name].type]++;
-                    }
-                    match.current++;
+                } else if (Object.keys(recordData.result).length > 0) {
+                    alert('이미 오늘 경기를 종료하였습니다.');
+                    navigate('/record/day');
+                    return;
                 }
 
                 const teamsTemp = {}
+                const recordTemp = {}
                 const teamsData = (await Axios.get('/api/teams')).data;
                 for (const team of teamsData) {
                     teamsTemp[team.name] = {
@@ -45,6 +42,12 @@ function DailyTeamPage() {
                       draw: 0,
                       lose: 0
                     }
+                }
+                for (const matchLog of Object.values(recordData.metadata.log)) {
+                    for (const name of Object.keys(matchLog)) {
+                        recordTemp[name][matchLog[name].type]++;
+                    }
+                    match.current++;
                 }
 
                 setTeams(teamsTemp);

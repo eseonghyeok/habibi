@@ -25,13 +25,10 @@ cron.schedule('0 1 0 * * *', async () => {
   try {
     await sequelize.transaction(async (t) => {
       const players = await Player.findAll();
-      const initResult = {}
-      for (const { id, name } of players) {
-        initResult[id] = {
-          name,
-          ...utils.initValue()
-        };
-      }
+      const initResult = players.reduce((ret, player) => {
+        ret[player.id] = utils.initValue();
+        return ret;
+      }, {});
 
       const month = await Record.findOne({
         where: {
@@ -71,17 +68,27 @@ cron.schedule('0 1 0 * * *', async () => {
         if (Object.keys(record.metadata.log).length === 0) {
           await record.destroy({ transaction: t });
         } else {
-          utils.setResult(record.date, record.metadata.log);
+          await utils.setResult(t, record.date, record.metadata.log);
         }
       }
     });
 
     await sequelize.transaction(async (t) => {
-      await Team.destroy({
-        where: {},
-        transaction: t
-      });
+      const teams = await Team.findAll();
+      await Promise.all(teams.map(async team => {
+        return team.setPlayers([], { transaction: t });
+      }));
     });
+
+    if ((date.getMonth() === 0) && (date.getDate() === 1)) {
+      await sequelize.transaction(async (t) => {
+        const players = await Player.findAll();
+        await Promise.all(players.map(async (player) => {
+          player.record = utils.initValue();
+          return player.save({ transaction: t });
+        }));
+      });
+    }
 
     console.log("HealthCheck Success");
   } catch (err) {

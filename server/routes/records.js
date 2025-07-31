@@ -191,5 +191,21 @@ router.patch('/date/:date/plays', async (req, res) => {
     res.sendStatus(500);
   }
 });
+router.patch('/date/:date/player/id/:id/create', async (req, res) => {
+  try {
+    const { match } = req.body;
 
+    await sequelize.transaction(async (t) => {
+      const record = await Record.findByPk(req.params.date);
+      delete record.metadata.log[match];
+      record.changed('metadata', true);
+      await record.save({ transaction: t });
+    });
+
+    res.sendStatus(204);
+  } catch (err) {
+    console.log(err);
+    res.sendStatus(500);
+  }
+});
 module.exports = router;

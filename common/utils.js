@@ -66,7 +66,9 @@ async function setResult(transaction, date, log, isDelete = false) {
     addValue(yearRecord.result[id], result[id]);
 
     if (isDelete) {
-      player.record.plays -= 2;
+      if (player) {
+        player.record.plays -= 2;
+      }
       dayRecord.result[id].plays -= 2;
       monthRecord.result[id].plays -= 2;
       yearRecord.result[id].plays -= 2;

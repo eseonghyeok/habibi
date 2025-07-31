@@ -90,8 +90,14 @@ function YearChartTable() {
                         <div key={name}>
                             <p style={{ marginTop: '30px', marginBottom: '20px', fontWeight: 'bold' }}>{name}팀 명단</p>
                             {log[name].playersId.map(id => {
-                                if (players.current[id]) return <p><span style={{ fontWeight: 'bold' }}>{players.current[id].name}</span>, {players.current[id].info.alias}({players.current[id].info.number})</p>
-                                else return <p>알 수 없음</p>
+                                if (players.current[id]) {
+                                  return (
+                                    <p key={id}>
+                                      <span style={{ fontWeight: 'bold' }}>{players.current[id].name}</span>
+                                      {(players.current[id].info.alias && players.current[id].info.number) && (<span>, {players.current[id].info.alias}({players.current[id].info.number})</span>)}
+                                    </p>
+                                  )
+                                } else return <p key={id}>알 수 없음</p>
                             })}
                         </div>
                     )}
@@ -178,7 +184,7 @@ function YearChartTable() {
           ...result[id]
       }))
       .sort((a, b) => (b.pts - a.pts) || (b.avg - a.avg) || (b.plays - a.plays) || a.name.localeCompare(b.name));
-    
+
     let playerRank = 0;
     let indexedData = Data.map((item, index, array) => {
         if (index > 0 && array[index].pts === array[index - 1].pts) {
