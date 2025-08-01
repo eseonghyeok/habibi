@@ -4,21 +4,21 @@ import { Button, Modal, Input, Form, DatePicker } from 'antd';
 import dayjs from 'dayjs';
 
 export const playerInfo = (player) => {
-  const birth = player.info.birth.split('-');
+  const birth = player.metadata.birth.split('-');
 
   return (
     <div>
-      {(player.info.alias && player.info.number) && (
+      {(player.metadata.alias && player.metadata.number) && (
         <>
-          <p><span style={{ fontWeight: 'bolder' }}>{player.info.alias} ({player.info.number})</span></p>
+          <p><span style={{ fontWeight: 'bolder' }}>{player.metadata.alias} ({player.metadata.number})</span></p>
           <br />
         </>
       )}
       <p><span style={{ fontWeight: 'bolder' }}>이름</span>: {player.name}</p>
       <p><span style={{ fontWeight: 'bolder' }}>생년월일</span>: {birth[0]}년 {birth[1]}월 {birth[2]}일</p>
-      { player.info.etc.map(item => <p key={item.key}><span style={{ fontWeight: 'bolder' }}>{item.key}</span>: {item.value}</p>) }
+      <p><span style={{ fontWeight: 'bolder' }}>전화번호</span>: {player.metadata.phone}</p>
       <br />
-      <p><span style={{ fontWeight: 'bolder' }}>한마디</span>: {player.description}</p>
+      { player.metadata.etc.map(item => <p key={item.key}><span style={{ fontWeight: 'bolder' }}>{item.key}</span>: {item.value}</p>) }
     </div>
   );
 };
@@ -35,7 +35,7 @@ export const getPlayerInfo = (player) => {
   });
 }
 
-export const PlayerModal = ({ open, close, player }) => {
+export const PlayerModal = ({ open, close, player, isLogin }) => {
   const [form] = Form.useForm();
   const [items, setItems] = useState([]);
 
@@ -44,32 +44,32 @@ export const PlayerModal = ({ open, close, player }) => {
       form.setFieldsValue({
         name: player.name || '',
         birth: dayjs(player.birth) || '',
-        number: player.info.number || '',
-        alias: player.info.alias || '',
-        description: player.description || ''
+        phone: player.phone || '',
+        number: player.metadata.number || '',
+        alias: player.metadata.alias || ''
       });
-      form.setFieldsValue(player.info.etc.reduce((ret, item) => {
+      form.setFieldsValue(player.metadata.etc.reduce((ret, item) => {
         ret[`etc.${item.key}`] = item.value;
         return ret;
       }, {}));
-      setItems(player.info.etc.map(item => item.key));
+      setItems(player.metadata.etc.map(item => item.key));
     }
-  }, [player, form]);
+  }, [open, player, form]);
   
   const handleOk = async () => {
     let input = {}
     try {
       const items = await form.validateFields();
       input = {
-        name: items.name,
-        info: {
+        name: isLogin ? items.name : player.name,
+        metadata: isLogin ? {
           birth: items.birth.format('YYYY-MM-DD'),
+          phone: items.phone ? items.phone : '',
           number: items.number ? items.number : '',
           alias: items.alias ? items.alias : ''
-        },
-        description: items.description
+        } : player.metadata
       }
-      input.info.etc = Object.keys(items).filter(label => label.includes('etc.')).map(label => ({
+      input.metadata.etc = Object.keys(items).filter(label => label.includes('etc.')).map(label => ({
         key: label.split('.')[1],
         value: items[label] ? items[label] : ''
       }));
@@ -92,10 +92,8 @@ export const PlayerModal = ({ open, close, player }) => {
   };
 
   const handleCancel = () => {
-    if (player) {
-      setItems(player.info.etc.map(item => item.key));
-    }
     form.resetFields();
+    setItems([]);
     close();
   };
 
@@ -120,7 +118,7 @@ export const PlayerModal = ({ open, close, player }) => {
 
   return (
     <Modal
-      title={player ? '선수 수정' : '선수 추가'}
+      title={player ? isLogin ? '선수 수정' : '선수 정보' : '선수 추가'}
       open={open}
       onOk={handleOk}
       onCancel={handleCancel}
@@ -128,55 +126,67 @@ export const PlayerModal = ({ open, close, player }) => {
       cancelText='취소'
     >
       <Form form={form} layout="vertical">
-        <Form.Item
-          name="name"
-          label="이름"
-          rules={[{ required: true, message: '이름을 입력하세요' }]}
-        >
-          <Input
-            maxLength={20}
-          />
-        </Form.Item>
-        <Form.Item
-          name="birth"
-          label="생년월일"
-          rules={[{ required: true, message: '생년월일을 입력하세요' }]}
-        >
-          <DatePicker
-            format="YYYY-MM-DD"
-            placeholder="YYYY-MM-DD"
-            style={{ width: '100%' }}
-          />
-        </Form.Item>
-        <Form.Item
-          name="number"
-          label="유니폼 번호"
-        >
-          <Input
-            inputMode="numeric"
-            maxLength={3}
-            placeholder="숫자만 입력 가능합니다."
-            onChange={(e) => {
-              form.setFieldsValue({ number: e.target.value.replace(/\D/g, '') });
-            }}
-          />
-        </Form.Item>
-        <Form.Item
-          name="alias"
-          label="유니폼 이름"
-        >
-          <Input
-            maxLength={20}
-          />
-        </Form.Item>
-        <Form.Item
-          name="description"
-          label="한마디"
-        >
-          <Input
-            maxLength={20}
-          />
-        </Form.Item>
+        {(isLogin === 'true') ? (
+          <>
+            <Form.Item
+              name="name"
+              label="이름"
+              rules={[{ required: true, message: '이름을 입력하세요' }]}
+            >
+              <Input
+                maxLength={20}
+              />
+            </Form.Item>
+            <Form.Item
+              name="birth"
+              label="생년월일"
+              rules={[{ required: true, message: '생년월일을 입력하세요' }]}
+            >
+              <DatePicker
+                format="YYYY-MM-DD"
+                placeholder="YYYY-MM-DD"
+                style={{ width: '100%' }}
+              />
+            </Form.Item>
+            <Form.Item
+              name="phone"
+              label="전화번호"
+              rules={[{ required: true, message: '전화번호를 입력하세요' }]}
+            >
+              <Input
+                inputMode="numeric"
+                maxLength={15}
+                placeholder="숫자만 입력 가능합니다."
+                onChange={(e) => {
+                  form.setFieldsValue({ phone: e.target.value.replace(/\D/g, '') });
+                }}
+              />
+            </Form.Item>
+            <Form.Item
+              name="number"
+              label="유니폼 번호"
+            >
+              <Input
+                inputMode="numeric"
+                maxLength={3}
+                placeholder="숫자만 입력 가능합니다."
+                onChange={(e) => {
+                  form.setFieldsValue({ number: e.target.value.replace(/\D/g, '') });
+                }}
+              />
+            </Form.Item>
+            <Form.Item
+              name="alias"
+              label="유니폼 이름"
+            >
+              <Input
+                maxLength={20}
+              />
+            </Form.Item>
+          </>
+        ) : (player) && (
+          playerInfo(player)
+        )}
 
         {items.map((label) => (
           <Form.Item

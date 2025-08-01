@@ -117,7 +117,10 @@ function Table({ columns, data, isLoggedIn }) {
                         color: "#333",
                         textAlign: "center",
                       }}
-                      onClick={() => getPlayerInfo(row.original)}
+                      onClick={() => {
+                        setPlayer(row.original);
+                        setModal(true);
+                      }}
                     >
                       {cell.render("Cell")}
                     </td>
@@ -136,15 +139,6 @@ function Table({ columns, data, isLoggedIn }) {
                           gap: "10px",
                         }}
                       >
-                         <Button
-                          type="primary"
-                          style={{ background: '#6c757d' }}
-                          onClick={() => {
-                            setPlayer(row.original);
-                            setModal(true);
-                          }}>
-                            수정
-                        </Button>
                         <Button
                           type="primary"
                           style={{ background: '#dc3545' }}
@@ -164,6 +158,7 @@ function Table({ columns, data, isLoggedIn }) {
         open={modal}
         close={() => setModal(false)}
         player={player}
+        isLogin={isLoggedIn}
       />
     </div>
   );

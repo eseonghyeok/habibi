@@ -26,7 +26,7 @@ function LineupPage() {
                 players.current = playersData.reduce((ret, player) => {
                     ret[player.id] = {
                         name: player.name,
-                        info: player.info
+                        metadata: player.metadata
                     }
                     return ret;
                 }, {});
@@ -60,7 +60,7 @@ function LineupPage() {
       .map(id => ({
           id,
           name: players.current[id].name,
-          info: players.current[id].info,
+          metadata: players.current[id].metadata,
           isPlay: result[id] ? "O" : "X"
       }))
       .sort((a, b) => ((a.isPlay !== b.isPlay) ? ((b.isPlay === "O") ? 1 : -1) : 0) || a.name.localeCompare(b.name));

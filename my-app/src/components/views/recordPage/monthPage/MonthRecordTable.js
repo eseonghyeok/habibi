@@ -30,7 +30,7 @@ function MonthChartTable() {
                 players.current = playersData.reduce((ret, player) => {
                     ret[player.id] = {
                         name: player.name,
-                        info: player.info
+                        metadata: player.metadata
                     }
                     return ret;
                 }, {});
@@ -97,7 +97,12 @@ function MonthChartTable() {
             {
                 accessor: "avg",
                 Header: "AVG",
-            },
+                sortType: (rowA, rowB, column) => {
+                    const a = Number(rowA.values[column]);
+                    const b = Number(rowB.values[column]);
+                    return a - b;
+                }
+            }
         ], []
     );
 
@@ -105,7 +110,7 @@ function MonthChartTable() {
       .filter(id => players.current[id] ? true : false)
       .map(id => ({
           name: players.current[id].name,
-          info: players.current[id].info,
+          metadata: players.current[id].metadata,
           ...result[id]
       }))
       .sort((a, b) => (b.pts - a.pts) || (b.avg - a.avg) || (b.plays - a.plays) || a.name.localeCompare(b.name));

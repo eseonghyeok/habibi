@@ -19,14 +19,12 @@ router.get('/', async (req, res) => {
 // 선수 추가
 router.post('/', async (req, res) => {
   try {
-    const { name, info, description } = req.body;
+    const { name, metadata } = req.body;
 
     await sequelize.transaction(async (t) => {
       const player = await Player.create({
         name,
-        info,
-        description,
-        metadata: {}
+        metadata
       },
       { transaction: t });
 
@@ -104,15 +102,13 @@ router.delete('/id/:id', async (req, res) => {
 // 선수 변경
 router.patch('/id/:id', async (req, res) => {
   try {
-    const { name, info, description } = req.body;
+    const { name, metadata } = req.body;
 
     const player = await Player.findByPk(req.params.id);
     await sequelize.transaction(async (t) => {
       await player.update({
         name,
-        info,
-        description,
-        metadata: {}
+        metadata
       },
       { transaction: t });
     });

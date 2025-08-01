@@ -35,25 +35,26 @@ function PlayerListPage() {
         Header: "NAME",
       },
       {
-        accessor: "info.birth",
-        Header: "BIRTH",
-      },
-      {
-        accessor: "info.number",
-        Header: "BACK NUMBER",
-      },
-      {
-        accessor: "info.alias",
-        Header: "BACK NAME",
+        accessor: "back",
+        Header: "BACK",
+        sortType: (rowA, rowB, column) => {
+          let a = rowA.values[column].split('(')[1].slice(0, -1);
+          let b = rowB.values[column].split('(')[1].slice(0, -1);
+          a = (a === '') ? -11 : (a[0] === '0') ? Number(a) - 10 : Number(a);
+          b = (b === '') ? -11 : (b[0] === '0') ? Number(b) - 10 : Number(b);
+          return a - b;
+        }
       },
     ], []
   );
 
   let Data = players.current.sort((a, b) => a.name.localeCompare(b.name));
 
-  let indexedData = Data.map((item, index) => {
-    return { index: index + 1, ...item };
-  });
+  let indexedData = Data.map((item, index) => ({ 
+      index: index + 1,
+      ...item,
+      back: `${item.metadata.alias} (${item.metadata.number})`
+  }));
 
   if (loading) return <p>⏳ loading...</p>;
 
@@ -74,6 +75,8 @@ function PlayerListPage() {
       <PlayerModal
         open={modal}
         close={() => setModal(false)}
+        player={null}
+        isLogin={isLoggedIn}
       />
     </div>
   );
