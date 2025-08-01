@@ -3,7 +3,7 @@ import { useTable, useGlobalFilter, useSortBy } from "react-table";
 import Axios from 'axios';
 import { Button, Modal } from 'antd';
 import dayjs from 'dayjs';
-import { playerInfo, getPlayerInfo, PlayerModal } from '../../utils';
+import { playerInfo, PlayerModal } from '../../utils';
 import chartpage from '../../images/chartpage.jpg'
 
 

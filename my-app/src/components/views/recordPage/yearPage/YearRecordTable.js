@@ -90,7 +90,7 @@ function YearChartTable() {
                 Header: "PTS",
             },
             {
-                accessor: "avg",
+                accessor: "avgString",
                 Header: "AVG",
                 sortType: (rowA, rowB, column) => {
                     const a = Number(rowA.values[column]);
@@ -106,7 +106,8 @@ function YearChartTable() {
       .map(id => ({
           name: players.current[id].name,
           metadata: players.current[id].metadata,
-          ...result[id]
+          ...result[id],
+          avgString: result[id].avg.toFixed(2)
       }))
       .sort((a, b) => (b.pts - a.pts) || (b.avg - a.avg) || (b.plays - a.plays) || a.name.localeCompare(b.name));
     
