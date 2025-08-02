@@ -18,11 +18,9 @@ process.on('SIGINT', async () => {
 
 cron.schedule('0 */10 * * * *', async () => {
 	try {
-		sequelize.authenticate();
-		
-		console.log('HealthCheck Success');
+		console.log((await require('axios').get(`http://localhost:${process.env.WEB_PORT}/healthcheck`)).data);
 	} catch (err) {
-		console.log('err');
+		console.log(err);
 	}
 });
 
@@ -99,7 +97,6 @@ app.listen(process.env.WEB_PORT, function(){
     console.log(`listening on ${process.env.WEB_PORT}`)
 })
 
-
 //ajax
 app.use(express.json());
 app.use(cors());
@@ -111,21 +108,24 @@ app.get('/', function(req, res){
     res.sendFile(path.join(__dirname, 'my-app/build/index.html'));
 })
 
+//리액트 라우팅
+app.get('*', function(req, res){
+    res.sendFile(path.join(__dirname, 'my-app/build/index.html'));
+})
+
+app.get('/healthcheck', async (req, res) => {
+  try {
+		sequelize.authenticate();
+
+		res.send('HealthCheck Success');
+	} catch (err) {
+		console.log(err);
+	}
+});
+
+
 app.use('/api/chart', require('./server/routes/chart'));
 app.use('/api/record', require('./server/routes/record'));
 app.use('/api/players', require('./server/routes/players'));
 app.use('/api/records', require('./server/routes/records'));
 app.use('/api/teams', require('./server/routes/teams'));
-
-
-
-
-
-
-
-
-
-//리액트 라우팅
-app.get('*', function(req, res){
-    res.sendFile(path.join(__dirname, 'my-app/build/index.html'));
-})
