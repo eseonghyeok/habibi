@@ -8,23 +8,19 @@ function MonthChartTable() {
     const navigate = useNavigate();
     const [loading, setLoading] = useState(true);
     const [result, setResult] = useState([]);
-    const [year, setYear] = useState(null);
-    const [month, setMonth] = useState(null);
+    const [month, setMonth] = useState(dayjs().format('M'));
     const months = useRef([]);
     const scrollRef = useRef(null);
     const buttonRefs = useRef({});
     const players = useRef([]);
-    const now = dayjs().format('YYYY');
+		const year = dayjs().format('YYYY');
 
     useEffect(() => {
         async function getDate() {
             setLoading(true);
             try {
-                const recordsData = (await Axios.get(`/api/records/type/month/date/${now}`)).data;
-                const yearTemp = recordsData.at(-1).date.slice(0, 4);
+                const recordsData = (await Axios.get(`/api/records/type/month/date/${year}`)).data;
                 months.current = recordsData.map((record) => String(Number(record.date.slice(5, 7))));
-                setYear(yearTemp);
-                setMonth(months.current.at(-1));
 
                 const playersData = (await Axios.get('/api/players')).data;
                 players.current = playersData.reduce((ret, player) => {
@@ -43,15 +39,13 @@ function MonthChartTable() {
             }
         }
         getDate();
-    }, [navigate, now]);
+    }, [navigate, year]);
 
     useEffect(() => {
         async function getResult() {
-            if (!month) return;
-
             try {
                 if (buttonRefs.current[month]) {
-                    buttonRefs.current[month].scrollIntoView({ inline: 'center', behavior: 'smooth' });
+                    buttonRefs.current[month].scrollIntoView({ inline: 'center', block: 'nearest', behavior: 'smooth' });
                 }
 
                 const recordData = (await Axios.get(`/api/records/date/${year}-${month.padStart(2, '0')}`)).data;
@@ -62,7 +56,7 @@ function MonthChartTable() {
             }
         }
         getResult();
-    }, [year, month]);
+    }, [loading, year, month]);
 
     const columns = useMemo(
         () => [

@@ -1,11 +1,63 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import Axios from 'axios';
 import { Button, Modal } from 'antd';
+import dayjs from 'dayjs';
 import PasswordModal from '../adminPage/PasswordModal'
 import background from '../../images/homepage.png'
 
 function HomePage() {
     const [visible, setVisible] = useState(false);
     const [isLoggedIn, setIsLoggedIn] = useState(localStorage.getItem('isLoggedIn') === 'true');
+
+		useEffect(() => {
+				async function getBirthdays() {
+						const [year, month, day] = dayjs().format('YYYY-MM-DD').split('-');
+						if (localStorage.getItem('checkData') && (`${year}-${month}-${day}` === localStorage.getItem('checkData'))) {
+								return;
+						}
+
+						const playersData = (await Axios.get('/api/players')).data;
+						Modal.confirm({
+								title: '생일자 목록',
+								content: (
+										<div>
+												<p style={{ fontWeight: 'bolder' }}>오늘 생일자</p>
+												{playersData.map(player => {
+							 							if (player.metadata.birth.slice(5, 10) === `${month}-${day}`) {
+																return (
+																		<p key={player.id}>
+																				<span style={{ fontWeight: 'bold' }}>{player.name}</span>
+																				{(player.metadata.alias && player.metadata.number) && (<span>, {player.metadata.alias}({player.metadata.number})</span>)}
+                                    </p>
+																)
+														}
+														return null;
+												})}
+												<br />
+												<p style={{ fontWeight: 'bolder' }}>이번 달 생일자</p>
+												{playersData.map(player => {
+							 							if (player.metadata.birth.slice(5, 7) === month) {
+																return (
+																		<p key={player.id}>
+																				<span style={{ fontWeight: 'bold' }}>{player.name}</span>
+																				{(player.metadata.alias && player.metadata.number) && (<span>, {player.metadata.alias}({player.metadata.number})</span>)}
+                                    </p>
+																)
+														}
+														return null;
+												})}
+										</div>
+								),
+								okText: '확인',
+								cancelText: '하루 동안 보지 않기',
+								icon:'🎉',
+								onCancel() {
+										localStorage.setItem('checkData', `${year}-${month}-${day}`);
+								}
+					});
+				}
+				getBirthdays();
+	}, []);
     
     const showModal = () => {
         setVisible(true);
@@ -101,11 +153,11 @@ function HomePage() {
                     <PasswordModal visible={visible} onCancel={handleCancel} />
                 </div>
             )}
-            <div style={{ marginBottom: '20px' }}>
+            {/* <div style={{ marginBottom: '20px' }}>
                 <Button type="primary" href="/past" size="large" style={buttonStyle}>
                     하비비 2024 <p style={{ fontSize: '40px', marginRight: '-30px'}}>💛</p>
                 </Button>
-            </div>
+            </div> */}
         </div>
     );
 }

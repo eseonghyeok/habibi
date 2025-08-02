@@ -2,19 +2,21 @@ import { useEffect, useState, useMemo, useRef } from 'react'
 import { useNavigate } from 'react-router-dom';
 import Axios from 'axios';
 import { Button, Modal } from 'antd'
+import dayjs from 'dayjs';
 import Table from "../default/defaultDailyRecordTable";
 
 function YearChartTable() {
     const navigate = useNavigate();
     const [loading, setLoading] = useState(true);
     const [result, setResult] = useState([]);
-    const [year, setYear] = useState(null);
+    const [year, setYear] = useState(dayjs().format('YYYY'));
     const [day, setDay] = useState(null);
     const years = useRef([]);
     const days = useRef([]);
     const scrollRef = useRef(null);
     const buttonRefs = useRef({});
     const players = useRef([]);
+		const lastRecord = useRef(null);
 
     useEffect(() => {
         async function getDate() {
@@ -22,9 +24,9 @@ function YearChartTable() {
             try {
                 const recordData = (await Axios.get('/api/records/type/year')).data;
                 years.current = recordData.map((record) => record.date);
-                const lastDateData = (await Axios.get('/api/records/last')).data;
-                if (!lastDateData) throw new Error(null);
-                setYear(lastDateData.date.slice(0, 4));
+                lastRecord.current = (await Axios.get('/api/records/last')).data;
+                if (!lastRecord.current) throw new Error(null);
+                setYear(lastRecord.current.date.slice(0, 4));
 
                 const playersData = (await Axios.get('/api/players')).data;
                 players.current = playersData.reduce((ret, player) => {
@@ -47,11 +49,9 @@ function YearChartTable() {
 
     useEffect(() => {
         async function getDays() {
-            if (!year) return;
-
             try {
                 if (buttonRefs.current[year]) {
-                    buttonRefs.current[year].scrollIntoView({ inline: 'center', behavior: 'smooth' });
+                    buttonRefs.current[year].scrollIntoView({ inline: 'center', block: 'nearest', behavior: 'smooth' });
                 }
 
                 const recordData = (await Axios.get(`/api/records/type/day/date/${year}`)).data;
@@ -64,7 +64,7 @@ function YearChartTable() {
             }
         }
         getDays();
-    }, [navigate, year]);
+    }, [navigate, loading, year]);
 
     useEffect(() => {
         async function getResult() {
@@ -93,8 +93,8 @@ function YearChartTable() {
                                 if (players.current[id]) {
                                   return (
                                     <p key={id}>
-                                      <span style={{ fontWeight: 'bold' }}>{players.current[id].name}</span>
-                                      {(players.current[id].metadata.alias && players.current[id].metadata.number) && (<span>, {players.current[id].metadata.alias}({players.current[id].metadata.number})</span>)}
+																				<span style={{ fontWeight: 'bold' }}>{players.current[id].name}</span>
+																				{(players.current[id].metadata.alias && players.current[id].metadata.number) && (<span>, {players.current[id].metadata.alias}({players.current[id].metadata.number})</span>)}
                                     </p>
                                   )
                                 } else return <p key={id}>알 수 없음</p>
@@ -250,7 +250,7 @@ function YearChartTable() {
                     ))}
                 </select>
             </div>
-            <Table columns={columns} data={indexedData} date={day} />
+            <Table columns={columns} data={indexedData} date={day} lastRecord={lastRecord.current} />
         </div>
     );
 }

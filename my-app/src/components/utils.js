@@ -43,7 +43,7 @@ export const PlayerModal = ({ open, close, player, isLogin }) => {
     if (player) {
       form.setFieldsValue({
         name: player.name || '',
-        birth: dayjs(player.birth) || '',
+        birth: dayjs(player.metadata.birth) || '',
         phone: player.phone || '',
         number: player.metadata.number || '',
         alias: player.metadata.alias || ''

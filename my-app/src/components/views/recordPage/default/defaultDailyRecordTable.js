@@ -6,7 +6,7 @@ import dayjs from 'dayjs';
 import { getPlayerInfo } from '../../../utils';
 import chartpage from '../../../images/chartpage.jpg'
 
-function Table({ columns, data, date }) {
+function Table({ columns, data, date, lastRecord }) {
   const {
     getTableProps,
     getTableBodyProps,
@@ -25,7 +25,6 @@ function Table({ columns, data, date }) {
       async onOk() {
         try {
           await Axios.delete(`/api/records/date/${now}`);
-          await Axios.patch('/api/teams/reset');
           window.location.reload();
         } catch (err) {
           alert('경기 결과 삭제를 실패했습니다.');
@@ -109,7 +108,7 @@ function Table({ columns, data, date }) {
           </tbody>
         </table>
       </div>
-      {(now === date) && (localStorage.getItem('isLoggedIn') === 'true') && (
+      {(now === date) && (localStorage.getItem('isLoggedIn') === 'true') && (Object.keys(lastRecord.result).length > 0) && (
         <div style={{ display: "flex", justifyContent: "flex-end" }}>
           <Button type="primary" onClick={() => deleteResult()} style={{ background: '#dc3545', width: '145px', height: '45px', borderRadius: '6px', fontSize: '13px', marginTop: '10px', color: 'black', fontWeight: 'bolder' }}>경기결과삭제✖️</Button>
         </div>

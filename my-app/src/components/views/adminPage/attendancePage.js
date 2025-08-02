@@ -118,7 +118,11 @@ function AttendancePage() {
                                     style={{ marginLeft: '20px', background: '#dc3545' }}
                                     onClick={async () => {
                                         try {
-                                            await axios.delete(`/api/teams/name/${profile.name}`)
+																						if ((await axios.get('/api/teams')).data.length <= 2) {
+																								alert('두 팀 이상이 필요합니다.');
+																								return;
+																						} 
+                                            await axios.delete(`/api/teams/name/${profile.name}`);
                                             window.location.reload();
                                         } catch (err) {
                                             alert('팀 삭제에 실패하였습니다.');
@@ -184,7 +188,7 @@ function AttendancePage() {
             content: (
                 <div>
                     <p>정말 초기화하시겠습니까?</p>
-                    <p>종료하시면 팀 구성원이 초기화됩니다.</p>
+                    <p>종료하시면 팀 구성원 및 경기 기록이 초기화됩니다.</p>
                 </div>
             ),
             okText: '확인',

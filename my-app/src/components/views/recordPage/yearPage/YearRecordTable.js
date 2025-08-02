@@ -1,13 +1,14 @@
 import { useEffect, useState, useMemo, useRef } from 'react'
 import { useNavigate } from 'react-router-dom';
 import Axios from 'axios';
+import dayjs from 'dayjs';
 import Table from "../default/defaultYearRecordTable";
 
 function YearChartTable() {
     const navigate = useNavigate();
     const [loading, setLoading] = useState(true);
     const [result, setResult] = useState([]);
-    const [year, setYear] = useState(null);
+    const [year, setYear] = useState(dayjs().format('YYYY'));
     const years = useRef([]);
     const scrollRef = useRef(null);
     const buttonRefs = useRef({});
@@ -19,7 +20,6 @@ function YearChartTable() {
             try {
                 const recordsData = (await Axios.get('/api/records/type/year')).data;
                 years.current = recordsData.map((record) => record.date);
-                setYear(years.current.at(-1));
 
                 const playersData = (await Axios.get('/api/players')).data;
                 players.current = playersData.reduce((ret, player) => {
@@ -42,11 +42,9 @@ function YearChartTable() {
 
     useEffect(() => {
         async function getResult() {
-            if (!year) return;
-
             try {
                 if (buttonRefs.current[year]) {
-                    buttonRefs.current[year].scrollIntoView({ inline: 'center', behavior: 'smooth' });
+                    buttonRefs.current[year].scrollIntoView({ inline: 'center', block: 'nearest', behavior: 'smooth' });
                 }
 
                 const recordData = (await Axios.get(`/api/records/date/${year}`)).data;
@@ -57,7 +55,7 @@ function YearChartTable() {
             }
         }
         getResult();
-    }, [year]);
+    }, [loading, year]);
 
     const columns = useMemo(
         () => [

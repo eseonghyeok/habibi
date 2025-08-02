@@ -16,6 +16,16 @@ process.on('SIGINT', async () => {
   process.exit(0);
 });
 
+cron.schedule('0 */10 * * * *', async () => {
+	try {
+		sequelize.authenticate();
+		
+		console.log('HealthCheck Success');
+	} catch (err) {
+		console.log('err');
+	}
+});
+
 cron.schedule('0 1 0 * * *', async () => {
 
   const date = new Date();
@@ -79,8 +89,6 @@ cron.schedule('0 1 0 * * *', async () => {
         return team.setPlayers([], { transaction: t });
       }));
     });
-
-    console.log("HealthCheck Success");
   } catch (err) {
     console.log(err);
   }
