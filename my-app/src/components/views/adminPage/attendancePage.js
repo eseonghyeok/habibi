@@ -53,7 +53,7 @@ function AttendancePage() {
 
                 setTeams(teamsTemp);
                 setActiveTeam(Object.keys(teamsTemp)[0]);
-                setMembers((await Axios.get('/api/players')).data.sort((a, b) => a.name.localeCompare(b.name)));
+								setMembers((await Axios.get('/api/players')).data.filter(player => !player.teamName).sort((a, b) => a.name.localeCompare(b.name)));
             } catch (err) {
                 alert('오늘의 팀 정보 가져오기를 실패하였습니다.');
                 throw err;

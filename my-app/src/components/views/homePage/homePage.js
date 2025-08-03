@@ -35,13 +35,14 @@ function HomePage() {
 												})}
 												<br />
 												<p style={{ fontWeight: 'bolder' }}>이번 달 생일자</p>
-												{playersData.map(player => {
+												{playersData.sort((a, b) => a.metadata.birth.slice(8, 10).localeCompare(b.metadata.birth.slice(8, 10))).map(player => {
 							 							if (player.metadata.birth.slice(5, 7) === month) {
 																return (
 																		<p key={player.id}>
+																				<span>{month}월 {player.metadata.birth.slice(8, 10)}일 / </span>
 																				<span style={{ fontWeight: 'bold' }}>{player.name}</span>
 																				{(player.metadata.alias && player.metadata.number) && (<span>, {player.metadata.alias}({player.metadata.number})</span>)}
-                                    </p>
+																		</p>
 																)
 														}
 														return null;

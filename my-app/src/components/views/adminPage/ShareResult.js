@@ -12,13 +12,13 @@ async function captureAndShare(targetRef) {
             "",
             "",
             "▼ 연간 랭킹🥇 확인하기 ▼",
-            "https://hbbfc-eseonghyeok.koyeb.app/record/year",
+            "https://habibi-oo7e.onrender.com/record/year",
             "",
             "▼ 월간 랭킹🥈 확인하기 ▼",
-            "https://hbbfc-eseonghyeok.koyeb.app/record/month",
+            "https://habibi-oo7e.onrender.com/record/month",
             "",
             "▼ 경기 결과✅ 확인하기 ▼",
-            "https://hbbfc-eseonghyeok.koyeb.app/record/day"
+            "https://habibi-oo7e.onrender.com/record/day"
         ].join("\n")
         
         const file = new File([blob], "screenshot.png", { type: "image/png" });
