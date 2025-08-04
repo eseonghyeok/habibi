@@ -18,7 +18,7 @@ process.on('SIGINT', async () => {
 
 cron.schedule('0 */10 * * * *', async () => {
 	try {
-		console.log((await require('axios').get(`http://localhost:${process.env.WEB_PORT}/healthcheck`)).data);
+		console.log((await require('axios').get(`${process.env.REACT_APP_WEB_SITE}/healthcheck`)).data);
 	} catch (err) {
 		console.log(err);
 	}

@@ -12,13 +12,13 @@ async function captureAndShare(targetRef) {
             "",
             "",
             "▼ 연간 랭킹🥇 확인하기 ▼",
-            "https://habibi-oo7e.onrender.com/record/year",
+            `${process.env.REACT_APP_WEB_SITE}/record/year`,
             "",
             "▼ 월간 랭킹🥈 확인하기 ▼",
-            "https://habibi-oo7e.onrender.com/record/month",
+            `${process.env.REACT_APP_WEB_SITE}/record/month`,
             "",
             "▼ 경기 결과✅ 확인하기 ▼",
-            "https://habibi-oo7e.onrender.com/record/day"
+            `${process.env.REACT_APP_WEB_SITE}/record/day`,
         ].join("\n")
         
         const file = new File([blob], "screenshot.png", { type: "image/png" });
