@@ -16,14 +16,6 @@ process.on('SIGINT', async () => {
   process.exit(0);
 });
 
-cron.schedule('0 */10 * * * *', async () => {
-	try {
-		console.log((await require('axios').get(`${process.env.REACT_APP_WEB_SITE}/healthcheck`)).data);
-	} catch (err) {
-		console.log(err);
-	}
-});
-
 cron.schedule('0 1 0 * * *', async () => {
 
   const date = new Date();
@@ -99,12 +91,11 @@ app.use(cors());
 app.get('/healthcheck', async (req, res) => {
   try {
 		sequelize.authenticate();
-		res.send('HealthCheck Success');
+		console.log('HealthCheck Success');
 	} catch (err) {
 		console.log(err);
 	}
 });
-
 
 app.use(express.static(path.join(__dirname, 'my-app/build')));
 
