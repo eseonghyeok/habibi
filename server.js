@@ -90,7 +90,7 @@ app.use(cors());
 
 app.get('/healthcheck', async (req, res) => {
   try {
-    sequelize.authenticate();
+    await sequelize.authenticate();
     console.log('HealthCheck Success');
     res.sendStatus(200);
   } catch (err) {
