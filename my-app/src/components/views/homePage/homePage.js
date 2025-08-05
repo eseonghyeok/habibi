@@ -9,56 +9,56 @@ function HomePage() {
     const [visible, setVisible] = useState(false);
     const [isLoggedIn, setIsLoggedIn] = useState(localStorage.getItem('isLoggedIn') === 'true');
 
-		useEffect(() => {
-				async function getBirthdays() {
-						const [year, month, day] = dayjs().format('YYYY-MM-DD').split('-');
-						if (localStorage.getItem('checkData') && (`${year}-${month}-${day}` === localStorage.getItem('checkData'))) {
-								return;
-						}
+    useEffect(() => {
+        async function getBirthdays() {
+            const [year, month, day] = dayjs().format('YYYY-MM-DD').split('-');
+            if (localStorage.getItem('checkData') && (`${year}-${month}-${day}` === localStorage.getItem('checkData'))) {
+                return;
+            }
 
-						const playersData = (await Axios.get('/api/players')).data;
-						Modal.confirm({
-								title: '생일자 목록',
-								content: (
-										<div>
-												<p style={{ fontWeight: 'bolder' }}>오늘 생일자</p>
-												{playersData.map(player => {
-							 							if (player.metadata.birth.slice(5, 10) === `${month}-${day}`) {
-																return (
-																		<p key={player.id}>
-																				<span style={{ fontWeight: 'bold' }}>{player.name}</span>
-																				{(player.metadata.alias && player.metadata.number) && (<span>, {player.metadata.alias}({player.metadata.number})</span>)}
+            const playersData = (await Axios.get('/api/players')).data;
+            Modal.confirm({
+                title: '생일자 목록',
+                content: (
+                    <div>
+                        <p style={{ fontWeight: 'bolder' }}>오늘 생일자</p>
+                        {playersData.map(player => {
+                             if (player.metadata.birth.slice(5, 10) === `${month}-${day}`) {
+                                return (
+                                    <p key={player.id}>
+                                        <span style={{ fontWeight: 'bold' }}>{player.name}</span>
+                                        {(player.metadata.alias && player.metadata.number) && (<span>, {player.metadata.alias}({player.metadata.number})</span>)}
                                     </p>
-																)
-														}
-														return null;
-												})}
-												<br />
-												<p style={{ fontWeight: 'bolder' }}>이번 달 생일자</p>
-												{playersData.sort((a, b) => a.metadata.birth.slice(8, 10).localeCompare(b.metadata.birth.slice(8, 10))).map(player => {
-							 							if (player.metadata.birth.slice(5, 7) === month) {
-																return (
-																		<p key={player.id}>
-																				<span>{month}월 {player.metadata.birth.slice(8, 10)}일 / </span>
-																				<span style={{ fontWeight: 'bold' }}>{player.name}</span>
-																				{(player.metadata.alias && player.metadata.number) && (<span>, {player.metadata.alias}({player.metadata.number})</span>)}
-																		</p>
-																)
-														}
-														return null;
-												})}
-										</div>
-								),
-								okText: '확인',
-								cancelText: '하루 동안 보지 않기',
-								icon:'🎉',
-								onCancel() {
-										localStorage.setItem('checkData', `${year}-${month}-${day}`);
-								}
-					});
-				}
-				getBirthdays();
-	}, []);
+                                )
+                            }
+                            return null;
+                        })}
+                        <br />
+                        <p style={{ fontWeight: 'bolder' }}>이번 달 생일자</p>
+                        {playersData.sort((a, b) => a.metadata.birth.slice(8, 10).localeCompare(b.metadata.birth.slice(8, 10))).map(player => {
+                             if (player.metadata.birth.slice(5, 7) === month) {
+                                return (
+                                    <p key={player.id}>
+                                        <span>{month}월 {player.metadata.birth.slice(8, 10)}일 / </span>
+                                        <span style={{ fontWeight: 'bold' }}>{player.name}</span>
+                                        {(player.metadata.alias && player.metadata.number) && (<span>, {player.metadata.alias}({player.metadata.number})</span>)}
+                                    </p>
+                                )
+                            }
+                            return null;
+                        })}
+                    </div>
+                ),
+                okText: '확인',
+                cancelText: '하루 동안 보지 않기',
+                icon:'🎉',
+                onCancel() {
+                    localStorage.setItem('checkData', `${year}-${month}-${day}`);
+                }
+          });
+        }
+        getBirthdays();
+  }, []);
     
     const showModal = () => {
         setVisible(true);

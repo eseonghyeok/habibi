@@ -90,11 +90,13 @@ app.use(cors());
 
 app.get('/healthcheck', async (req, res) => {
   try {
-		sequelize.authenticate();
-		console.log('HealthCheck Success');
-	} catch (err) {
-		console.log(err);
-	}
+    sequelize.authenticate();
+    console.log('HealthCheck Success');
+    res.sendStatus(200);
+  } catch (err) {
+    console.log(err);
+    res.sendStatus(500);
+  }
 });
 
 app.use(express.static(path.join(__dirname, 'my-app/build')));

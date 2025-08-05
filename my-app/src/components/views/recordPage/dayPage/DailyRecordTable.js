@@ -16,7 +16,7 @@ function YearChartTable() {
     const scrollRef = useRef(null);
     const buttonRefs = useRef({});
     const players = useRef([]);
-		const lastRecord = useRef(null);
+    const lastRecord = useRef(null);
 
     useEffect(() => {
         async function getDate() {
@@ -93,8 +93,8 @@ function YearChartTable() {
                                 if (players.current[id]) {
                                   return (
                                     <p key={id}>
-																				<span style={{ fontWeight: 'bold' }}>{players.current[id].name}</span>
-																				{(players.current[id].metadata.alias && players.current[id].metadata.number) && (<span>, {players.current[id].metadata.alias}({players.current[id].metadata.number})</span>)}
+                                        <span style={{ fontWeight: 'bold' }}>{players.current[id].name}</span>
+                                        {(players.current[id].metadata.alias && players.current[id].metadata.number) && (<span>, {players.current[id].metadata.alias}({players.current[id].metadata.number})</span>)}
                                     </p>
                                   )
                                 } else return <p key={id}>알 수 없음</p>

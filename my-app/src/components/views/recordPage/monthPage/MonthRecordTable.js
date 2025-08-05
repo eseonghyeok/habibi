@@ -13,7 +13,7 @@ function MonthChartTable() {
     const scrollRef = useRef(null);
     const buttonRefs = useRef({});
     const players = useRef([]);
-		const year = dayjs().format('YYYY');
+    const year = dayjs().format('YYYY');
 
     useEffect(() => {
         async function getDate() {
