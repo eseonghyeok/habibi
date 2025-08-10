@@ -12,6 +12,7 @@ function DailyTeamPage() {
     const [teams, setTeams] = useState([]);
     const [record, setRecord] = useState({});
     const match = useRef(1);
+    const modalCheck = useRef(false);
     const now = dayjs().format('YYYY-MM-DD');
 
     useEffect(() => { 
@@ -53,7 +54,7 @@ function DailyTeamPage() {
                 setTeams(teamsTemp);
                 setRecord(recordTemp);
             } catch (err) {
-                alert('오늘의 팀 정보 가져오기를 실패하였습니다.')
+                alert('오늘의 팀 정보 가져오기를 실패하였습니다.');
                 throw err;
             } finally {
                 setLoading(false);
@@ -62,61 +63,80 @@ function DailyTeamPage() {
         getTeams();
     }, [navigate, now]);
 
-    const setLog = (name, type) => {
-        const secondTeamType = (type === 'win') ? 'lose' : (type === 'draw') ? 'draw' : 'win';
+    const setLog = async (name, type) => {
+        try {
+            if ((Object.keys((await Axios.get(`/api/records/date/${now}`)).data.metadata.log).length + 1) !== match.current) {
+                alert('기록이 변경 되었으므로 다시 시도해 주세요.');
+                window.location.reload();
+                return;
+            }
+            const secondTeamType = (type === 'win') ? 'lose' : (type === 'draw') ? 'draw' : 'win';
 
-        Modal.info({
-            title: `${(type === 'win') ? '패배' : (type === 'draw') ? '무승부' : '승리'}한 팀을 선택해 주세요.`,
-            content: (
-                <div>
-                    {Object.keys(teams).filter(secondTeamName => secondTeamName !== name).map(secondTeamName => 
-                        <Button
-                            key={secondTeamName}
-                            onClick={async () => {
-                                setLoading(true);
-                                try {
-                                    await Axios.patch(`/api/records/date/${now}/log`, {
-                                        match: match.current,
-                                        log: {
-                                            [name]: {
-                                                type,
-                                                playersId: teams[name].players.map(player => player.id)
-                                            },
-                                            [secondTeamName]: {
-                                                type: secondTeamType,
-                                                playersId: teams[secondTeamName].players.map(player => player.id)
-                                            },
-                                        }
-                                    });
+            Modal.info({
+                title: `${(type === 'win') ? '패배' : (type === 'draw') ? '무승부' : '승리'}한 팀을 선택해 주세요.`,
+                content: (
+                    <div>
+                        {Object.keys(teams).filter(secondTeamName => secondTeamName !== name).map(secondTeamName => 
+                            <Button
+                                key={secondTeamName}
+                                onClick={async () => {
+                                    if (modalCheck.current) return;
+                                    modalCheck.current = true;
+                                    setLoading(true);
+                                    try {
+                                        await Axios.patch(`/api/records/date/${now}/log`, {
+                                            match: match.current,
+                                            log: {
+                                                [name]: {
+                                                    type,
+                                                    playersId: teams[name].players.map(player => player.id)
+                                                },
+                                                [secondTeamName]: {
+                                                    type: secondTeamType,
+                                                    playersId: teams[secondTeamName].players.map(player => player.id)
+                                                },
+                                            }
+                                        });
 
-                                    match.current++;
-                                    const recordTemp = structuredClone(record);
-                                    recordTemp[name][type]++;
-                                    recordTemp[secondTeamName][secondTeamType]++;
-                                    setRecord(recordTemp);
-                                    Modal.destroyAll();
-                                } catch (err) {
-                                    alert('결과 반영에 실패하였습니다.');
-                                    throw err;
-                                } finally {
-                                    setLoading(false);
-                                }
-                            }}
-                            icon={<img src={teams[secondTeamName].image} alt={secondTeamName} style={{ width: '50px', height: '50px', borderRadius: '50%' }} />}
-                            style={{background: 'transparent', border: 'none', padding: 0}}
-                        >
-                            <span style={{ fontWeight: 'bold' }}>{secondTeamName}</span>
-                        </Button>
-                    )}
-                </div>
-            ),
-            okText: '취소'
-        });
+                                        match.current++;
+                                        const recordTemp = structuredClone(record);
+                                        recordTemp[name][type]++;
+                                        recordTemp[secondTeamName][secondTeamType]++;
+                                        setRecord(recordTemp);
+                                        Modal.destroyAll();
+                                    } catch (err) {
+                                        alert('결과 반영에 실패하였습니다.');
+                                        throw err;
+                                    } finally {
+                                        modalCheck.current = false;
+                                        setLoading(false);
+                                    }
+                                }}
+                                icon={<img src={teams[secondTeamName].image} alt={secondTeamName} style={{ width: '50px', height: '50px', borderRadius: '50%' }} />}
+                                style={{background: 'transparent', border: 'none', padding: 0}}
+                            >
+                                <span style={{ fontWeight: 'bold' }}>{secondTeamName}</span>
+                            </Button>
+                        )}
+                    </div>
+                ),
+                okText: '취소'
+            });
+        } catch (err) {
+            alert('결과 반영에 실패하였습니다.');
+            throw err;
+        } finally {
+            setLoading(false);
+        }
     };
 
     const deleteLog = async () => {
-        setLoading(true);
         try {
+            if ((Object.keys((await Axios.get(`/api/records/date/${now}`)).data.metadata.log).length + 1) !== match.current) {
+                alert('기록이 변경 되었으므로 다시 시도해 주세요.');
+                window.location.reload();
+                return;
+            }
             if (match.current === 1) {
                 alert('기록이 존재하지 않습니다.');
                 setLoading(false);
@@ -139,6 +159,7 @@ function DailyTeamPage() {
                 okText: '삭제',
                 cancelText: '취소',
                 async onOk() {
+                    setLoading(true);
                     try {
                         await Axios.patch(`/api/records/date/${now}/log/delete`, {
                             match: match.current - 1
@@ -169,9 +190,14 @@ function DailyTeamPage() {
         }
     };
 
-    const finishPlay = () => {
+    const finishPlay = async () => {
         setLoading(true);
         try {
+            if ((Object.keys((await Axios.get(`/api/records/date/${now}`)).data.metadata.log).length + 1) !== match.current) {
+                alert('기록이 변경 되었으므로 다시 시도해 주세요.');
+                window.location.reload();
+                return;
+            }
             if (match.current === 1) {
                 alert('기록이 존재하지 않습니다.');
                 setLoading(false);

@@ -210,13 +210,21 @@ function AttendancePage() {
     };
 
     const submitAttendanceList = () => {
+        let playerNum = 0;
+        const list = Object.keys(teams).map(name => {
+            playerNum += teams[name].members.length;
+            return <p key={name}>{name}팀 인원: {teams[name].members.length}명</p>
+        });
+        if (!playerNum) {
+            alert('팀에 선수를 등록해주세요.');
+            return;
+        }
+
         Modal.confirm({
             title: '명단 제출',
             content: (
                 <div>
-                    {Object.keys(teams).map(name => 
-                        <p key={name}>{name}팀 인원: {teams[name].members.length}명</p>
-                    )}
+                    {list}
                     <p>정말 등록하시겠습니까?</p>
                     <p>수정 후 재등록도 가능합니다.</p>
                 </div>
