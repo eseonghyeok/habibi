@@ -18,7 +18,7 @@ export const playerInfo = (player) => {
       <p><span style={{ fontWeight: 'bolder' }}>생년월일</span>: {birth[0]}년 {birth[1]}월 {birth[2]}일</p>
       <p><span style={{ fontWeight: 'bolder' }}>전화번호</span>: {player.metadata.phone}</p>
       <br />
-      { player.metadata.etc.map(item => <p key={item.key}><span style={{ fontWeight: 'bolder' }}>{item.key}</span>: {item.value}</p>) }
+      {player.metadata.etc.map(item => <p key={item.key}><span style={{ fontWeight: 'bolder' }}>{item.key}</span>: {item.value}</p>)}
     </div>
   );
 };
@@ -55,7 +55,7 @@ export const PlayerModal = ({ open, close, player, isLogin }) => {
       setItems(player.metadata.etc.map(item => item.key));
     }
   }, [open, player, form]);
-  
+
   const handleOk = async () => {
     let input = {}
     try {
@@ -85,7 +85,7 @@ export const PlayerModal = ({ open, close, player, isLogin }) => {
         await Axios.post('/api/players', { ...input });
       }
       window.location.reload();
-    } catch(err) {
+    } catch (err) {
       alert('선수 정보 수정하기를 실패하였습니다.');
       window.location.reload();
       throw err;

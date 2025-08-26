@@ -145,7 +145,7 @@ function Table({ columns, data, isLoggedIn }) {
                           type="primary"
                           style={{ background: '#dc3545' }}
                           onClick={() => deletePlayer(row.original)}>
-                            삭제
+                          삭제
                         </Button>
                       </div>
                     </td>

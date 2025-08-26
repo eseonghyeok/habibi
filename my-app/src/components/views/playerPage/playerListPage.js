@@ -52,10 +52,10 @@ function PlayerListPage() {
 
   let Data = players.current.sort((a, b) => a.name.localeCompare(b.name));
 
-  let indexedData = Data.map((item, index) => ({ 
-      index: index + 1,
-      ...item,
-      back: `${item.metadata.alias} (${item.metadata.number})`
+  let indexedData = Data.map((item, index) => ({
+    index: index + 1,
+    ...item,
+    back: `${item.metadata.alias} (${item.metadata.number})`
   }));
 
   if (loading) return <p>⏳ loading...</p>;
@@ -64,14 +64,14 @@ function PlayerListPage() {
     <div>
       {(isLoggedIn === 'true') && (
         <div style={{ display: 'flex', justifyContent: 'flex-end', backgroundColor: 'yellow', padding: '0px 20px 10px 20px' }}>
-          <Button 
+          <Button
             type="primary"
             style={{ background: '#28a745', padding: '5px 10px' }}
             onClick={() => setModal(true)}
           >
             추가
           </Button>
-      </div>
+        </div>
       )}
       <Table columns={columns} data={indexedData} isLoggedIn={isLoggedIn} />
       <PlayerModal

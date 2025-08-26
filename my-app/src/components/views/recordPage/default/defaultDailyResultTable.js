@@ -29,29 +29,29 @@ function Table({ columns, data, filteredIds }) {
       okText: '반영',
       cancelText: '취소',
       onOk() {
-        Axios.post('/api/record/plusPlays', {ids})
-        .then(response => {
-          if(response.data.success) {
-            //window.location.reload();
-          } else {
-            alert('출석체크에 실패하였습니다.')
-          }
-        })
+        Axios.post('/api/record/plusPlays', { ids })
+          .then(response => {
+            if (response.data.success) {
+              //window.location.reload();
+            } else {
+              alert('출석체크에 실패하였습니다.')
+            }
+          })
 
         Axios.post('/api/record/initDaily')
-        .then(response => {
-          if(response.data.success) {
-            window.location.reload();
-          } else {
-            alert('차트 초기화(최종 반영)에 실패하였습니다.')
-          }
-        })
+          .then(response => {
+            if (response.data.success) {
+              window.location.reload();
+            } else {
+              alert('차트 초기화(최종 반영)에 실패하였습니다.')
+            }
+          })
       },
       onCancel() {
-          console.log('취소됨');
+        console.log('취소됨');
       },
     });
-  };   
+  };
 
   let date = new Date();
   let resultRef = useRef(null);
