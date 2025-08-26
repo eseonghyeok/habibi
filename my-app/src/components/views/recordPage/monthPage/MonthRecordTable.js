@@ -52,6 +52,7 @@ function MonthChartTable() {
                 setResult(recordData.result);
             } catch (err) {
                 alert('월간차트 가져오기를 실패하였습니다.');
+                window.location.reload();
                 throw err;
             }
         }

@@ -116,7 +116,10 @@ router.delete('/name/:name', async (req, res) => {
 // 팀 변경
 router.patch('/', async (req, res) => {
   try {
-    const { teams } = req.body;
+    const { teams, test = 0 } = req.body;
+
+    console.log('/'); // test
+    console.log(test)
 
     await sequelize.transaction(async (t) => {
       await Promise.all(Object.keys(teams).map(async name => {
@@ -134,6 +137,8 @@ router.patch('/', async (req, res) => {
 });
 router.patch('/reset', async (req, res) => {
   try {
+    console.log('/reset'); // test
+
     await sequelize.transaction(async (t) => {
       const teams = await Team.findAll();
       await Promise.all(teams.map(async team => {

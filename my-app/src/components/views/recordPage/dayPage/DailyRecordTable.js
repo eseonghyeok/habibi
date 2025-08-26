@@ -75,6 +75,7 @@ function YearChartTable() {
                 setResult(recordData.result);
             } catch (err) {
                 alert('차트 가져오기를 실패하였습니다.');
+                window.location.reload();
                 throw err;
             }
         }
@@ -139,6 +140,7 @@ function YearChartTable() {
             });
         } catch (err) {
             alert('상세 경기 결과 가져오기를 실패하였습니다.');
+            window.location.reload();
             throw err;
         }
     }

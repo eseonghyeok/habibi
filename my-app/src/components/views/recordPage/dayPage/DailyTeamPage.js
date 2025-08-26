@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import Axios from 'axios';
 import { Button, List, Modal } from 'antd';
 import dayjs from 'dayjs';
+import { getPlayerInfo } from '../../../utils';
 import groundJpg from '../../../images/ground.png';
 import captureAndShare from "../../adminPage/ShareResult";
 
@@ -30,6 +31,7 @@ function DailyTeamPage() {
                     return;
                 }
 
+                let playerNum = 0;
                 const teamsTemp = {}
                 const recordTemp = {}
                 const teamsData = (await Axios.get('/api/teams')).data;
@@ -38,12 +40,25 @@ function DailyTeamPage() {
                         image: team.metadata.image,
                         players: (await Axios.get(`/api/teams/name/${team.name}/players`)).data
                     }
+                    playerNum += teamsTemp[team.name].players.length;
+
                     recordTemp[team.name] = {
                       win: 0,
                       draw: 0,
                       lose: 0
                     }
                 }
+
+                if (playerNum === 0) {
+                  if (Object.keys(recordData.metadata.teams).length > 0) {
+                    await Axios.patch('/api/teams', {
+                      teams: recordData.metadata.teams,
+                      test: 2
+                    });
+                    window.location.reload();
+                  }
+                }
+
                 for (const matchLog of Object.values(recordData.metadata.log)) {
                     for (const name of Object.keys(matchLog)) {
                         recordTemp[name][matchLog[name].type]++;
@@ -55,6 +70,7 @@ function DailyTeamPage() {
                 setRecord(recordTemp);
             } catch (err) {
                 alert('오늘의 팀 정보 가져오기를 실패하였습니다.');
+                window.location.reload();
                 throw err;
             } finally {
                 setLoading(false);
@@ -65,11 +81,6 @@ function DailyTeamPage() {
 
     const setLog = async (name, type) => {
         try {
-            if ((Object.keys((await Axios.get(`/api/records/date/${now}`)).data.metadata.log).length + 1) !== match.current) {
-                alert('기록이 변경 되었으므로 다시 시도해 주세요.');
-                window.location.reload();
-                return;
-            }
             const secondTeamType = (type === 'win') ? 'lose' : (type === 'draw') ? 'draw' : 'win';
 
             Modal.info({
@@ -84,6 +95,12 @@ function DailyTeamPage() {
                                     modalCheck.current = true;
                                     setLoading(true);
                                     try {
+                                        if ((Object.keys((await Axios.get(`/api/records/date/${now}`)).data.metadata.log).length + 1) !== match.current) {
+                                            alert('기록이 변경 되었으므로 다시 시도해 주세요.');
+                                            window.location.reload();
+                                            return;
+                                        }
+
                                         await Axios.patch(`/api/records/date/${now}/log`, {
                                             match: match.current,
                                             log: {
@@ -106,6 +123,7 @@ function DailyTeamPage() {
                                         Modal.destroyAll();
                                     } catch (err) {
                                         alert('결과 반영에 실패하였습니다.');
+                                        window.location.reload();
                                         throw err;
                                     } finally {
                                         modalCheck.current = false;
@@ -124,6 +142,7 @@ function DailyTeamPage() {
             });
         } catch (err) {
             alert('결과 반영에 실패하였습니다.');
+            window.location.reload();
             throw err;
         } finally {
             setLoading(false);
@@ -132,11 +151,6 @@ function DailyTeamPage() {
 
     const deleteLog = async () => {
         try {
-            if ((Object.keys((await Axios.get(`/api/records/date/${now}`)).data.metadata.log).length + 1) !== match.current) {
-                alert('기록이 변경 되었으므로 다시 시도해 주세요.');
-                window.location.reload();
-                return;
-            }
             if (match.current === 1) {
                 alert('기록이 존재하지 않습니다.');
                 setLoading(false);
@@ -161,6 +175,12 @@ function DailyTeamPage() {
                 async onOk() {
                     setLoading(true);
                     try {
+                        if ((Object.keys((await Axios.get(`/api/records/date/${now}`)).data.metadata.log).length + 1) !== match.current) {
+                            alert('기록이 변경 되었으므로 다시 시도해 주세요.');
+                            window.location.reload();
+                            return;
+                        }
+
                         await Axios.patch(`/api/records/date/${now}/log/delete`, {
                             match: match.current - 1
                         });
@@ -173,6 +193,7 @@ function DailyTeamPage() {
                         setRecord(recordTemp);
                     } catch (err) {
                         alert('결과 반영에 실패하였습니다.');
+                        window.location.reload();
                         throw err;
                     } finally {
                         setLoading(false);
@@ -184,6 +205,7 @@ function DailyTeamPage() {
             });
         } catch (err) {
             alert('결과 반영에 실패하였습니다.');
+            window.location.reload();
             throw err;
         } finally {
             setLoading(false);
@@ -193,11 +215,6 @@ function DailyTeamPage() {
     const finishPlay = async () => {
         setLoading(true);
         try {
-            if ((Object.keys((await Axios.get(`/api/records/date/${now}`)).data.metadata.log).length + 1) !== match.current) {
-                alert('기록이 변경 되었으므로 다시 시도해 주세요.');
-                window.location.reload();
-                return;
-            }
             if (match.current === 1) {
                 alert('기록이 존재하지 않습니다.');
                 setLoading(false);
@@ -226,6 +243,12 @@ function DailyTeamPage() {
                 async onOk() {
                     setLoading(true);
                     try {
+                        if ((Object.keys((await Axios.get(`/api/records/date/${now}`)).data.metadata.log).length + 1) !== match.current) {
+                            alert('기록이 변경 되었으므로 다시 시도해 주세요.');
+                            window.location.reload();
+                            return;
+                        }
+
                         await Axios.patch(`/api/records/date/${now}`);
                         await Axios.patch('/api/teams/reset');
 
@@ -244,6 +267,7 @@ function DailyTeamPage() {
                         })
                     } catch (err) {
                         alert('결과 반영에 실패하였습니다.');
+                        window.location.reload();
                         throw err;
                     } finally {
                         setLoading(false);
@@ -255,6 +279,7 @@ function DailyTeamPage() {
             });
         } catch (err) {
             alert('결과 반영에 실패하였습니다.');
+            window.location.reload();
             throw err;
         } finally {
             setLoading(false);
@@ -284,7 +309,7 @@ function DailyTeamPage() {
                             dataSource={teams[name].players}
                             renderItem={(member) => (
                                 <List.Item>
-                                    <div style={{ textAlign: 'center' }}>
+                                    <div style={{ textAlign: 'center' }} onClick={() => getPlayerInfo(member)}>
                                         <img src={teams[name].image} alt={member.name} style={{ width: '50px', height: '50px', borderRadius: '50%' }} />
                                         <p style={{ color: 'white' }}>{member.name}</p>
                                     </div>

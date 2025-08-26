@@ -51,6 +51,7 @@ function YearChartTable() {
                 setResult(recordData.result);
             } catch (err) {
                 alert('연간차트 가져오기를 실패하였습니다.');
+                window.location.reload();
                 throw err;
             }
         }

@@ -34,6 +34,7 @@ function AttendancePage() {
                     return;
                 }
 
+                let playerNum = 0;
                 const teamsData = (await Axios.get('/api/teams')).data;
                 const teamsTemp = {}
                 for (const team of teamsData) {
@@ -41,6 +42,7 @@ function AttendancePage() {
                         image: team.metadata.image,
                         members: (await Axios.get(`/api/teams/name/${team.name}/players`)).data
                     }
+                    playerNum += teamsTemp[team.name].members.length;
                 }
 
                 profiles.current = [profile1, profile2, profile3, profile4].map(image => {
@@ -51,11 +53,22 @@ function AttendancePage() {
                     }
                 });
 
+                if ((playerNum === 0) && recordData) {
+                  if (Object.keys(recordData.metadata.teams).length > 0) {
+                    await Axios.patch('/api/teams', {
+                      teams: recordData.metadata.teams,
+                      test: 1
+                    });
+                    window.location.reload();
+                  }
+                }
+
                 setTeams(teamsTemp);
                 setActiveTeam(Object.keys(teamsTemp)[0]);
                 setMembers((await Axios.get('/api/players')).data.filter(player => !player.teamName).sort((a, b) => a.name.localeCompare(b.name)));
             } catch (err) {
                 alert('오늘의 팀 정보 가져오기를 실패하였습니다.');
+                window.location.reload();
                 throw err;
             } finally {
                 setLoading(false);
@@ -85,6 +98,7 @@ function AttendancePage() {
             window.location.reload();
         } catch (err) {
             alert('팀 수정에 실패하였습니다.');
+            window.location.reload();
             throw err;
         }
     }
@@ -126,6 +140,7 @@ function AttendancePage() {
                                             window.location.reload();
                                         } catch (err) {
                                             alert('팀 삭제에 실패하였습니다.');
+                                            window.location.reload();
                                             throw err;
                                         }
                                     }}
@@ -203,6 +218,7 @@ function AttendancePage() {
                     window.location.reload();
                 } catch (err) {
                     alert('팀 초기화에 실패하였습니다.');
+                    window.location.reload();
                     throw err;
                 }
             }
@@ -237,10 +253,12 @@ function AttendancePage() {
                     if (!recordData) {
                         await Axios.post(`/api/records/date/${now}`);
                     }
+                    await Axios.patch(`/api/records/date/${now}/teams`, { teams });
                     await Axios.patch('/api/teams', { teams });
                     window.location.reload();
                 } catch (err) {
                     alert('명단 등록에 실패하였습니다.');
+                    window.location.reload();
                     throw err;
                 }
             }

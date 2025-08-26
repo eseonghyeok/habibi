@@ -73,7 +73,8 @@ router.post('/date/:date', async (req, res) => {
         type: 'day',
         result: {},
         metadata: {
-          log: {}
+          log: {},
+          teams: {}
         }
       },
       { transaction: t });
@@ -149,6 +150,29 @@ router.patch('/date/:date/log/delete', async (req, res) => {
       delete record.metadata.log[match];
       record.changed('metadata', true);
       await record.save({ transaction: t });
+    });
+
+    res.sendStatus(204);
+  } catch (err) {
+    console.log(err);
+    res.sendStatus(500);
+  }
+});
+router.patch('/date/:date/teams', async (req, res) => {
+  try {
+    const { teams } = req.body;
+
+    const record = await Record.findByPk(req.params.date);
+    await sequelize.transaction(async (t) => {
+      await Promise.all(Object.keys(teams).map(name => {
+        record.metadata.teams[name] = {
+          members: {
+            id: teams[name].members.map(memeber => memeber.id)
+          }
+        };
+        record.changed('metadata', true);
+        return record.save({ transaction: t });
+      }));
     });
 
     res.sendStatus(204);

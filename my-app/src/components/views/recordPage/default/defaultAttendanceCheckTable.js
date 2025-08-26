@@ -36,6 +36,7 @@ function Table({ columns, data, date }) {
           window.location.reload();
         } catch (err) {
           alert(`${isPlay ? '불참' : '참석'} 변경 실패하였습니다.`);
+          window.location.reload();
           throw err;
         }
       }

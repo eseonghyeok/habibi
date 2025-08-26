@@ -34,6 +34,7 @@ function LineupPage() {
                 setResult(recordData.result);
             } catch (err) {
                 alert('오늘의 경기 결과 가져오기를 실패하였습니다.');
+                window.location.reload();
                 throw err;
             } finally {
                 setLoading(false);

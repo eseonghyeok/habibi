@@ -28,6 +28,7 @@ function Table({ columns, data, date, lastRecord }) {
           window.location.reload();
         } catch (err) {
           alert('경기 결과 삭제를 실패했습니다.');
+          window.location.reload();
           throw err;
         }
       }

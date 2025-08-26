@@ -16,6 +16,8 @@ function PlayerListPage() {
       try {
         players.current = (await Axios.get('/api/players')).data;
       } catch (err) {
+        alert('선수 목록 가져오기를 실패하였습니다.');
+        window.location.reload();
         throw err;
       } finally {
         setLoading(false);

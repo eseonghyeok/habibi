@@ -28,6 +28,7 @@ function Table({ columns, data, isLoggedIn }) {
       }
     } catch (err) {
       alert('기록 가져오기를 실패하였습니다.');
+      window.location.reload();
       throw err;
     }
 
@@ -48,6 +49,7 @@ function Table({ columns, data, isLoggedIn }) {
           window.location.reload();
         } catch (err) {
           alert('선수 삭제에 실패하였습니다.');
+          window.location.reload();
           throw err;
         }
       }

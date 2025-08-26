@@ -87,6 +87,7 @@ export const PlayerModal = ({ open, close, player, isLogin }) => {
       window.location.reload();
     } catch(err) {
       alert('선수 정보 수정하기를 실패하였습니다.');
+      window.location.reload();
       throw err;
     }
   };
