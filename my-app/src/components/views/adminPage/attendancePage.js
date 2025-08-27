@@ -2,9 +2,9 @@ import { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Axios from 'axios';
 import { Button, List, Modal } from 'antd';
-import { SettingOutlined } from '@ant-design/icons';
+import { SettingOutlined, ReloadOutlined } from '@ant-design/icons';
 import dayjs from 'dayjs';
-import { playerInfo } from '../../utils';
+import { playerInfo, getPlayerInfo } from '../../utils';
 import groundJpg from '../../images/ground.png';
 import list from '../../images/playerlist.jpg';
 
@@ -31,6 +31,11 @@ function AttendancePage() {
         if (recordData && (Object.keys(recordData.result).length > 0)) {
           alert('이미 오늘 경기를 종료하였습니다.');
           navigate('/record/day');
+          return;
+        }
+        if (!recordData && (localStorage.getItem('isLoggedIn') !== 'true')) {
+          alert('오늘의 팀 명단이 존재하지 않습니다.');
+          navigate('/');
           return;
         }
 
@@ -102,6 +107,59 @@ function AttendancePage() {
       throw err;
     }
   }
+
+  const relocationTeam = async () => {
+    Modal.confirm({
+      title: '팀 섞기',
+      content: (
+        <div>
+          <div
+            style={{
+              display: "grid",
+              gridTemplateColumns: `repeat(${Object.keys(teams).length}, minmax(0,1fr))`,
+              gap: 12,
+            }}
+          >
+            {Object.keys(teams).map(name =>
+              <p>
+                {teams[name].members.map(member =>
+                  <div>{member.name}</div>
+                )}
+              </p>
+            )}
+          </div>
+          <br />
+          <p>팀을 기준에 맞게 섞으시겠습니까?</p>
+        </div>
+      ),
+      okText: '섞기',
+      cancelText: '취소',
+      onOk() {
+        const teamsTemp = structuredClone(teams);
+        const teamNames = Object.keys(teams);
+        const teamValues = Object.values(teams);
+        let maxNum = 0;
+        for (const name of teamNames) {
+          maxNum = Math.max(maxNum, teamsTemp[name].members.length);
+          teamsTemp[name].members = [];
+        }
+
+        for (let i = 0; i < maxNum; i++) {
+          for (let i = teamNames.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [teamNames[i], teamNames[j]] = [teamNames[j], teamNames[i]];
+          }
+
+          for (const j in teamValues) {
+            if (teamValues[j].members[i]) {
+              teamsTemp[teamNames[j]].members.push(teamValues[j].members[i]);
+            }
+          }
+        }
+        setTeams(teamsTemp);
+      }
+    });
+  };
 
   const setTeamNames = () => {
     for (const team of Object.values(teams)) {
@@ -270,52 +328,60 @@ function AttendancePage() {
   if (loading) return <p>⏳ loading...</p>;
 
   return (
-    <div style={{ textAlign: 'center', minHeight: "100vh" }}>
-      <div style={{ backgroundImage: `url(${list})` }}>
-        <div style={{ padding: "10px", color: 'white' }}>
-          <h1>🔴 팀 나누기 🔵</h1>
-          <p> {date.toLocaleDateString()} </p>
-          <p>💡 {Object.keys(teams).join(', ')} 팀을 선택하고 회원을 추가하세요.</p>
-          <div style={{ display: 'flex', overflowX: 'auto', justifyContent: 'center', gap: '10px', marginBottom: '20px', padding: '10px 0' }}>
-            {Object.keys(teams).map(name => (
-              <Button
-                key={name}
-                type={activeTeam === name ? 'primary' : 'default'}
-                onClick={() => setActiveTeam(name)}
-              >
-                {name}
-              </Button>
-            ))}
-          </div>
-          <div style={{ display: 'flex', justifyContent: 'flex-end', marginBottom: '20px' }}>
-            <Button
-              icon={<SettingOutlined />}
-              onClick={() => setTeamNames()}
-            >
-              팀 설정
-            </Button>
-          </div>
-        </div>
-
-        <div>
-          <List
-            grid={{ gutter: 10, column: 5 }}
-            dataSource={members}
-            renderItem={(member) => (
-              <List.Item>
+    <div style={{ textAlign: 'center' }}>
+      {(localStorage.getItem('isLoggedIn') === 'true') && (
+        <div style={{ backgroundImage: `url(${list})` }}>
+          <div style={{ padding: "10px", color: 'white' }}>
+            <h1>🔴 팀 나누기 🔵</h1>
+            <p> {date.toLocaleDateString()} </p>
+            <p>💡 {Object.keys(teams).join(', ')} 팀을 선택하고 회원을 추가하세요.</p>
+            <div style={{ display: 'flex', overflowX: 'auto', justifyContent: 'center', gap: '10px', marginBottom: '20px', padding: '10px 0' }}>
+              {Object.keys(teams).map(name => (
                 <Button
-                  onClick={() => handleTeamAdd(member)}
-                  style={{ borderRadius: '3px', fontSize: '15px', padding: '0px 15px' }}
+                  key={name}
+                  type={activeTeam === name ? 'primary' : 'default'}
+                  onClick={() => setActiveTeam(name)}
                 >
-                  {member.name}
+                  {name}
                 </Button>
-              </List.Item>
-            )}
-          />
-        </div>
-      </div>
+              ))}
+            </div>
+            <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '20px' }}>
+              <Button
+                icon={<ReloadOutlined />}
+                onClick={() => relocationTeam()}
+              >
+                팀 섞기
+              </Button>
+              <Button
+                icon={<SettingOutlined />}
+                onClick={() => setTeamNames()}
+              >
+                팀 설정
+              </Button>
+            </div>
+          </div>
 
-      <div style={{ padding: '20px', background: `url(${groundJpg})`, backgroundSize: 'cover', position: 'relative', overflow: 'hidden' }}>
+          <div>
+            <List
+              grid={{ gutter: 10, column: 5 }}
+              dataSource={members}
+              renderItem={(member) => (
+                <List.Item>
+                  <Button
+                    onClick={() => handleTeamAdd(member)}
+                    style={{ borderRadius: '3px', fontSize: '15px', padding: '0px 15px' }}
+                  >
+                    {member.name}
+                  </Button>
+                </List.Item>
+              )}
+            />
+          </div>
+        </div>
+      )}
+
+      <div style={{ padding: '20px', background: `url(${groundJpg})`, backgroundSize: 'cover', backgroundPosition: 'center', position: 'relative', overflow: 'hidden' }}>
         {Object.keys(teams).map(name => (
           <div key={name} style={{ marginBottom: '20px' }}>
             <h2 style={{ color: 'white' }}>{name}</h2>
@@ -324,7 +390,7 @@ function AttendancePage() {
               dataSource={teams[name].members}
               renderItem={(member) => (
                 <List.Item>
-                  <div style={{ textAlign: 'center' }} onClick={() => removeFromTeam(member, name)}>
+                  <div style={{ textAlign: 'center' }} onClick={() => localStorage.getItem('isLoggedIn') ? removeFromTeam(member, name) : getPlayerInfo(member)}>
                     <img src={teams[name].image} alt={member.name} style={{ width: '50px', height: '50px', borderRadius: '50%' }} />
                     <p style={{ color: 'white' }}>{member.name}</p>
                   </div>
@@ -333,10 +399,12 @@ function AttendancePage() {
             />
           </div>
         ))}
-        <div style={{ marginTop: '70px' }}>
-          <Button type="primary" onClick={() => initDailyTeam()} style={{ background: '#d9363e', width: '120px', height: '50px', borderRadius: '6px', fontSize: '16px', position: 'absolute', bottom: '1%', left: '4%' }}>초기화</Button>
-          <Button type="primary" onClick={submitAttendanceList} style={{ background: '#2a85fb', width: '120px', height: '50px', borderRadius: '6px', fontSize: '16px', position: 'absolute', bottom: '1%', right: '4%' }}>저장</Button>
-        </div>
+        {(localStorage.getItem('isLoggedIn') === 'true') && (
+          <div style={{ marginTop: '70px' }}>
+            <Button type="primary" onClick={() => initDailyTeam()} style={{ background: '#d9363e', width: '120px', height: '50px', borderRadius: '6px', fontSize: '16px', position: 'absolute', bottom: '1%', left: '4%' }}>초기화</Button>
+            <Button type="primary" onClick={submitAttendanceList} style={{ background: '#2a85fb', width: '120px', height: '50px', borderRadius: '6px', fontSize: '16px', position: 'absolute', bottom: '1%', right: '4%' }}>저장</Button>
+          </div>
+        )}
       </div>
     </div>
   );

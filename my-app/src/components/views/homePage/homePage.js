@@ -123,13 +123,13 @@ function HomePage() {
           경기 결과 <p style={{ fontSize: '35px', marginRight: '-30px' }}>✅</p>
         </Button>
       </div>
+      <div style={{ marginBottom: '20px' }}>
+        <Button type="primary" href="/attendance" size="large" style={buttonStyle}>
+          팀 명단 <p style={{ fontSize: '35px', marginRight: '-30px' }}>🎭</p>
+        </Button>
+      </div>
       {isLoggedIn ? (
         <div>
-          <div style={{ marginBottom: '20px' }}>
-            <Button type="primary" href="/attendance" size="large" style={buttonStyle}>
-              팀 나누기 <p style={{ fontSize: '35px', marginRight: '-30px' }}>🎭</p>
-            </Button>
-          </div>
           <div style={{ marginBottom: '20px' }}>
             <Button type="primary" href="/record/teams" size="large" style={buttonStyle}>
               승점 체크 <p style={{ fontSize: '35px', marginRight: '-30px' }}>📊</p>
