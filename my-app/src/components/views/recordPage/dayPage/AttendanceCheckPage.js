@@ -19,8 +19,9 @@ function LineupPage() {
         if (!recordData) {
           await Axios.post(`/api/records/date/${now}`);
           window.location.reload();
+          return;
         }
-        result.current = recordData;
+        result.current = recordData.result;
 
         const playersData = (await Axios.get('/api/players')).data;
         players.current = playersData.reduce((ret, player) => {
