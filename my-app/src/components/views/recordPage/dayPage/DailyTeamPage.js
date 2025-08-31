@@ -215,12 +215,6 @@ function DailyTeamPage() {
   const finishPlay = async () => {
     setLoading(true);
     try {
-      if (match.current === 1) {
-        alert('기록이 존재하지 않습니다.');
-        setLoading(false);
-        return;
-      }
-
       Modal.confirm({
         title: '경기 결과 반영',
         content: (
