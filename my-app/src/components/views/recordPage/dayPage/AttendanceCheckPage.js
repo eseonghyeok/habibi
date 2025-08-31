@@ -7,7 +7,7 @@ import Table from '../default/defaultAttendanceCheckTable'
 function LineupPage() {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(true);
-  const [result, setResult] = useState([]);
+  const result = useRef([]);
   const players = useRef([]);
   const now = dayjs().format('YYYY-MM-DD');
 
@@ -16,11 +16,11 @@ function LineupPage() {
       setLoading(true);
       try {
         const recordData = (await Axios.get(`/api/records/date/${now}`)).data;
-        if (!recordData || (Object.keys(recordData.result).length === 0)) {
-          alert('오늘 경기 결과가 없습니다.');
-          navigate('/');
-          return;
+        if (!recordData) {
+          await Axios.post(`/api/records/date/${now}`);
+          window.location.reload();
         }
+        result.current = recordData;
 
         const playersData = (await Axios.get('/api/players')).data;
         players.current = playersData.reduce((ret, player) => {
@@ -30,8 +30,6 @@ function LineupPage() {
           }
           return ret;
         }, {});
-
-        setResult(recordData.result);
       } catch (err) {
         alert('오늘의 경기 결과 가져오기를 실패하였습니다.');
         window.location.reload();
@@ -57,12 +55,12 @@ function LineupPage() {
   );
 
   let Data = Object.keys(players.current)
-    .filter(id => (result[id] && (result[id].matches > 0)) ? false : true)
+    .filter(id => (result.current[id] && (result.current[id].matches > 0)) ? false : true)
     .map(id => ({
       id,
       name: players.current[id].name,
       metadata: players.current[id].metadata,
-      isPlay: result[id] ? "O" : "X"
+      isPlay: result.current[id] ? "O" : "X"
     }))
     .sort((a, b) => ((a.isPlay !== b.isPlay) ? ((b.isPlay === "O") ? 1 : -1) : 0) || a.name.localeCompare(b.name));
 
