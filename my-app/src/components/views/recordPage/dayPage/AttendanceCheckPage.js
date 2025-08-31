@@ -20,6 +20,10 @@ function LineupPage() {
           await Axios.post(`/api/records/date/${now}`);
           window.location.reload();
           return;
+        } else if (Object.keys(recordData.metadata.teams).length !== 0) {
+          alert('경기 진행 중에는 불가능하므로 팀 초기화하거나 경기 종료 이후에 진행해주세요.');
+          navigate('/');
+          return;
         }
         result.current = recordData.result;
 
