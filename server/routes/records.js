@@ -166,10 +166,10 @@ router.patch('/date/:date/teams', async (req, res) => {
     await sequelize.transaction(async (t) => {
       await Promise.all(Object.keys(teams).map(name => {
         record.metadata.teams[name] = {
-          members: {
-            id: teams[name].members.map(memeber => memeber.id)
-          }
-        };
+          members: teams[name].members.map(memeber => ({
+            id: memeber.id
+          }))
+        }
         record.changed('metadata', true);
         return record.save({ transaction: t });
       }));
