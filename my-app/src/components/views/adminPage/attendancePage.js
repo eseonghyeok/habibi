@@ -61,8 +61,7 @@ function AttendancePage() {
         if ((playerNum === 0) && recordData) {
           if (Object.keys(recordData.metadata.teams).length > 0) {
             await Axios.patch('/api/teams', {
-              teams: recordData.metadata.teams,
-              test: 1
+              teams: recordData.metadata.teams
             });
             window.location.reload();
           }

@@ -52,8 +52,7 @@ function DailyTeamPage() {
         if (playerNum === 0) {
           if (Object.keys(recordData.metadata.teams).length > 0) {
             await Axios.patch('/api/teams', {
-              teams: recordData.metadata.teams,
-              test: 2
+              teams: recordData.metadata.teams
             });
             window.location.reload();
           }

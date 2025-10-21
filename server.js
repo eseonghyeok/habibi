@@ -67,7 +67,7 @@ cron.schedule('0 1 0 * * *', async () => {
       if (record) {
         if ((Object.keys(record.result).length === 0) && (Object.keys(record.metadata.log).length === 0)) {
           await record.destroy({ transaction: t });
-        } else {
+        } else if (Object.keys(record.metadata.teams).length !== 0) {
           await utils.setResult(t, record.date, record.metadata.log);
         }
       }

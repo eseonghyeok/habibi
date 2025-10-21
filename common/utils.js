@@ -69,6 +69,9 @@ async function setResult(transaction, date, log, isDelete = false) {
   monthRecord.changed('result', true);
   yearRecord.changed('result', true);
 
+  dayRecord.metadata.teams = {};
+  dayRecord.changed('metadata', true);
+
   await dayRecord.save({ transaction });
   await monthRecord.save({ transaction });
   await yearRecord.save({ transaction });

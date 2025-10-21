@@ -192,6 +192,7 @@ router.patch('/date/:date/plays', async (req, res) => {
 
       if (isPlay) {
         dayRecord.result[playerId] = utils.initValue();
+        dayRecord.result[playerId].plays++;
         monthRecord.result[playerId].plays++;
         yearRecord.result[playerId].plays++;
       } else {
