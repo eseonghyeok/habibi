@@ -110,6 +110,7 @@ app.use('/api/record', require('./server/routes/record'));
 app.use('/api/players', require('./server/routes/players'));
 app.use('/api/records', require('./server/routes/records'));
 app.use('/api/teams', require('./server/routes/teams'));
+app.use('/api/notifications', require('./server/routes/notifications'));
 
 //리액트 라우팅
 app.get('*', function(req, res){
