@@ -7,7 +7,7 @@ const { sequelize, Notification } = require('../../common/models/index');
 router.get('/', async (req, res) => {
   try {
     const notification = await Notification.findAll({
-      order: [[ "index", 'ASC' ]]
+      order: [[ "created_at", 'ASC' ]]
     });
 
     res.json(notification);
@@ -24,7 +24,6 @@ router.post('/', async (req, res) => {
 
     await sequelize.transaction(async (t) => {
       await Notification.create({
-        index: await Notification.count({ transaction: t }) + 1,
         title,
         content
       },
@@ -39,12 +38,12 @@ router.post('/', async (req, res) => {
 });
 
 // 공지사항 삭제
-router.delete('/index/:index', async (req, res) => {
+router.delete('/title/:title', async (req, res) => {
   try {
     await sequelize.transaction(async (t) => {
       await Notification.destroy({
         where: {
-          index: req.params.index
+          title: decodeURIComponent(req.params.title)
         },
         transaction: t
       });
@@ -58,11 +57,11 @@ router.delete('/index/:index', async (req, res) => {
 });
 
 // 공지사항 변경
-router.patch('/index/:index', async (req, res) => {
+router.patch('/title/:title', async (req, res) => {
   try {
     const { title, content } = req.body;
 
-    const notification = await Notification.findByPk(req.params.index);
+    const notification = await Notification.findByPk(decodeURIComponent(req.params.title));
     if (!notification) {
       return res.sendStatus(404);
     }

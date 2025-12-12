@@ -2,14 +2,9 @@
 
 module.exports = function (sequelize, DataTypes) {
   var Notification = sequelize.define("Notification", {
-    index: {
-      type: DataTypes.INTEGER,
-      primaryKey: true,
-      allowNull: false
-    },
     title: {
       type: DataTypes.TEXT,
-      unique: true,
+      primaryKey: true,
       allowNull: false
     },
     content: {

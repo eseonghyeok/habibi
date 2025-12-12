@@ -20,11 +20,9 @@ function NotiPage() {
       setLoading(true);
       try {
         const notificationsData = (await Axios.get(`/api/notifications`)).data;
-        // index 순서대로 정렬
-        const sortedNotifications = notificationsData.sort((a, b) => a.index - b.index);
-        setNotifications(sortedNotifications);
-        if (sortedNotifications.length > 0) {
-          setActiveTab(sortedNotifications[0].index);
+        setNotifications(notificationsData);
+        if (notificationsData.length > 0) {
+          setActiveTab(notificationsData[0].title);
         }
       } catch (err) {
         alert('공지사항 가져오기를 실패하였습니다.');
@@ -74,14 +72,14 @@ function NotiPage() {
       <div style={{ marginBottom: '20px' }}>
         {notifications.map((notification) => (
           <button
-            key={notification.index}
+            key={notification.title}
             style={{
               ...buttonStyle,
-              backgroundColor: activeTab === notification.index ? '#007bff' : '#ff0',
-              color: activeTab === notification.index ? 'white' : 'black'
+              backgroundColor: activeTab === notification.title ? '#007bff' : '#ff0',
+              color: activeTab === notification.title ? 'white' : 'black'
             }}
             onClick={() => {
-              setActiveTab(notification.index);
+              setActiveTab(notification.title);
               setIsEditing(false);
               setIsAdding(false);
             }}
@@ -146,14 +144,12 @@ function NotiPage() {
                     });
                     // 공지사항 목록 새로고침
                     const notificationsData = (await Axios.get(`/api/notifications`)).data;
-                    // index 순서대로 정렬
-                    const sortedNotifications = notificationsData.sort((a, b) => a.index - b.index);
-                    setNotifications(sortedNotifications);
+                    setNotifications(notificationsData);
                     setIsAdding(false);
                     setEditTitle('');
                     setEditContent('');
-                    if (sortedNotifications.length > 0) {
-                      setActiveTab(sortedNotifications[sortedNotifications.length - 1].index);
+                    if (notificationsData.length > 0) {
+                      setActiveTab(editTitle.trim());
                     }
                     alert('공지사항이 추가되었습니다.');
                   } catch (err) {
@@ -170,7 +166,7 @@ function NotiPage() {
               </Button>
             </div>
           </div>
-        ) : activeTab !== null && notifications.find(n => n.index === activeTab) ? (
+        ) : activeTab !== null && notifications.find(n => n.title === activeTab) ? (
           <>
             {isLoggedIn && !isEditing && (
               <div style={{ marginBottom: '10px', textAlign: 'right' }}>
@@ -178,7 +174,7 @@ function NotiPage() {
                   type="primary"
                   style={{ marginRight: '10px' }}
                   onClick={() => {
-                    const currentNotification = notifications.find(n => n.index === activeTab);
+                    const currentNotification = notifications.find(n => n.title === activeTab);
                     setEditTitle(currentNotification.title);
                     setEditContent(currentNotification.content);
                     setIsEditing(true);
@@ -193,15 +189,13 @@ function NotiPage() {
                   onClick={async () => {
                     if (window.confirm('정말 삭제하시겠습니까?')) {
                       try {
-                        const currentNotification = notifications.find(n => n.index === activeTab);
-                        await Axios.delete(`/api/notifications/index/${currentNotification.index}`);
+                        const currentNotification = notifications.find(n => n.title === activeTab);
+                        await Axios.delete(`/api/notifications/title/${encodeURIComponent(currentNotification.title)}`);
                         // 공지사항 목록 새로고침
                         const notificationsData = (await Axios.get(`/api/notifications`)).data;
-                        // index 순서대로 정렬
-                        const sortedNotifications = notificationsData.sort((a, b) => a.index - b.index);
-                        setNotifications(sortedNotifications);
-                        if (sortedNotifications.length > 0) {
-                          setActiveTab(sortedNotifications[0].index);
+                        setNotifications(notificationsData);
+                        if (notificationsData.length > 0) {
+                          setActiveTab(notificationsData[0].title);
                         } else {
                           setActiveTab(null);
                         }
@@ -252,11 +246,11 @@ function NotiPage() {
                     type="primary"
                     onClick={async () => {
                       try {
-                        const currentNotification = notifications.find(n => n.index === activeTab);
+                        const currentNotification = notifications.find(n => n.title === activeTab);
                         
                         // 제목 중복 체크 (현재 공지사항 제외)
                         const duplicateNotification = notifications.find(
-                          n => n.index !== currentNotification.index && n.title === editTitle.trim()
+                          n => n.title !== currentNotification.title && n.title === editTitle.trim()
                         );
                         
                         if (duplicateNotification) {
@@ -269,16 +263,15 @@ function NotiPage() {
                           return;
                         }
                         
-                        await Axios.patch(`/api/notifications/index/${currentNotification.index}`, {
+                        await Axios.patch(`/api/notifications/title/${encodeURIComponent(currentNotification.title)}`, {
                           title: editTitle.trim(),
                           content: editContent
                         });
                         // 공지사항 목록 새로고침
                         const notificationsData = (await Axios.get(`/api/notifications`)).data;
-                        // index 순서대로 정렬
-                        const sortedNotifications = notificationsData.sort((a, b) => a.index - b.index);
-                        setNotifications(sortedNotifications);
+                        setNotifications(notificationsData);
                         setIsEditing(false);
+                        setActiveTab(editTitle.trim());
                         alert('공지사항이 수정되었습니다.');
                       } catch (err) {
                         if (err.response && err.response.status === 400) {
@@ -296,7 +289,7 @@ function NotiPage() {
               </div>
             ) : (
               <div style={{ whiteSpace: 'pre-wrap', wordBreak: 'break-word' }}>
-                {notifications.find(n => n.index === activeTab).content}
+                {notifications.find(n => n.title === activeTab).content}
               </div>
             )}
           </>
