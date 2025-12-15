@@ -104,6 +104,11 @@ function HomePage() {
         </Button>
       </div>
       <div style={{ marginBottom: '20px' }}>
+        <Button type="primary" href="/suggestion" size="large" style={buttonStyle}>
+          건의사항 <p style={{ fontSize: '40px', marginRight: '-30px' }}>🙋</p>
+        </Button>
+      </div>
+      <div style={{ marginBottom: '20px' }}>
         <Button type="primary" href="/player/list" size="large" style={buttonStyle}>
           선수 정보 <p style={{ fontSize: '40px', marginRight: '-30px' }}>👕</p>
         </Button>

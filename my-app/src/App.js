@@ -5,6 +5,7 @@ import Bar from "./components/views/homePage/bar"
 // import awardPage from "./components/views/homePage/awardPage"
 import attendancePage from "./components/views/adminPage/attendancePage"
 import notiPage from "./components/views/homePage/notiPage"
+import suggestionPage from "./components/views/homePage/suggestionPage"
 import playerListPage from "./components/views/playerPage/playerListPage"
 import Footer from "./components/views/homePage/footer"
 import pastHabibiPage from "./components/views/homePage/pastHabibiPage"
@@ -25,6 +26,7 @@ function App() {
           <Route exact path="/" Component={HomePage} />
           {/* <Route exact path="/award" Component={awardPage} /> */}
           <Route exact path="/notification" Component={notiPage} />
+          <Route exact path="/suggestion" Component={suggestionPage} />
           <Route exact path="/player/list" Component={playerListPage} />
           <Route exact path="/record/year" Component={yearRecordTable} />
           <Route exact path="/record/month" Component={monthRecordTable} />

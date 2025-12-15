@@ -1,25 +1,31 @@
 "use strict";
 
 module.exports = function (sequelize, DataTypes) {
-  var Notification = sequelize.define("Notification", {
-    title: {
-      type: DataTypes.TEXT,
+  var Suggestion = sequelize.define("Suggestion", {
+    id: {
+      type: DataTypes.UUID,
       primaryKey: true,
-      allowNull: false
+      allowNull: false,
+      defaultValue: DataTypes.UUIDV4
     },
     content: {
       type: DataTypes.TEXT,
       allowNull: false
+    },
+    check: {
+      type: DataTypes.BOOLEAN,
+      allowNull: false,
+      defaultValue: false
     }
   }, {
     timestamps: true,
     underscored: true,
     freezeTableName: true,
     paranoid: false,
-    tableName: "notifications",
+    tableName: "suggestions",
     hooks: {},
     indexes: [],
   });
 
-  return Notification;
+  return Suggestion;
 };
