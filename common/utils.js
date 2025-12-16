@@ -1,6 +1,6 @@
 'use strict';
 
-const { Record } = require('./models/index');
+const { Player, Record } = require('./models/index');
 
 function addValue(result, input) {
   const { win, draw, lose } = input;
@@ -54,15 +54,22 @@ async function setResult(transaction, date, log, isDelete = false) {
   const monthRecord = await Record.findByPk(date.slice(0, 7));
   const yearRecord = await Record.findByPk(date.slice(0, 4));
   for (const id of Object.keys(result)) {
+    const player = await Player.findByPk(id);
+
     addValue(dayRecord.result[id], result[id]);
     addValue(monthRecord.result[id], result[id]);
     addValue(yearRecord.result[id], result[id]);
+    addValue(player.record, result[id]);
 
     if (isDelete) {
       dayRecord.result[id].plays -= 2;
       monthRecord.result[id].plays -= 2;
       yearRecord.result[id].plays -= 2;
+      player.record.plays -= 2;
     }
+
+    player.changed('record', true);
+    await player.save({ transaction });
   }
 
   dayRecord.changed('result', true);
@@ -78,7 +85,6 @@ async function setResult(transaction, date, log, isDelete = false) {
 }
 
 module.exports = {
-	addValue,
 	initValue,
   setResult
 }

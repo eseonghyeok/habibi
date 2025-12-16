@@ -24,6 +24,7 @@ router.post('/', async (req, res) => {
     await sequelize.transaction(async (t) => {
       const player = await Player.create({
         name,
+        record: utils.initValue(),
         metadata
       },
       { transaction: t });

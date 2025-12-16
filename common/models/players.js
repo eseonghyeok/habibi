@@ -16,6 +16,10 @@ module.exports = function (sequelize, DataTypes) {
       type: DataTypes.TEXT,
       allowNull: true
     },
+    record: {
+      type: DataTypes.JSON,
+      allowNull: true
+    },
     metadata: {
       type: DataTypes.JSON,
       allowNull: true
