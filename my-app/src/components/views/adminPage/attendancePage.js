@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Axios from 'axios';
-import { Button, List, Modal } from 'antd';
+import { Button, List, Modal, Select } from 'antd';
 import { SettingOutlined, ReloadOutlined } from '@ant-design/icons';
 import dayjs from 'dayjs';
 import { playerInfo, getPlayerInfo } from '../../utils';
@@ -108,6 +108,8 @@ function AttendancePage() {
   }
 
   const relocationTeam = async () => {
+    let selectedValue = 'record';
+
     Modal.confirm({
       title: '팀 섞기',
       content: (
@@ -128,34 +130,111 @@ function AttendancePage() {
             )}
           </div>
           <br />
+          <Select
+            style={{ width: "100%", marginTop: 8 }}
+            defaultValue='기록 기준'
+            onChange={(value) => {
+              selectedValue = value;
+            }}
+          >            
+            <Select.Option value="record">기록 기준</Select.Option>
+            <Select.Option value="tier">티어 기준</Select.Option>
+            <Select.Option value="radnom">무작위</Select.Option>
+          </Select>
           <p>팀을 기준에 맞게 섞으시겠습니까?</p>
         </div>
       ),
       okText: '섞기',
       cancelText: '취소',
       onOk() {
-        const teamsTemp = structuredClone(teams);
-        const teamNames = Object.keys(teams);
-        const teamValues = Object.values(teams);
-        let maxNum = 0;
-        for (const name of teamNames) {
-          maxNum = Math.max(maxNum, teamsTemp[name].members.length);
-          teamsTemp[name].members = [];
-        }
-
-        for (let i = 0; i < maxNum; i++) {
-          for (let i = teamNames.length - 1; i > 0; i--) {
-            const j = Math.floor(Math.random() * (i + 1));
-            [teamNames[i], teamNames[j]] = [teamNames[j], teamNames[i]];
+        try {
+          const teamsTemp = structuredClone(teams);
+          const teamNames = Object.keys(teams);
+          const teamMembers = [];
+          for (const name of teamNames) {
+            teamMembers.push(...teams[name].members);
+            teamsTemp[name].members = [];
           }
 
-          for (const j in teamValues) {
-            if (teamValues[j].members[i]) {
-              teamsTemp[teamNames[j]].members.push(teamValues[j].members[i]);
+          switch (selectedValue) {
+            case "record": {
+              for (let i = teamNames.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [teamNames[i], teamNames[j]] = [teamNames[j], teamNames[i]];
+              }
+
+              const teamRecords = [];
+              for (const teamName of teamNames) {
+                teamRecords.push({
+                  teamName,
+                  members: [],
+                  matches: 0,
+                  pts: 0,
+                  avg: 0
+                });
+              }
+
+              teamMembers.sort((a, b) => b.record.matches - a.record.matches || b.record.pts - a.record.pts);
+              while (teamMembers.length > 0) {
+                const teamMembersTemp = teamMembers.splice(0, teamNames.length).sort((a, b) => a.record.avg - b.record.avg);
+                for (let i = 0; i < teamMembersTemp.length; i++) {
+                  teamRecords[i].members.push(teamMembersTemp[i]);
+                  teamRecords[i].matches += teamMembersTemp[i].record.matches;
+                  teamRecords[i].pts += teamMembersTemp[i].record.pts;
+                  teamRecords[i].avg = teamRecords[i].matches ? teamRecords[i].pts / teamRecords[i].matches : 0;
+                }
+                teamRecords.sort((a, b) => b.avg - a.avg);
+              }
+
+              for (const teamRecord of teamRecords) {
+                teamsTemp[teamRecord.teamName].members = teamRecord.members;
+              }
+
+              break;
             }
+            case "tier":
+              let maxNum = 0;
+              for (const name of teamNames) {
+                maxNum = Math.max(maxNum, teams[name].members.length);
+                teamsTemp[name].members = [];
+              }
+
+              const teamValues = Object.values(teams);
+              for (let i = 0; i < maxNum; i++) {
+                for (let j = teamValues.length - 1; j > 0; j--) {
+                  const k = Math.floor(Math.random() * (j + 1));
+                  [teamValues[j], teamValues[k]] = [teamValues[k], teamValues[j]];
+                }
+
+                for (const j in teamValues) {
+                  if (teamValues[j].members[i]) {
+                    teamsTemp[teamNames[j]].members.push(teamValues[j].members[i]);
+                  }
+                }
+              }
+
+              break;
+            case "radnom":
+              for (let i = teamMembers.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [teamMembers[i], teamMembers[j]] = [teamMembers[j], teamMembers[i]];
+              }
+
+              teamMembers.forEach((member, i) => {
+                teamsTemp[teamNames[i % teamNames.length]].members.push(member);
+              });
+
+              break;
+            default:
+              throw new Error(null);
           }
+          
+          setTeams(teamsTemp);
+        } catch (err) {
+          alert('팀 섞기에 실패하였습니다.');
+          window.location.reload();
+          throw err;
         }
-        setTeams(teamsTemp);
       }
     });
   };
