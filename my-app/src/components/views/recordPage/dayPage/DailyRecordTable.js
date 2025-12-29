@@ -52,6 +52,8 @@ function YearChartTable() {
       try {
         if (buttonRefs.current[year]) {
           buttonRefs.current[year].scrollIntoView({ inline: 'center', block: 'nearest', behavior: 'smooth' });
+        } else {
+          return;
         }
 
         const recordData = (await Axios.get(`/api/records/type/day/date/${year}`)).data;

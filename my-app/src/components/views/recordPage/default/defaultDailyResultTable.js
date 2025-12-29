@@ -31,9 +31,7 @@ function Table({ columns, data, filteredIds }) {
       onOk() {
         Axios.post('/api/record/plusPlays', { ids })
           .then(response => {
-            if (response.data.success) {
-              //window.location.reload();
-            } else {
+            if (!response.data.success) {
               alert('출석체크에 실패하였습니다.')
             }
           })

@@ -82,35 +82,18 @@ function SuggestionPage() {
   };
 
   return (
-    <div style={{ textAlign: 'left', backgroundImage: `url(${backgroud})`, backgroundColor: '#FAF9F6', minHeight: '100vh', padding: '20px' }}>
-      <h1 style={{ marginBottom: "10px", color: "white", fontSize: "34px" }}>🙋하비비 건의사항🙋</h1>
-      
-      {!isLoggedIn ? (
-        <div>
-          <p style={{ fontSize: '15px', color: "#fff", marginBottom: '20px' }}>💡건의사항을 자유롭게 작성해주세요. 건의사항은 익명이며 운영진이 검토 후 답변드리겠습니다.</p>
-          <div style={{ backgroundColor: '#f5f5f5', minHeight: '500px', marginTop: '20px', borderRadius: '5px', padding: '20px' }}>
-            <div style={{ marginBottom: '10px' }}>
-              <label style={{ display: 'block', marginBottom: '5px', fontWeight: 'bold' }}>건의사항</label>
-              <TextArea
-                value={content}
-                onChange={(e) => setContent(e.target.value)}
-                placeholder="건의사항을 입력해주세요"
-                rows={15}
-              />
-            </div>
-            <div style={{ textAlign: 'right' }}>
-              <Button
-                type="primary"
-                onClick={handleSubmit}
-              >
-                제출
-              </Button>
-            </div>
-          </div>
-        </div>
-      ) : (
-        <div>
+    <div style={{ minHeight: "100vh", padding: "10px", backgroundImage: `url(${backgroud})`, backgroundSize: "cover", backgroundPosition: "center" }}>
+      <div style={{ marginBottom: "20px", textAlign: "center" }}>
+        <h1 style={{ marginBottom: "10px", color: "white", fontSize: "34px" }}>💬건의사항💬</h1>
+        {isLoggedIn ? (
           <p style={{ fontSize: '15px', color: "#fff", marginBottom: '20px' }}>💡등록된 건의사항을 확인하고 처리 상태를 관리할 수 있습니다.</p>
+        ) : (
+          <p style={{ fontSize: '15px', color: "#fff", marginBottom: '20px' }}>💡건의사항을 자유롭게 작성해주세요. 건의사항은 익명이며 운영진이 검토 후 답변드리겠습니다.</p>
+        )}
+      </div>
+      
+      {isLoggedIn ? (
+        <div>
           {loading ? (
             <p>⏳ loading...</p>
           ) : (
@@ -164,6 +147,28 @@ function SuggestionPage() {
               )}
             </div>
           )}
+        </div>
+      ) : (
+         <div>
+          <div style={{ backgroundColor: '#f5f5f5', minHeight: '500px', marginTop: '20px', borderRadius: '5px', padding: '20px' }}>
+            <div style={{ marginBottom: '10px' }}>
+              <label style={{ display: 'block', marginBottom: '5px', fontWeight: 'bold' }}>건의사항</label>
+              <TextArea
+                value={content}
+                onChange={(e) => setContent(e.target.value)}
+                placeholder="건의사항을 입력해주세요"
+                rows={15}
+              />
+            </div>
+            <div style={{ textAlign: 'right' }}>
+              <Button
+                type="primary"
+                onClick={handleSubmit}
+              >
+                제출
+              </Button>
+            </div>
+          </div>
         </div>
       )}
     </div>

@@ -109,6 +109,11 @@ function HomePage() {
         </Button>
       </div>
       <div style={{ marginBottom: '20px' }}>
+        <Button type="primary" href="/dues" size="large" style={buttonStyle}>
+          회비 내역 <p style={{ fontSize: '40px', marginRight: '-30px' }}>🧾</p>
+        </Button>
+      </div>
+      <div style={{ marginBottom: '20px' }}>
         <Button type="primary" href="/player/list" size="large" style={buttonStyle}>
           선수 정보 <p style={{ fontSize: '40px', marginRight: '-30px' }}>👕</p>
         </Button>
@@ -159,11 +164,6 @@ function HomePage() {
           <PasswordModal visible={visible} onCancel={handleCancel} />
         </div>
       )}
-      {/* <div style={{ marginBottom: '20px' }}>
-        <Button type="primary" href="/past" size="large" style={buttonStyle}>
-          하비비 2024 <p style={{ fontSize: '40px', marginRight: '-30px'}}>💛</p>
-        </Button>
-      </div> */}
     </div>
   );
 }
