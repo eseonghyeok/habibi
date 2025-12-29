@@ -192,30 +192,32 @@ function DuesPage() {
           <h3 style={{ color: "white", margin: 0 }}>입금: {dues.money.in.toLocaleString()}원</h3>
           <h3 style={{ color: "white", margin: 0 }}>출금: {dues.money.out.toLocaleString()}원</h3>
         </div>
-        <table style={{ width: "100%", borderCollapse: "collapse", marginTop: "20px" }}>
-          <thead>
-          <tr>
-            {dues.history.length > 0 &&
-              Object.keys(dues.history[0]).map((key) => (
-                <th key={key} style={thStyle}>{key}</th>
-              ))}
-          </tr>
-          </thead>
-          <tbody>
-            {dues.history.map((item, idx) => (
-              <tr
-                key={idx}
-                style={{ backgroundColor: idx % 2 === 0 ? "#fff" : "#f9f9f9" }}
-              >
-                {Object.keys(item).map((key) => (
-                  <td key={key} style={tdStyle}>
-                    {item[key]}
-                  </td>
+        <div style={{ overflowX: "auto" }}>
+          <table style={{ width: "100%", borderCollapse: "collapse", marginTop: "20px" }}>
+            <thead>
+            <tr>
+              {dues.history.length > 0 &&
+                Object.keys(dues.history[0]).map((key) => (
+                  <th key={key} style={thStyle}>{key}</th>
                 ))}
-              </tr>
-            ))}
-          </tbody>
-        </table>
+            </tr>
+            </thead>
+            <tbody>
+              {dues.history.map((item, idx) => (
+                <tr
+                  key={idx}
+                  style={{ backgroundColor: idx % 2 === 0 ? "#fff" : "#f9f9f9" }}
+                >
+                  {Object.keys(item).map((key) => (
+                    <td key={key} style={tdStyle}>
+                      {item[key]}
+                    </td>
+                  ))}
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
       </div>
     );
   };
