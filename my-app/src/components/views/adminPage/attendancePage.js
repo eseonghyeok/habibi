@@ -229,6 +229,9 @@ function AttendancePage() {
               throw new Error(null);
           }
           
+          for (const team of Object.values(teamsTemp)) {
+            team.members.sort((a, b) => a.name.localeCompare(b.name));
+          }
           setTeams(teamsTemp);
         } catch (err) {
           alert('팀 섞기에 실패하였습니다.');
