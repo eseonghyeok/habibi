@@ -4,7 +4,7 @@ import Axios from 'axios';
 import dayjs from 'dayjs';
 import Table from "../default/defaultMonthRecordTable";
 
-function MonthChartTable() {
+function MonthRecordTable() {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(true);
   const [result, setResult] = useState([]);
@@ -160,4 +160,4 @@ function MonthChartTable() {
   );
 }
 
-export default MonthChartTable;
+export default MonthRecordTable;

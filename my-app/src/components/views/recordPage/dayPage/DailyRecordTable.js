@@ -5,7 +5,7 @@ import { Button, Modal } from 'antd'
 import dayjs from 'dayjs';
 import Table from "../default/defaultDailyRecordTable";
 
-function YearChartTable() {
+function DailyRecordTable() {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(true);
   const [result, setResult] = useState([]);
@@ -259,4 +259,4 @@ function YearChartTable() {
   );
 }
 
-export default YearChartTable;
+export default DailyRecordTable;

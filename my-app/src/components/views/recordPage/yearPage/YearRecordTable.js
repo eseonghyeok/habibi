@@ -4,7 +4,7 @@ import Axios from 'axios';
 import dayjs from 'dayjs';
 import Table from "../default/defaultYearRecordTable";
 
-function YearChartTable() {
+function YearRecordTable() {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(true);
   const [result, setResult] = useState([]);
@@ -159,4 +159,4 @@ function YearChartTable() {
   );
 }
 
-export default YearChartTable;
+export default YearRecordTable;
