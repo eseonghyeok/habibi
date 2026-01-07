@@ -395,8 +395,20 @@ function AttendancePage() {
           }
           await Axios.patch(`/api/records/date/${now}/teams`, { teams });
           await Axios.patch('/api/teams', { teams });
-          captureAndShare(teamRef.current, 'team');
-          navigate('/');
+          
+          Modal.confirm({
+            title: '팀 명단 공유',
+            content: '팀 명단을 공유하시겠습니까?',
+            okText: '공유',
+            cancelText: '취소',
+            onOk() {
+              captureAndShare(teamRef.current, 'team');
+              navigate('/');
+            },
+            onCancel() {
+              navigate('/');
+            }
+          })
         } catch (err) {
           alert('명단 등록에 실패하였습니다.');
           window.location.reload();
