@@ -5,7 +5,10 @@ async function captureAndShare(targetRef, type) {
 
   const canvas = await html2canvas(targetRef);
   canvas.toBlob(async (blob) => {
-    const textArray = []
+    const textArray = [
+      process.env.REACT_APP_WEB_SITE,
+      "",
+    ]
     const today = new Date().toISOString().split("T")[0];
     switch (type) {
       case 'record':
@@ -36,12 +39,6 @@ async function captureAndShare(targetRef, type) {
         alert("공유할 수 없는 환경입니다.");
         break;
     }
-
-    textArray.push(
-      "",
-      "",
-      "https://habibi-oo7e.onrender.com/",
-    );
 
     const file = new File([blob], "screenshot.png", { type: "image/png" });
     if (navigator.canShare && navigator.canShare({ files: [file] })) {
