@@ -7,6 +7,7 @@ import dayjs from 'dayjs';
 import { playerInfo, getPlayerInfo } from '../../utils';
 import groundJpg from '../../images/ground.png';
 import list from '../../images/playerlist.jpg';
+import captureAndShare from "../adminPage/ShareResult";
 
 import profile1 from '../../images/profile/1.jpg';
 import profile2 from '../../images/profile/2.jpg';
@@ -394,7 +395,8 @@ function AttendancePage() {
           }
           await Axios.patch(`/api/records/date/${now}/teams`, { teams });
           await Axios.patch('/api/teams', { teams });
-          window.location.reload();
+          captureAndShare(teamRef.current, 'team');
+          navigate('/');
         } catch (err) {
           alert('명단 등록에 실패하였습니다.');
           window.location.reload();
@@ -405,6 +407,7 @@ function AttendancePage() {
   };
 
   let date = new Date();
+  let teamRef = useRef(null);
 
   if (loading) return <p>⏳ loading...</p>;
 
@@ -462,7 +465,7 @@ function AttendancePage() {
         </div>
       )}
 
-      <div style={{ padding: '20px', background: `url(${groundJpg})`, backgroundSize: 'cover', backgroundPosition: 'center', position: 'relative', overflow: 'hidden' }}>
+      <div ref={teamRef} style={{ padding: '20px', background: `url(${groundJpg})`, backgroundSize: 'cover', backgroundPosition: 'center', position: 'relative', overflow: 'hidden' }}>
         {Object.keys(teams).map(name => (
           <div key={name} style={{ marginBottom: '20px' }}>
             <h2 style={{ color: 'white' }}>{name}</h2>

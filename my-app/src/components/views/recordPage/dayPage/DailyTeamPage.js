@@ -257,7 +257,7 @@ function DailyTeamPage() {
               okText: '공유',
               cancelText: '취소',
               onOk() {
-                captureAndShare(recordRef);
+                captureAndShare(recordRef.current, 'record');
                 navigate('/');
               },
               onCancel() {
