@@ -135,7 +135,7 @@ function HomePage() {
       </div>
       <div style={{ marginBottom: '20px' }}>
         <Button type="primary" href="/attendance" size="large" style={buttonStyle}>
-          팀 명단 <p style={{ fontSize: '35px', marginRight: '-30px' }}>🎭</p>
+          팀 명단 <p style={{ fontSize: '35px', marginRight: '-30px' }}>👥</p>
         </Button>
       </div>
       {isLoggedIn ? (
