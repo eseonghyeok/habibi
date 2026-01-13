@@ -43,6 +43,7 @@ async function captureAndShare(targetRef, type) {
     const file = new File([blob], "screenshot.png", { type: "image/png" });
     if (navigator.canShare && navigator.canShare({ files: [file] })) {
       try {
+        await navigator.clipboard.writeText(textArray.join("\n"));
         await navigator.share({
           files: [file],
           title: "결과 공유",
