@@ -23,7 +23,7 @@ function SuggestionPage() {
       setSuggestions(suggestionsData);
     } catch (err) {
       alert('건의사항 가져오기를 실패하였습니다.');
-      console.error(err);
+      window.location.reload();
     } finally {
       setLoading(false);
     }
@@ -39,11 +39,11 @@ function SuggestionPage() {
       await Axios.post(`/api/suggestions`, {
         content: content.trim()
       });
-      setContent('');
       alert('건의사항이 등록되었습니다. 감사합니다!');
     } catch (err) {
       alert('건의사항 등록에 실패했습니다.');
-      console.error(err);
+    } finally {
+      window.location.reload();
     }
   };
 
@@ -55,7 +55,7 @@ function SuggestionPage() {
       await loadSuggestions();
     } catch (err) {
       alert('상태 변경에 실패했습니다.');
-      console.error(err);
+      window.location.reload();
     }
   };
 
@@ -69,7 +69,7 @@ function SuggestionPage() {
       await loadSuggestions();
     } catch (err) {
       alert('건의사항 삭제에 실패했습니다.');
-      console.error(err);
+      window.location.reload();
     }
   };
 

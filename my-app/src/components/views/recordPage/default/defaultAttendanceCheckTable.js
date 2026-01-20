@@ -48,8 +48,8 @@ function Table({ columns, data, date }) {
       <div style={{ marginBottom: "20px", textAlign: "center" }}>
         <h1 style={{ marginBottom: "10px", color: "#fff", fontSize: "25px" }}>🙋출석 체크🙋‍♂️</h1>
         <p style={{ fontSize: '11px', color: "#fff" }}>💡출석 체크 페이지에서는 오늘 경기 기록이 없는 선수의 출석을 변경할 수 있습니다.</p>
-        <p style={{ fontSize: '10px', color: "#fff" }}>💡경기 기록이 있는 선수는 명단에 보이지 않습니다.</p>
-        <p style={{ fontSize: '10px', color: "#fff" }}>💡선수를 누르면 출석을 수정할 수 있습니다.</p>
+        <p style={{ fontSize: '11px', color: "#fff" }}>💡출석 체크는 경기 종료 이후에 진행해주세요.</p>
+        <p style={{ fontSize: '10px', color: "#fff" }}>💡선수를 누르면 출석을 수정할 수 있으며 경기 기록이 있는 선수는 명단에 보이지 않습니다.</p>
         <Search
           onSubmit={setGlobalFilter} style={{ overflowX: "auto", padding: "0 30px" }}
         />

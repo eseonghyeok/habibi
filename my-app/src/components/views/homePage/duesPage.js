@@ -120,13 +120,12 @@ function DuesPage() {
 
     result.history.forEach((item) => {
       const type = item["구분"];
-      const content = String(item["메모"] || "").trim();
       const memo = String(item["메모"] || "").trim();
       const amount = Math.abs(parseMoney(item["거래금액"]));
 
       summary[type]["기타"] += amount;
       for (const category of categorys) {
-        if ((content.includes(category) || memo.includes(category))) {
+        if (memo.includes(category)) {
           summary[type][category] += amount;
           summary[type]["기타"] -= amount;
         }
