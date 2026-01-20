@@ -9,7 +9,7 @@ module.exports = function (sequelize, DataTypes) {
       defaultValue: DataTypes.UUIDV4
     },
     content: {
-      type: DataTypes.TEXT,
+      type: DataTypes.JSON,
       allowNull: false
     },
     check: {
