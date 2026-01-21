@@ -2,18 +2,6 @@
 
 const { Player, Record } = require('./models/index');
 
-function addValue(result, input) {
-  const { plays, win, draw, lose } = input;
-
-  result.plays += plays;
-  result.matches += win + draw + lose;
-  result.win += win;
-  result.draw += draw;
-  result.lose += lose;
-  result.pts += win * 3 + draw;
-  result.avg = result.matches ? Number((result.pts / result.matches).toFixed(2)) : 0;
-}
-
 function initValue() {
   return {
     plays: 0,
@@ -24,6 +12,18 @@ function initValue() {
     pts: 0,
     avg: 0
   }
+}
+
+function addValue(result, input) {
+  const { plays, win, draw, lose } = input;
+
+  result.plays += plays;
+  result.matches += win + draw + lose;
+  result.win += win;
+  result.draw += draw;
+  result.lose += lose;
+  result.pts += win * 3 + draw;
+  result.avg = result.matches ? Number((result.pts / result.matches).toFixed(2)) : 0;
 }
 
 async function setResult(transaction, date, log, isDelete = false) {
@@ -81,5 +81,6 @@ async function setResult(transaction, date, log, isDelete = false) {
 
 module.exports = {
 	initValue,
+  addValue,
   setResult
 }

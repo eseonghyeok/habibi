@@ -147,7 +147,7 @@ function AttendancePage() {
       ),
       okText: '섞기',
       cancelText: '취소',
-      onOk() {
+      async onOk() {
         try {
           const teamsTemp = structuredClone(teams);
           const teamNames = Object.keys(teams);
@@ -175,13 +175,17 @@ function AttendancePage() {
                 });
               }
 
-              teamMembers.sort((a, b) => b.record.matches - a.record.matches || b.record.pts - a.record.pts);
+              const standardRecordData = (await Axios.get(`/api/records/standard`)).data;
+              teamMembers.forEach(member => {
+                member.standardRecord = standardRecordData[member.id];
+              });
+              teamMembers.sort((a, b) => b.standardRecord.matches - a.standardRecord.matches || b.standardRecord.pts - a.standardRecord.pts);
               while (teamMembers.length > 0) {
-                const teamMembersTemp = teamMembers.splice(0, teamNames.length).sort((a, b) => a.record.avg - b.record.avg);
+                const teamMembersTemp = teamMembers.splice(0, teamNames.length).sort((a, b) => a.standardRecord.avg - b.standardRecord.avg);
                 for (let i = 0; i < teamMembersTemp.length; i++) {
                   teamRecords[i].members.push(teamMembersTemp[i]);
-                  teamRecords[i].matches += teamMembersTemp[i].record.matches;
-                  teamRecords[i].pts += teamMembersTemp[i].record.pts;
+                  teamRecords[i].matches += teamMembersTemp[i].standardRecord.matches;
+                  teamRecords[i].pts += teamMembersTemp[i].standardRecord.pts;
                   teamRecords[i].avg = teamRecords[i].matches ? teamRecords[i].pts / teamRecords[i].matches : 0;
                 }
                 teamRecords.sort((a, b) => b.avg - a.avg);
@@ -236,7 +240,7 @@ function AttendancePage() {
           setTeams(teamsTemp);
         } catch (err) {
           alert('팀 섞기에 실패하였습니다.');
-          window.location.reload();
+          // window.location.reload();
           throw err;
         }
       }

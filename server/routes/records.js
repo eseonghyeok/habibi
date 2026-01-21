@@ -63,6 +63,31 @@ router.get('/last', async (req, res) => {
     res.sendStatus(500);
   }
 });
+router.get('/standard', async (req, res) => {
+  try {
+    const record = await Record.findAll({
+      where: {
+        type: 'month'
+      },
+      order: [[ "date", 'DESC' ]],
+      limit: 3
+    });
+
+    res.json(record.reduce((ret, record) => {
+      for (const [uuid, data] of Object.entries(record.result)) {
+        if (!ret[uuid]) {
+          ret[uuid] = record.result[uuid];
+        } else {
+          utils.addValue(ret[uuid], record.result[uuid]);
+        }
+      }
+      return ret;
+    }, {}));
+  } catch (err) {
+    console.log(err);
+    res.sendStatus(500);
+  }
+});
 
 // 기록 추가
 router.post('/date/:date', async (req, res) => {

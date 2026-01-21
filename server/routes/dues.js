@@ -93,7 +93,7 @@ router.post('/', upload.single('file'), async (req, res) => {
 
     const dues = {};
     historys.forEach((history) => {
-      const date = history['거래일시'].slice(0, 7).replace(/\./g, "-");
+      const date = history["거래일시"].slice(0, 7).replace(/\./g, "-");
       if (!dues[date]) {
         dues[date] = { 
           money: { 
@@ -105,13 +105,13 @@ router.post('/', upload.single('file'), async (req, res) => {
       }
 
       dues[date].history.unshift(history);
-      const money = Number(history['거래금액'].replace(/,/g, ""));
+      const money = Number(history["거래금액"].replace(/,/g, ""));
       if (money > 0) dues[date].money.in += money;
       else dues[date].money.out -= money;
     });
 
     for (const date of Object.keys(dues)) {
-      dues[date].money.balance = Number(dues[date].history[0]['거래 후 잔액'].replace(/,/g, ""));
+      dues[date].money.balance = Number(dues[date].history[0]["거래 후 잔액"].replace(/,/g, ""));
 
       await sequelize.transaction(async (t) => {
         await Dues.destroy({
