@@ -3,9 +3,9 @@
 const { Player, Record } = require('./models/index');
 
 function addValue(result, input) {
-  const { win, draw, lose } = input;
+  const { plays, win, draw, lose } = input;
 
-  result.plays++;
+  result.plays += plays;
   result.matches += win + draw + lose;
   result.win += win;
   result.draw += draw;
@@ -32,6 +32,7 @@ async function setResult(transaction, date, log, isDelete = false) {
   if (isDelete) {
     Object.keys(dayRecord.result).forEach(id => {
       result[id] = {
+        plays: -1,
         win: -dayRecord.result[id].win,
         draw: -dayRecord.result[id].draw,
         lose: -dayRecord.result[id].lose,
@@ -43,6 +44,7 @@ async function setResult(transaction, date, log, isDelete = false) {
         for (const id of record.playersId) {
           if (!Object.hasOwn(result, id)) {
             result[id] = initValue();
+            result[id].plays++;
             dayRecord.result[id] = initValue();
           }
           result[id][record.type]++;
@@ -60,13 +62,6 @@ async function setResult(transaction, date, log, isDelete = false) {
     addValue(monthRecord.result[id], result[id]);
     addValue(yearRecord.result[id], result[id]);
     addValue(player.record, result[id]);
-
-    if (isDelete) {
-      dayRecord.result[id].plays -= 2;
-      monthRecord.result[id].plays -= 2;
-      yearRecord.result[id].plays -= 2;
-      player.record.plays -= 2;
-    }
 
     player.changed('record', true);
     await player.save({ transaction });
