@@ -140,7 +140,7 @@ function SuggestionPage() {
           )}
           {isOpen && (
             <div style={{ backgroundColor: '#f5f5f5', minHeight: '500px', marginTop: '20px', borderRadius: '5px', padding: '20px' }}>
-              {suggestions.length === 0 ? (
+              {suggestions.filter(suggestion => isLoggedIn || !suggestion.check).length === 0 ? (
                 <div style={{ textAlign: 'center', padding: '50px', color: '#999' }}>
                   등록된 건의사항이 없습니다.
                 </div>
