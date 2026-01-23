@@ -17,6 +17,19 @@ export const playerInfo = (player) => {
       <p><span style={{ fontWeight: 'bolder' }}>이름</span>: {player.name}</p>
       <p><span style={{ fontWeight: 'bolder' }}>생년월일</span>: {birth[0]}년 {birth[1]}월 {birth[2]}일</p>
       <p><span style={{ fontWeight: 'bolder' }}>전화번호</span>: {player.metadata.phone}</p>
+      {player.record && (
+        <>
+          <br />
+          <p><span style={{ fontWeight: 'bolder' }}>경기 기록</span></p>
+          <p>
+            {player.record.matches} <span style={{ fontWeight: 'bolder' }}>전 </span>
+            {player.record.win} <span style={{ fontWeight: 'bolder' }}>승 </span>
+            {player.record.draw} <span style={{ fontWeight: 'bolder' }}>무 </span>
+            {player.record.lose} <span style={{ fontWeight: 'bolder' }}>패 </span>
+          </p>
+          <p><span style={{ fontWeight: 'bolder' }}>총점: </span>{player.record.pts} <span style={{ fontWeight: 'bolder' }}>평균: </span>{player.record.avg}</p>
+        </>
+      )}
       <br />
       {player.metadata.etc.map(item => <p key={item.key}><span style={{ fontWeight: 'bolder' }}>{item.key}</span>: {item.value}</p>)}
     </div>
