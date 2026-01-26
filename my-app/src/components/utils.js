@@ -136,7 +136,7 @@ export const PlayerModal = ({ open, close, player, isLogin }) => {
       open={open}
       onOk={handleOk}
       onCancel={handleCancel}
-      okText={player ? '수정' : '추가'}
+      okText={player ? '확인' : '추가'}
       cancelText='취소'
     >
       <Form form={form} layout="vertical">
@@ -197,6 +197,19 @@ export const PlayerModal = ({ open, close, player, isLogin }) => {
                 maxLength={20}
               />
             </Form.Item>
+            {player && (
+              <>
+                <p><span style={{ fontWeight: 'bolder' }}>경기 기록</span></p>
+                  <p>
+                    {player.record.matches} <span style={{ fontWeight: 'bolder' }}>전 </span>
+                    {player.record.win} <span style={{ fontWeight: 'bolder' }}>승 </span>
+                    {player.record.draw} <span style={{ fontWeight: 'bolder' }}>무 </span>
+                    {player.record.lose} <span style={{ fontWeight: 'bolder' }}>패 </span>
+                  </p>
+                <p><span style={{ fontWeight: 'bolder' }}>총점: </span>{player.record.pts} <span style={{ fontWeight: 'bolder' }}>평균: </span>{player.record.avg}</p>
+                <br />
+              </>
+            )}
           </>
         ) : (player) && (
           playerInfo(player)
