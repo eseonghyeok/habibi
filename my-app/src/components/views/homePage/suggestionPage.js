@@ -8,8 +8,7 @@ const { TextArea } = Input;
 function SuggestionPage() {
   const [loading, setLoading] = useState(false);
   const [suggestions, setSuggestions] = useState([]);
-  const [message, setMessage] = useState('');
-  const [name, setName] = useState('');
+  const [content, setContent] = useState('');
   const [isOpen, setIsOpen] = useState(true);
   const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
 
@@ -31,21 +30,14 @@ function SuggestionPage() {
   };
 
   const handleSubmit = async () => {
-    if (!message.trim()) {
+    if (!content.trim()) {
       alert('건의사항을 입력해주세요.');
-      return;
-    }
-    if (!name.trim()) {
-      alert('작성자를 입력해주세요.');
       return;
     }
 
     try {
       await Axios.post(`/api/suggestions`, {
-        content: {
-          message: message.trim(),
-          name: name.trim()
-        }
+        content: content.trim()
       });
       alert('건의사항이 등록되었습니다. 감사합니다!');
     } catch (err) {
@@ -95,7 +87,7 @@ function SuggestionPage() {
         {isLoggedIn ? (
           <p style={{ fontSize: '15px', color: "#fff", marginBottom: '20px' }}>💡등록된 건의사항을 확인하고 처리 상태를 관리할 수 있습니다.</p>
         ) : (
-          <p style={{ fontSize: '15px', color: "#fff", marginBottom: '20px' }}>💡건의사항을 자유롭게 작성해주세요. 건의사항의 작성자는 운영진에게만 보이며 운영진이 검토 후 답변드리겠습니다.</p>
+          <p style={{ fontSize: '15px', color: "#fff", marginBottom: '20px' }}>💡건의사항을 자유롭게 작성해주세요. 운영진이 검토 후 답변드리겠습니다.</p>
         )}
       </div>
       
@@ -104,19 +96,13 @@ function SuggestionPage() {
           <div style={{ marginBottom: '10px' }}>
             <label style={{ display: 'block', marginBottom: '5px', fontWeight: 'bold' }}>건의사항</label>
             <TextArea
-              value={message}
-              onChange={(e) => setMessage(e.target.value)}
+              value={content}
+              onChange={(e) => setContent(e.target.value)}
               placeholder="건의사항을 입력해주세요"
               rows={15}
             />
           </div>
-          <div style={{ display: 'flex', justifyContent: 'space-between', textAlign: 'right' }}>
-            <TextArea style={{ width: "100px" }}
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-              placeholder="작성자"
-              rows={1}
-            />
+          <div style={{ textAlign: 'right' }}>
             <Button
               type="primary"
               onClick={handleSubmit}
@@ -183,13 +169,7 @@ function SuggestionPage() {
                         </div>
                       )}
                       <div style={{ whiteSpace: 'pre-wrap', wordBreak: 'break-word', padding: '10px', backgroundColor: '#fafafa', borderRadius: '3px' }}>
-                        {isLoggedIn && (
-                          <div>
-                            <strong>작성자:</strong> {suggestion.content.name}
-                            <br /><br />
-                          </div>
-                        )}
-                        {suggestion.content.message}
+                        {suggestion.content}
                       </div>
                     </div>
                   ))}
