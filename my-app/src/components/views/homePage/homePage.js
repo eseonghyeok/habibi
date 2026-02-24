@@ -81,6 +81,66 @@ function HomePage() {
     });
   };
 
+  const recordModal = () => {
+    Modal.info({
+      icon: '📊',
+      title: '경기 기록',
+      content: (
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
+          <Button type="primary" href="/record/year" size="large" style={buttonStyle}>
+            연도별 기록
+          </Button>
+          <Button type="primary" href="/record/month" size="large" style={buttonStyle}>
+            월별 기록
+          </Button>
+          <Button type="primary" href="/record/day" size="large" style={buttonStyle}>
+            경기별 기록
+          </Button>
+        </div>
+      ),
+      okText: '취소'
+    });
+  }
+
+  const checkModal = () => {
+    Modal.info({
+      icon: '📝',
+      title: '경기 체크',
+      content: (
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
+          <Button type="primary" href="/record/teams" size="large" style={buttonStyle}>
+            승점 체크
+          </Button>
+          <Button type="primary" href="/record/attendanceCheck" size="large" style={buttonStyle}>
+            출석 체크
+          </Button>
+        </div>
+      ),
+      okText: '취소'
+    });
+  }
+
+  const operationsModal = () => {
+    Modal.info({
+      icon: '📢',
+      title: '운영 사항',
+      content: (
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
+          <Button type="primary" href="/notification" size="large" style={buttonStyle}>
+            공지 사항
+          </Button>
+          <Button type="primary" href="/suggestion" size="large" style={buttonStyle}>
+            건의 사항
+          </Button>
+          <Button type="primary" href="/dues" size="large" style={buttonStyle}>
+            회비 내역
+          </Button>
+        </div>
+      ),
+      okText: '취소'
+    });
+  }
+
   const buttonStyle = {
     width: '240px',
     height: '80px',
@@ -99,18 +159,8 @@ function HomePage() {
   return (
     <div style={{ textAlign: 'center', display: 'flex', backgroundImage: `url(${background})`, backgroundSize: 'cover', backgroundPosition: 'center', minHeight: '100vh', flexDirection: 'column', alignItems: 'center' }}>
       <div style={{ marginBottom: '20px', marginTop: '50px' }}>
-        <Button type="primary" href="/notification" size="large" style={buttonStyle}>
-          공지사항 <p style={{ fontSize: '40px', marginRight: '-30px' }}>📢</p>
-        </Button>
-      </div>
-      <div style={{ marginBottom: '20px' }}>
-        <Button type="primary" href="/suggestion" size="large" style={buttonStyle}>
-          건의사항 <p style={{ fontSize: '40px', marginRight: '-30px' }}>🙋</p>
-        </Button>
-      </div>
-      <div style={{ marginBottom: '20px' }}>
-        <Button type="primary" href="/dues" size="large" style={buttonStyle}>
-          회비 내역 <p style={{ fontSize: '40px', marginRight: '-30px' }}>🧾</p>
+        <Button type="primary" onClick={operationsModal}  size="large" style={buttonStyle}>
+          운영 사항 <p style={{ fontSize: '40px', marginRight: '-30px' }}>📢</p>
         </Button>
       </div>
       <div style={{ marginBottom: '20px' }}>
@@ -119,35 +169,20 @@ function HomePage() {
         </Button>
       </div>
       <div style={{ marginBottom: '20px' }}>
-        <Button type="primary" href="/record/year" size="large" style={buttonStyle}>
-          연간 랭킹 <p style={{ fontSize: '40px', marginRight: '-30px' }}>🥇</p>
-        </Button>
-      </div>
-      <div style={{ marginBottom: '20px' }}>
-        <Button type="primary" href="/record/month" size="large" style={buttonStyle}>
-          월간 랭킹 <p style={{ fontSize: '40px', marginRight: '-30px' }}>🥈</p>
-        </Button>
-      </div>
-      <div style={{ marginBottom: '20px' }}>
-        <Button type="primary" href="/record/day" size="large" style={buttonStyle}>
-          경기 결과 <p style={{ fontSize: '35px', marginRight: '-30px' }}>✅</p>
+        <Button type="primary" onClick={recordModal}  size="large" style={buttonStyle}>
+          경기 기록 <p style={{ fontSize: '40px', marginRight: '-30px' }}>📊</p>
         </Button>
       </div>
       <div style={{ marginBottom: '20px' }}>
         <Button type="primary" href="/attendance" size="large" style={buttonStyle}>
-          팀 명단 <p style={{ fontSize: '35px', marginRight: '-30px' }}>👥</p>
+          경기 명단 <p style={{ fontSize: '35px', marginRight: '-30px' }}>👥</p>
         </Button>
       </div>
       {isLoggedIn ? (
         <div>
           <div style={{ marginBottom: '20px' }}>
-            <Button type="primary" href="/record/teams" size="large" style={buttonStyle}>
-              승점 체크 <p style={{ fontSize: '35px', marginRight: '-30px' }}>📊</p>
-            </Button>
-          </div>
-          <div style={{ marginBottom: '20px' }}>
-            <Button type="primary" href="/record/attendanceCheck" size="large" style={buttonStyle}>
-              출석 체크 <p style={{ fontSize: '35px', marginRight: '-30px' }}>📋</p>
+            <Button type="primary" onClick={checkModal}  size="large" style={buttonStyle}>
+              경기 체크 <p style={{ fontSize: '40px', marginRight: '-30px' }}>📝</p>
             </Button>
           </div>
           <div style={{ marginBottom: '20px' }}>

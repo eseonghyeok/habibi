@@ -16,22 +16,16 @@ async function captureAndShare(targetRef, type) {
           `📢 오늘의 경기 결과 (${today}) 📢`,
           "",
           "",
-          "▼ 경기 결과✅ 확인하기 ▼",
+          "▼ 경기 결과📊 확인하기 ▼",
           `${process.env.REACT_APP_WEB_SITE}/record/day`,
-          "",
-          "▼ 월간 랭킹🥈 확인하기 ▼",
-          `${process.env.REACT_APP_WEB_SITE}/record/month`,
-          "",
-          "▼ 연간 랭킹🥇 확인하기 ▼",
-          `${process.env.REACT_APP_WEB_SITE}/record/year`,
         );
         break;
       case 'team':
         textArray.push(
-          `📢 오늘의 팀 명단 (${today}) 📢`,
+          `📢 오늘의 경기 명단 (${today}) 📢`,
           "",
           "",
-          "▼ 팀 명단👥 확인하기 ▼",
+          "▼ 경기 명단👥 확인하기 ▼",
           `${process.env.REACT_APP_WEB_SITE}/attendance`,
         );
         break;

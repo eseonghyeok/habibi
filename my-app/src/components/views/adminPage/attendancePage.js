@@ -35,7 +35,7 @@ function AttendancePage() {
           return;
         }
         if (!recordData && (localStorage.getItem('isLoggedIn') !== 'true')) {
-          alert('오늘의 팀 명단이 존재하지 않습니다.');
+          alert('오늘의 경기 명단이 존재하지 않습니다.');
           navigate('/');
           return;
         }
@@ -401,8 +401,8 @@ function AttendancePage() {
           await Axios.patch('/api/teams', { teams });
           
           Modal.confirm({
-            title: '팀 명단 공유',
-            content: '팀 명단을 공유하시겠습니까?',
+            title: '경기 명단 공유',
+            content: '경기 명단을 공유하시겠습니까?',
             okText: '공유',
             cancelText: '취소',
             onOk() {
@@ -432,7 +432,7 @@ function AttendancePage() {
       {(localStorage.getItem('isLoggedIn') === 'true') && (
         <div style={{ backgroundImage: `url(${list})` }}>
           <div style={{ padding: "10px", color: 'white' }}>
-            <h1>🔴 팀 나누기 🔵</h1>
+            <h1>🔴 경기 명단 🔵</h1>
             <p> {date.toLocaleDateString()} </p>
             <p>💡 {Object.keys(teams).join(', ')} 팀을 선택하고 회원을 추가하세요.</p>
             <div style={{ display: 'flex', overflowX: 'auto', justifyContent: 'center', gap: '10px', marginBottom: '20px', padding: '10px 0' }}>

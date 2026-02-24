@@ -22,7 +22,7 @@ function DailyTeamPage() {
       try {
         const recordData = (await Axios.get(`/api/records/date/${now}`)).data;
         if (!recordData) {
-          alert('팀 나누기 이후에 진행하세요.');
+          alert('경기 명단 저장 이후에 진행하세요.');
           navigate('/attendance');
           return;
         } else if (Object.keys(recordData.result).length > 0) {

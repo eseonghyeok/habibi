@@ -91,7 +91,7 @@ function DailyRecordTable() {
         <div>
           {Object.keys(log).map(name =>
             <div key={name}>
-              <p style={{ marginTop: '30px', marginBottom: '20px', fontWeight: 'bold' }}>{name}팀 명단</p>
+              <p style={{ marginTop: '30px', marginBottom: '20px', fontWeight: 'bold' }}>{name}경기 명단</p>
               {log[name].playersId.map(id => {
                 if (players.current[id]) {
                   return (

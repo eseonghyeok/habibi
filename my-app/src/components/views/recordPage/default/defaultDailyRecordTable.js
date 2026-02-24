@@ -38,9 +38,9 @@ function Table({ columns, data, date, lastRecord }) {
   return (
     <div style={{ minHeight: "100vh", padding: "10px", backgroundImage: `url(${chartpage})`, backgroundSize: "cover", backgroundPosition: "center" }}>
       <div style={{ marginBottom: "20px", textAlign: "center" }}>
-        <h1 style={{ marginBottom: "10px", color: "#fff", fontSize: "25px" }}>📋경기 결과📋</h1>
-        <p style={{ fontSize: '11px', color: "#fff" }}>💡경기 결과 페이지에서는 경기 결과를 상세하게 확인할 수 있습니다.</p>
-        <p style={{ fontSize: '11px', color: "#fff" }}>💡경기 결과 페이지에서는 오늘 경기 결과를 삭제할 수 있습니다.</p>
+        <h1 style={{ marginBottom: "10px", color: "#fff", fontSize: "25px" }}>경기별 기록</h1>
+        <p style={{ fontSize: '11px', color: "#fff" }}>💡경기별 기록 페이지에서는 경기 결과를 상세하게 확인할 수 있습니다.</p>
+        <p style={{ fontSize: '11px', color: "#fff" }}>💡경기별 기록 페이지에서는 오늘 경기 결과를 삭제할 수 있습니다.</p>
         <p style={{ fontSize: '10px', color: "#fff" }}>💡점수는 승무패 기록으로 합산됩니다.</p>
         <p style={{ fontSize: '10px', color: "#fff" }}>💡선수를 누르면 선수 정보를 확인할 수 있습니다.</p>
         <Search
