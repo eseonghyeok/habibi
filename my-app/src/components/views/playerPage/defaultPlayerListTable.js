@@ -59,7 +59,7 @@ function Table({ columns, data, isLoggedIn }) {
   return (
     <div style={{ minHeight: "100vh", padding: "10px", backgroundImage: `url(${chartpage})`, backgroundSize: "cover", backgroundPosition: "center" }}>
       <div style={{ marginBottom: "20px", textAlign: "center" }}>
-        <h1 style={{ marginBottom: "10px", color: "#fff", fontSize: "23px" }}>🧑‍🦱선수 정보👨</h1>
+        <h1 style={{ marginBottom: "10px", color: "#fff", fontSize: "23px" }}>선수 정보</h1>
         <p style={{ fontSize: '11px', color: "#fff" }}>💡선수 정보 페이지에서는 선수 정보를 확인하거나 선수 추가/수정/삭제할 수 있습니다.</p>
         <p style={{ fontSize: '11px', color: "#fff" }}>💡선수를 누르면 선수 정보를 확인할 수 있습니다.</p>
       </div>

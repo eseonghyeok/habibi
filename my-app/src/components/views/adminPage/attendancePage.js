@@ -432,7 +432,7 @@ function AttendancePage() {
       {(localStorage.getItem('isLoggedIn') === 'true') && (
         <div style={{ backgroundImage: `url(${list})` }}>
           <div style={{ padding: "10px", color: 'white' }}>
-            <h1>🔴 경기 명단 🔵</h1>
+            <h1>경기 명단</h1>
             <p> {date.toLocaleDateString()} </p>
             <p>💡 {Object.keys(teams).join(', ')} 팀을 선택하고 회원을 추가하세요.</p>
             <div style={{ display: 'flex', overflowX: 'auto', justifyContent: 'center', gap: '10px', marginBottom: '20px', padding: '10px 0' }}>

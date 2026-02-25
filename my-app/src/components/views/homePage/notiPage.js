@@ -51,7 +51,7 @@ function NotiPage() {
   return (
     <div style={{ textAlign: 'left', backgroundImage: `url(${backgroud})`, backgroundColor: '#FAF9F6', minHeight: '100vh', padding: '20px' }}>
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: "10px" }}>
-        <h1 style={{ margin: 0, color: "white", fontSize: "34px" }}>📢하비비 공지사항📢</h1>
+        <h1 style={{ margin: 0, color: "white", fontSize: "34px" }}>공지사항</h1>
         {isLoggedIn && (
           <Button
             type="primary"

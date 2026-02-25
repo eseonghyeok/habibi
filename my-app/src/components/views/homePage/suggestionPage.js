@@ -83,7 +83,7 @@ function SuggestionPage() {
   return (
     <div style={{ minHeight: "100vh", padding: "10px", backgroundImage: `url(${backgroud})`, backgroundSize: "cover", backgroundPosition: "center" }}>
       <div style={{ marginBottom: "20px", textAlign: "center" }}>
-        <h1 style={{ marginBottom: "10px", color: "white", fontSize: "34px" }}>💬건의사항💬</h1>
+        <h1 style={{ marginBottom: "10px", color: "white", fontSize: "34px" }}>건의사항</h1>
         {isLoggedIn ? (
           <p style={{ fontSize: '15px', color: "#fff", marginBottom: '20px' }}>💡등록된 건의사항을 확인하고 처리 상태를 관리할 수 있습니다.</p>
         ) : (

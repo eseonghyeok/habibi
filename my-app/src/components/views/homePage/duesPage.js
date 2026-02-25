@@ -286,7 +286,7 @@ function DuesPage() {
 
       <div style={{ minHeight: "100vh", padding: "10px", backgroundImage: `url(${backgroud})`, backgroundSize: "cover", backgroundPosition: "center" }}>
         <div style={{ marginBottom: "20px", textAlign: "center" }}>
-          <h1 style={{ marginBottom: "10px", color: "white", fontSize: "34px" }}>💵회비 내역💵</h1>
+          <h1 style={{ marginBottom: "10px", color: "white", fontSize: "34px" }}>회비 내역</h1>
           <p style={{ fontSize: '15px', color: "#fff", marginBottom: '20px' }}>💡월별로 회비의 거래내역과 잔액을 확인할 수 있습니다.</p>
           {isLoggedIn && (
             <p style={{ fontSize: '15px', color: "#fff", marginBottom: '20px' }}>💡거래내역 파일을 업로드할 수 있습니다.</p>
