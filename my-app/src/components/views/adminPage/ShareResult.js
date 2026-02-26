@@ -13,7 +13,7 @@ async function captureAndShare(targetRef, type) {
     switch (type) {
       case 'record':
         textArray.push(
-          `📢 오늘의 경기 결과 (${today}) 📢`,
+          `📢 오늘의 경기 결과 (${today})`,
           "",
           "",
           "▼ 경기 결과📊 확인하기 ▼",
@@ -25,7 +25,7 @@ async function captureAndShare(targetRef, type) {
         break;
       case 'team':
         textArray.push(
-          `📢 오늘의 경기 명단 (${today}) 📢`,
+          `📢 오늘의 경기 명단 (${today})`,
           "",
           "",
           "▼ 경기 명단👥 확인하기 ▼",
