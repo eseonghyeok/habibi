@@ -18,6 +18,9 @@ async function captureAndShare(targetRef, type) {
           "",
           "▼ 경기 결과📊 확인하기 ▼",
           `${process.env.REACT_APP_WEB_SITE}/record/day`,
+          "",
+          "▼ 순위표🏆 확인하기 ▼",
+          `${process.env.REACT_APP_WEB_SITE}/record/rank`,
         );
         break;
       case 'team':
