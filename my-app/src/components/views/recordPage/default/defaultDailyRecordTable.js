@@ -87,7 +87,7 @@ function Table({ columns, data, date, lastRecord }) {
             {rows.map((row, i) => {
               prepareRow(row);
               return (
-                <tr {...row.getRowProps()} style={{ backgroundColor: i === 0 ? "#8000ffcc" : "#100995cc", fontWeight: i === 0 ? "bold" : "400" }}>
+                <tr {...row.getRowProps()} style={{ backgroundColor: "#100995cc", fontWeight: "400" }}>
                   {row.cells.map((cell) => (
                     <td
                       {...cell.getCellProps()}

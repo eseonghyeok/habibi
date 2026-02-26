@@ -158,7 +158,12 @@ function HomePage() {
 
   return (
     <div style={{ textAlign: 'center', display: 'flex', backgroundImage: `url(${background})`, backgroundSize: 'cover', backgroundPosition: 'center', minHeight: '100vh', flexDirection: 'column', alignItems: 'center' }}>
-      <div style={{ marginBottom: '20px', marginTop: '50px' }}>
+      <div style={{ marginBottom: '50px', marginTop: '50px' }}>
+        <Button type="primary" href="/record/rank" size="large" style={{...buttonStyle, height: '100px', background: ''}}>
+          순위표 <p style={{ fontSize: '50px', marginRight: '-30px' }}>🏆</p>
+        </Button>
+      </div>
+      <div style={{ marginBottom: '20px' }}>
         <Button type="primary" onClick={operationsModal}  size="large" style={buttonStyle}>
           운영 사항 <p style={{ fontSize: '40px', marginRight: '-30px' }}>📢</p>
         </Button>

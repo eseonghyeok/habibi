@@ -13,6 +13,7 @@ import monthRecordTable from "./components/views/recordPage/monthPage/MonthRecor
 import yearRecordTable from "./components/views/recordPage/yearPage/YearRecordTable"
 import dailyTeamPage from "./components/views/recordPage/dayPage/DailyTeamPage"
 import attendanceCheckPage from "./components/views/recordPage/dayPage/AttendanceCheckPage"
+import RankRecordTable from "./components/views/recordPage/rankPage/RankRecordTable"
 
 import './App.css';
 
@@ -33,6 +34,7 @@ function App() {
           <Route exact path="/attendance" Component={attendancePage} />
           <Route exact path="/record/teams" Component={dailyTeamPage} />
           <Route exact path="/record/attendanceCheck" Component={attendanceCheckPage} />
+          <Route exact path="/record/rank" Component={RankRecordTable} />
         </Routes>
       </div>
       <Footer/>

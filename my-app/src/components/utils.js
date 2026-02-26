@@ -249,3 +249,27 @@ export const PlayerModal = ({ open, close, player, isLogin }) => {
     </Modal>
   );
 };
+
+export function initValue() {
+  return {
+    plays: 0,
+    matches: 0,
+    win: 0,
+    draw: 0,
+    lose: 0,
+    pts: 0,
+    avg: 0
+  }
+}
+
+export function addValue(result, input) {
+  const { plays, win, draw, lose } = input;
+
+  result.plays += plays;
+  result.matches += win + draw + lose;
+  result.win += win;
+  result.draw += draw;
+  result.lose += lose;
+  result.pts += win * 3 + draw;
+  result.avg = result.matches ? Number((result.pts / result.matches).toFixed(2)) : 0;
+}

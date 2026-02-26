@@ -111,6 +111,7 @@ app.use('/api/teams', require('./server/routes/teams'));
 app.use('/api/notifications', require('./server/routes/notifications'));
 app.use('/api/suggestions', require('./server/routes/suggestions'));
 app.use('/api/dues', require('./server/routes/dues'));
+app.use('/api/settings', require('./server/routes/settings'));
 
 //리액트 라우팅
 app.get('*', function(req, res){

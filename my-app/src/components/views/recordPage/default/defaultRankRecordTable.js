@@ -3,7 +3,7 @@ import Search from "./search";
 import { getPlayerInfo } from '../../../utils';
 import chartpage from '../../../images/chartpage.jpg'
 
-function Table({ columns, data }) {
+function Table({ columns, data, rankPolicy }) {
   const {
     getTableProps,
     getTableBodyProps,
@@ -16,8 +16,9 @@ function Table({ columns, data }) {
   return (
     <div style={{ minHeight: "100vh", padding: "10px", backgroundImage: `url(${chartpage})`, backgroundSize: "cover", backgroundPosition: "center" }}>
       <div style={{ marginBottom: "20px", textAlign: "center" }}>
-        <h1 style={{ marginBottom: "10px", color: "#fff", fontSize: "25px" }}>월별 기록</h1>
-        <p style={{ fontSize: '11px', color: "#fff" }}>💡월별 기록 페이지에서는 선수들의 월간 기록을 확인할 수 있습니다.</p>
+        <h1 style={{ marginBottom: "10px", color: "#fff", fontSize: "25px" }}> 순위표 ({rankPolicy.start}월 ~ {rankPolicy.end}월) </h1>
+        <p style={{ fontSize: '11px', color: "#fff" }}>💡순위표 페이지에서는 선수들의 순위를 확인할 수 있습니다.</p>
+        <p style={{ fontSize: '11px', color: "#fff" }}>💡포상 정책을 눌러 자세한 포상 정책을 확인할 수 있습니다.</p>
         <p style={{ fontSize: '10px', color: "#fff" }}>💡점수는 승무패 기록으로 합산됩니다.</p>
         <p style={{ fontSize: '10px', color: "#fff" }}>💡선수를 누르면 선수 정보를 확인할 수 있습니다.</p>
         <Search
@@ -40,7 +41,7 @@ function Table({ columns, data }) {
               <tr {...headerGroup.getHeaderGroupProps()}>
                 {headerGroup.headers.map((column) => (
                   <th
-                    {...column.getHeaderProps(column.getSortByToggleProps())}
+                    {...column.getHeaderProps()}
                     style={{
                       padding: "6px",
                       color: "white",
@@ -52,9 +53,6 @@ function Table({ columns, data }) {
                     }}
                   >
                     {column.render("Header")}
-                    <span>
-                      {column.isSorted ? (column.isSortedDesc ? " 🔽" : " 🔼") : ""}
-                    </span>
                   </th>
                 ))}
               </tr>
@@ -64,8 +62,8 @@ function Table({ columns, data }) {
             {rows.map((row, i) => {
               prepareRow(row);
               return (
-                <tr {...row.getRowProps()} style={{ backgroundColor: "#100995cc", fontWeight: "400" }}>
-                  {row.cells.map((cell) => (
+                <tr {...row.getRowProps()} style={{ backgroundColor: i < rankPolicy.num ? "#8000ffcc" : "#100995cc", fontWeight: i < rankPolicy.num ? "bold" : "400" }}>
+                  {row.cells.map((cell, index) => (
                     <td
                       {...cell.getCellProps()}
                       style={{
@@ -77,7 +75,15 @@ function Table({ columns, data }) {
                       }}
                       onClick={() => getPlayerInfo(row.original)}
                     >
-                      {cell.render("Cell")}
+                      { index === 0 && i ===0 ? (
+                        <span>🥇</span>
+                      ) : index === 0 && i === 1 ? (
+                        <span>🥈</span>
+                      ) : index === 0 && i === 2 ? (
+                        <span>🥉</span>
+                      ) : (
+                        cell.render("Cell")
+                      )}
                     </td>
                   ))}
                 </tr>
