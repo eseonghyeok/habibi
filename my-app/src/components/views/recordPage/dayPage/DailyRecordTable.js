@@ -58,7 +58,7 @@ function DailyRecordTable() {
 
         const recordData = (await Axios.get(`/api/records/type/day/date/${year}`)).data;
         if (recordData.length === 0) throw new Error(null);
-        days.current = recordData.reverse().map((record) => record.date);
+        days.current = recordData.filter((record) => Object.keys(record.result).length > 0).reverse().map((record) => record.date);
         setDay(days.current[0]);
       } catch {
         alert('기록이 존재하지 않습니다.');
