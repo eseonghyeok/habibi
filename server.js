@@ -5,7 +5,7 @@ const cors = require('cors');
 const dotenv = require('dotenv');
 const cron = require('node-cron');
 const utils = require('./common/utils');
-const { sequelize, Player, Record, Team } = require('./common/models/index');
+const { sequelize, Player, Record, Team, Calendar } = require('./common/models/index');
 
 dotenv.config();
 
@@ -58,6 +58,21 @@ cron.schedule('0 1 0 * * *', async () => {
           metadata: {}
         },
         { transaction: t });
+      }
+
+      const calendar = await Calendar.findOne({
+        where: { date: `${nowYear}-${nowMonth}` },
+        transaction: t
+      });
+      if (!calendar) {
+        await Calendar.create({
+          date: `${nowYear}-${nowMonth}`,
+          content: {
+            soccer: [],
+            drinks: [],
+            etc: []
+          }
+        }, { transaction: t });
       }
     });
 
@@ -112,6 +127,7 @@ app.use('/api/notifications', require('./server/routes/notifications'));
 app.use('/api/suggestions', require('./server/routes/suggestions'));
 app.use('/api/dues', require('./server/routes/dues'));
 app.use('/api/settings', require('./server/routes/settings'));
+app.use('/api/calendars', require('./server/routes/calendarEvents'));
 
 //리액트 라우팅
 app.get('*', function(req, res){
