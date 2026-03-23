@@ -33,7 +33,7 @@ function ScheduleFormFields() {
             noStyle
             rules={[{ required: true, message: '시작 시간을 입력하세요' }]}
           >
-            <TimePicker format="HH:mm" minuteStep={5} placeholder="시작" />
+            <TimePicker format="HH:mm" minuteStep={5} placeholder="시작" inputReadOnly />
           </Form.Item>
           <span>~</span>
           <Form.Item
@@ -51,7 +51,7 @@ function ScheduleFormFields() {
               }),
             ]}
           >
-            <TimePicker format="HH:mm" minuteStep={5} placeholder="종료" />
+            <TimePicker format="HH:mm" minuteStep={5} placeholder="종료" inputReadOnly />
           </Form.Item>
         </Space>
       </Form.Item>
