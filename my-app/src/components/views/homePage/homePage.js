@@ -16,42 +16,58 @@ function HomePage() {
         return;
       }
 
-      const playersData = (await Axios.get('/api/players')).data;
+      const [playersData, calendarData] = await Promise.all([
+        Axios.get('/api/players').then(r => r.data),
+        Axios.get(`/api/calendars/date/${year}-${month}`).then(r => r.data).catch(() => null),
+      ]);
+
+      const sortByDay = arr => [...arr].sort((a, b) => a.day - b.day);
+      const soccerEvents = sortByDay(calendarData?.content?.soccer || []);
+      const etcEvents = sortByDay(calendarData?.content?.etc || []);
+
+      const birthdayPlayers = playersData
+        .filter(p => p.metadata.birth.slice(5, 7) === month)
+        .sort((a, b) => a.metadata.birth.slice(8, 10).localeCompare(b.metadata.birth.slice(8, 10)));
+
+      const renderEvents = (events) =>
+        events.length === 0
+          ? <p style={{ color: '#999' }}>일정 없음</p>
+          : events.map(event => (
+            <p key={event.id}>
+              <span>{month}월 {event.day}일</span>
+              {event.time && <span> {event.time}</span>}
+              {' / '}
+              <span style={{ fontWeight: 'bold' }}>{event.title}</span>
+              {event.place && <span style={{ color: '#666' }}> ({event.place})</span>}
+            </p>
+          ));
+
       Modal.confirm({
-        title: '생일자 목록',
+        title: '이번달 일정',
         content: (
           <div>
-            <p style={{ fontWeight: 'bolder' }}>오늘 생일자</p>
-            {playersData.map(player => {
-              if (player.metadata.birth.slice(5, 10) === `${month}-${day}`) {
-                return (
-                  <p key={player.id}>
-                    <span style={{ fontWeight: 'bold' }}>{player.name}</span>
-                    {(player.metadata.alias && player.metadata.number) && (<span>, {player.metadata.alias}({player.metadata.number})</span>)}
-                  </p>
-                )
-              }
-              return null;
-            })}
+            <p style={{ fontWeight: 'bolder' }}>🎉 생일자 목록</p>
+            {birthdayPlayers.length === 0
+              ? <p style={{ color: '#999' }}>생일자 없음</p>
+              : birthdayPlayers.map(player => (
+                <p key={player.id}>
+                  <span>{month}월 {player.metadata.birth.slice(8, 10)}일 / </span>
+                  <span style={{ fontWeight: 'bold' }}>{player.name}</span>
+                  {(player.metadata.alias && player.metadata.number) && (<span>, {player.metadata.alias}({player.metadata.number})</span>)}
+                </p>
+              ))
+            }
             <br />
-            <p style={{ fontWeight: 'bolder' }}>이번 달 생일자</p>
-            {playersData.sort((a, b) => a.metadata.birth.slice(8, 10).localeCompare(b.metadata.birth.slice(8, 10))).map(player => {
-              if (player.metadata.birth.slice(5, 7) === month) {
-                return (
-                  <p key={player.id}>
-                    <span>{month}월 {player.metadata.birth.slice(8, 10)}일 / </span>
-                    <span style={{ fontWeight: 'bold' }}>{player.name}</span>
-                    {(player.metadata.alias && player.metadata.number) && (<span>, {player.metadata.alias}({player.metadata.number})</span>)}
-                  </p>
-                )
-              }
-              return null;
-            })}
+            <p style={{ fontWeight: 'bolder' }}>⚽ 축구 일정</p>
+            {renderEvents(soccerEvents)}
+            <br />
+            <p style={{ fontWeight: 'bolder' }}>📌 기타 일정</p>
+            {renderEvents(etcEvents)}
           </div>
         ),
         okText: '확인',
         cancelText: '하루 동안 보지 않기',
-        icon: '🎉',
+        icon: '📅',
         onCancel() {
           localStorage.setItem('checkData', `${year}-${month}-${day}`);
         }

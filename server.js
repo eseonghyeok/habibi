@@ -69,7 +69,6 @@ cron.schedule('0 1 0 * * *', async () => {
           date: `${nowYear}-${nowMonth}`,
           content: {
             soccer: [],
-            drinks: [],
             etc: []
           }
         }, { transaction: t });

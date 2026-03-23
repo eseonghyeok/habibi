@@ -3,8 +3,8 @@ const router = express.Router();
 const { randomUUID } = require('crypto');
 const { sequelize, Calendar } = require('../../common/models/index');
 
-const CATEGORIES = ['soccer', 'drinks', 'etc'];
-const emptyContent = () => ({ soccer: [], drinks: [], etc: [] });
+const CATEGORIES = ['soccer', 'etc'];
+const emptyContent = () => ({ soccer: [], etc: [] });
 
 // 월 일정 조회 (date: YYYY-MM)
 router.get('/date/:date', async (req, res) => {

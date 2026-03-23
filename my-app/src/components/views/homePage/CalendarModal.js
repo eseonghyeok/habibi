@@ -6,11 +6,11 @@ import dayjs from 'dayjs';
 
 const CATEGORIES = [
   { key: 'soccer', label: '⚽ 축구' },
-  { key: 'drinks', label: '🍺 회식' },
   { key: 'etc',    label: '📌 기타' },
 ];
 
-const CATEGORY_EMOJI = { soccer: '⚽', drinks: '🍺', etc: '📌' };
+const CATEGORY_EMOJI = { soccer: '⚽', etc: '📌' };
+const SOCCER_DEFAULTS = { title: '자체전', place: '영등포 공원' };
 
 function ScheduleFormFields() {
   return (
@@ -78,7 +78,6 @@ function ScheduleFormFields() {
 function CalendarModal({ open, onClose }) {
   const [currentMonth, setCurrentMonth] = useState(dayjs());
   const [players, setPlayers] = useState([]);
-  const [calendarRecord, setCalendarRecord] = useState(null);
   const [selectedDay, setSelectedDay] = useState(null);
   const [detailOpen, setDetailOpen] = useState(false);
   const [isAdding, setIsAdding] = useState(false);
@@ -104,10 +103,8 @@ function CalendarModal({ open, onClose }) {
   const loadMonthRecord = async (month) => {
     try {
       const res = await Axios.get(`/api/calendars/date/${month.format('YYYY-MM')}`);
-      setCalendarRecord(res.data);
       calendarContentRef.current = res.data?.content ?? null;
     } catch {
-      setCalendarRecord(null);
       calendarContentRef.current = null;
     } finally {
       setCalendarKey(k => k + 1); // 데이터 로드 후 Calendar 강제 재렌더링
@@ -116,14 +113,12 @@ function CalendarModal({ open, onClose }) {
 
   const reloadMonth = () => loadMonthRecord(currentMonth);
 
-  const SOCCER_DEFAULTS = { title: '자체전', place: '영등포 공원' };
-
   // 추가 폼 열리거나 카테고리가 soccer로 바뀔 때 기본값 세팅
   useEffect(() => {
     if (isAdding && addCategory === 'soccer') {
       addForm.setFieldsValue(SOCCER_DEFAULTS);
     }
-  }, [isAdding, addCategory]);
+  }, [isAdding, addCategory, addForm]);
 
   const getBirthdaysForDay = (date) => {
     const mmdd = date.format('MM-DD');
@@ -153,9 +148,7 @@ function CalendarModal({ open, onClose }) {
         {hasAny && (
           <div style={{ display: 'flex', gap: 1, flexWrap: 'wrap', justifyContent: 'center', marginTop: 1 }}>
             {birthdays.length > 0 && <span style={{ fontSize: 10 }}>🎂</span>}
-            {events.soccer && <span style={{ fontSize: 10 }}>⚽</span>}
-            {events.drinks && <span style={{ fontSize: 10 }}>🍺</span>}
-            {events.etc    && <span style={{ fontSize: 10 }}>📌</span>}
+            {CATEGORIES.map(({ key }) => events[key] && <span key={key} style={{ fontSize: 10 }}>{CATEGORY_EMOJI[key]}</span>)}
           </div>
         )}
       </div>
@@ -277,12 +270,14 @@ function CalendarModal({ open, onClose }) {
               });
               const monthOptions = Array.from({ length: 12 }, (_, i) => ({ value: i + 1, label: `${i + 1}월` }));
               return (
-                <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', padding: '8px 0', gap: 4 }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '8px 0' }}>
                   <Button type="text" icon={<LeftOutlined />} onClick={prev} />
-                  <Select value={value.year()} size="small" options={yearOptions} style={{ width: 88 }}
-                    onChange={(y) => { const m = value.year(y); onChange(m); setCurrentMonth(m); }} />
-                  <Select value={value.month() + 1} size="small" options={monthOptions} style={{ width: 68 }}
-                    onChange={(mo) => { const m = value.month(mo - 1); onChange(m); setCurrentMonth(m); }} />
+                  <div style={{ display: 'flex', gap: 4 }}>
+                    <Select value={value.year()} size="small" options={yearOptions} style={{ width: 88 }}
+                      onChange={(y) => { const m = value.year(y); onChange(m); setCurrentMonth(m); }} />
+                    <Select value={value.month() + 1} size="small" options={monthOptions} style={{ width: 68 }}
+                      onChange={(mo) => { const m = value.month(mo - 1); onChange(m); setCurrentMonth(m); }} />
+                  </div>
                   <Button type="text" icon={<RightOutlined />} onClick={next} />
                 </div>
               );
