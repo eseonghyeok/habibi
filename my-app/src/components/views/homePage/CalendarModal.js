@@ -81,17 +81,19 @@ function CalendarModal({ open, onClose }) {
   const [selectedDay, setSelectedDay] = useState(null);
   const [detailOpen, setDetailOpen] = useState(false);
   const [isAdding, setIsAdding] = useState(false);
+  const [isSaving, setIsSaving] = useState(false);
   const [addCategory, setAddCategory] = useState('soccer');
   const [editOpen, setEditOpen] = useState(false);
   const [editItem, setEditItem] = useState(null);
   const [calendarKey, setCalendarKey] = useState(0);
   const [addForm] = Form.useForm();
   const [editForm] = Form.useForm();
-  const calendarContentRef = useRef(null);
+  const calendarCacheRef = useRef({});
   const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
 
   useEffect(() => {
     if (open) {
+      setCurrentMonth(dayjs());
       Axios.get('/api/players').then(res => setPlayers(res.data)).catch(() => {});
     }
   }, [open]);
@@ -102,12 +104,16 @@ function CalendarModal({ open, onClose }) {
 
   const loadMonthRecord = async (month) => {
     try {
-      const res = await Axios.get(`/api/calendars/date/${month.format('YYYY-MM')}`);
-      calendarContentRef.current = res.data?.content ?? null;
-    } catch {
-      calendarContentRef.current = null;
+      const months = [month.subtract(1, 'month'), month, month.add(1, 'month')];
+      const results = await Promise.allSettled(
+        months.map(m => Axios.get(`/api/calendars/date/${m.format('YYYY-MM')}`))
+      );
+      months.forEach((m, i) => {
+        calendarCacheRef.current[m.format('YYYY-MM')] =
+          results[i].status === 'fulfilled' ? (results[i].value.data?.content ?? null) : null;
+      });
     } finally {
-      setCalendarKey(k => k + 1); // 데이터 로드 후 Calendar 강제 재렌더링
+      setCalendarKey(k => k + 1);
     }
   };
 
@@ -126,7 +132,7 @@ function CalendarModal({ open, onClose }) {
   };
 
   const getEventsForDay = (date) => {
-    const content = calendarContentRef.current;
+    const content = calendarCacheRef.current[date.format('YYYY-MM')];
     if (!content) return {};
     const day = date.date();
     const result = {};
@@ -169,8 +175,10 @@ function CalendarModal({ open, onClose }) {
   };
 
   const handleAdd = async () => {
+    if (isSaving) return;
     try {
       const values = await addForm.validateFields();
+      setIsSaving(true);
       // currentMonth 대신 selectedDay 기준으로 월 키 결정 (월 불일치 방지)
       await Axios.post(`/api/calendars/date/${selectedDay.format('YYYY-MM')}/item`, {
         category: addCategory,
@@ -186,6 +194,8 @@ function CalendarModal({ open, onClose }) {
     } catch (err) {
       if (err?.errorFields) return;
       alert('일정 추가에 실패했습니다.');
+    } finally {
+      setIsSaving(false);
     }
   };
 
@@ -339,7 +349,7 @@ function CalendarModal({ open, onClose }) {
             </Form>
             <div style={{ display: 'flex', justifyContent: 'flex-end', gap: 8, marginTop: 4 }}>
               <Button onClick={() => { setIsAdding(false); addForm.resetFields(); }}>취소</Button>
-              <Button type="primary" onClick={handleAdd}>저장</Button>
+              <Button type="primary" onClick={handleAdd} loading={isSaving}>저장</Button>
             </div>
           </div>
         )}
