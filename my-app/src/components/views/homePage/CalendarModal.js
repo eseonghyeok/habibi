@@ -134,13 +134,16 @@ function CalendarModal({ open, onClose }) {
       events.length === 0
         ? <p style={{ color: '#999' }}>일정 없음</p>
         : events.map(event => (
-          <p key={event.id}>
-            <span>{month}월 {event.day}일</span>
-            {event.time && <span> {event.time}</span>}
-            {' / '}
-            <span style={{ fontWeight: 'bold' }}>{event.title}</span>
-            {event.place && <span style={{ color: '#666' }}> ({event.place})</span>}
-          </p>
+          <div key={event.id} style={{ marginBottom: 6 }}>
+            <p style={{ margin: 0 }}>
+              <span>{month}월 {event.day}일</span>
+              {event.time && <span> {event.time}</span>}
+              {' / '}
+              <span style={{ fontWeight: 'bold' }}>{event.title}</span>
+              {event.place && <span style={{ color: '#666' }}> ({event.place})</span>}
+            </p>
+            {event.content && <p style={{ margin: '2px 0 0 0', color: '#555', fontSize: 13, whiteSpace: 'pre-wrap' }}>{event.content}</p>}
+          </div>
         ));
     Modal.info({
       title: `${currentMonth.format('YYYY년 MM월')} 일정`,
