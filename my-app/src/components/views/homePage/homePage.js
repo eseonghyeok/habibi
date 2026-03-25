@@ -10,7 +10,7 @@ function HomePage() {
   const [isLoggedIn, setIsLoggedIn] = useState(localStorage.getItem('isLoggedIn') === 'true');
 
   useEffect(() => {
-    async function getBirthdays() {
+    async function getMonthSchedule() {
       const [year, month, day] = dayjs().format('YYYY-MM-DD').split('-');
       if (localStorage.getItem('checkData') && (`${year}-${month}-${day}` === localStorage.getItem('checkData'))) {
         return;
@@ -73,7 +73,7 @@ function HomePage() {
         }
       });
     }
-    getBirthdays();
+    getMonthSchedule();
   }, []);
 
   const showModal = () => {

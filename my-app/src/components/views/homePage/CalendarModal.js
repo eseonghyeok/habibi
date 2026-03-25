@@ -119,6 +119,59 @@ function CalendarModal({ open, onClose }) {
 
   const reloadMonth = () => loadMonthRecord(currentMonth);
 
+  const showMonthSchedule = () => {
+    const month = currentMonth.format('MM');
+    const content = calendarCacheRef.current[currentMonth.format('YYYY-MM')];
+    const sortByDay = arr => [...arr].sort((a, b) => a.day - b.day);
+    const soccerEvents = sortByDay(content?.soccer || []);
+    const etcEvents = sortByDay(
+      Object.entries(content || {}).filter(([k]) => k !== 'soccer').flatMap(([, v]) => v)
+    );
+    const birthdayPlayers = players
+      .filter(p => p.metadata?.birth?.slice(5, 7) === month)
+      .sort((a, b) => a.metadata.birth.slice(8, 10).localeCompare(b.metadata.birth.slice(8, 10)));
+    const renderEvents = (events) =>
+      events.length === 0
+        ? <p style={{ color: '#999' }}>일정 없음</p>
+        : events.map(event => (
+          <p key={event.id}>
+            <span>{month}월 {event.day}일</span>
+            {event.time && <span> {event.time}</span>}
+            {' / '}
+            <span style={{ fontWeight: 'bold' }}>{event.title}</span>
+            {event.place && <span style={{ color: '#666' }}> ({event.place})</span>}
+          </p>
+        ));
+    Modal.info({
+      title: `${currentMonth.format('YYYY년 MM월')} 일정`,
+      icon: '📅',
+      okText: '확인',
+      content: (
+        <div>
+          <p style={{ fontWeight: 'bolder' }}>🎉 생일자 목록</p>
+          {birthdayPlayers.length === 0
+            ? <p style={{ color: '#999' }}>생일자 없음</p>
+            : birthdayPlayers.map(player => (
+              <p key={player.id}>
+                <span>{month}월 {player.metadata.birth.slice(8, 10)}일 / </span>
+                <span style={{ fontWeight: 'bold' }}>{player.name}</span>
+                {(player.metadata.alias && player.metadata.number) && (
+                  <span>, {player.metadata.alias}({player.metadata.number})</span>
+                )}
+              </p>
+            ))
+          }
+          <br />
+          <p style={{ fontWeight: 'bolder' }}>⚽ 축구 일정</p>
+          {renderEvents(soccerEvents)}
+          <br />
+          <p style={{ fontWeight: 'bolder' }}>📌 기타 일정</p>
+          {renderEvents(etcEvents)}
+        </div>
+      ),
+    });
+  };
+
   // 추가 폼 열리거나 카테고리가 soccer로 바뀔 때 기본값 세팅
   useEffect(() => {
     if (isAdding && addCategory === 'soccer') {
@@ -293,6 +346,11 @@ function CalendarModal({ open, onClose }) {
               );
             }}
           />
+        </div>
+        <div style={{ textAlign: 'center', paddingBottom: 8 }}>
+          <Button size="small" onClick={showMonthSchedule}>
+            {currentMonth.format('MM')}월 일정 보기
+          </Button>
         </div>
       </Modal>
 
