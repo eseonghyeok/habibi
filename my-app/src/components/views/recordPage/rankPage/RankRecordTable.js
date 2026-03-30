@@ -13,7 +13,6 @@ function RankRecordTable() {
   const [rankPolicy, setRankPolicy] = useState({});
   const players = useRef([]);
   const period = useRef({})
-  const year = dayjs().format('YYYY');
 
   useEffect(() => {
     async function getResult() {
