@@ -3,7 +3,7 @@ import Search from "./search";
 import { getPlayerInfo } from '../../../utils';
 import chartpage from '../../../images/chartpage.jpg'
 
-function Table({ columns, data, rankPolicy }) {
+function Table({ columns, data, rankPolicy, highlightSet = null }) {
   const {
     getTableProps,
     getTableBodyProps,
@@ -41,7 +41,7 @@ function Table({ columns, data, rankPolicy }) {
               <tr {...headerGroup.getHeaderGroupProps()}>
                 {headerGroup.headers.map((column) => (
                   <th
-                    {...column.getHeaderProps()}
+                    {...column.getHeaderProps(column.getSortByToggleProps())}
                     style={{
                       padding: "6px",
                       color: "white",
@@ -49,10 +49,12 @@ function Table({ columns, data, rankPolicy }) {
                       fontSize: '15px',
                       textAlign: "center",
                       backgroundColor: "transparent",
-                      width: "60px"
+                      width: "60px",
+                      cursor: "pointer"
                     }}
                   >
                     {column.render("Header")}
+                    <span>{column.isSorted ? (column.isSortedDesc ? " 🔽" : " 🔼") : ""}</span>
                   </th>
                 ))}
               </tr>
@@ -62,7 +64,7 @@ function Table({ columns, data, rankPolicy }) {
             {rows.map((row, i) => {
               prepareRow(row);
               return (
-                <tr {...row.getRowProps()} style={{ backgroundColor: i < rankPolicy.num ? "#8000ffcc" : "#100995cc", fontWeight: i < rankPolicy.num ? "bold" : "400" }}>
+                <tr {...row.getRowProps()} style={{ backgroundColor: highlightSet.has(row.original.name) ? "#8000ffcc" : "#100995cc", fontWeight: highlightSet.has(row.original.name) ? "bold" : "400" }}>
                   {row.cells.map((cell, index) => (
                     <td
                       {...cell.getCellProps()}

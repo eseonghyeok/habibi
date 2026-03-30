@@ -119,14 +119,14 @@ function RankRecordTable() {
     }
   });
 
+  const highlightSet = new Set(indexedData.slice(0, rankPolicy.num).map(d => d.name));
+
   if (loading) return <p>⏳ loading...</p>;
 
   return (
     <div>
-      <RankPolicyPage
-        rankPolicy={rankPolicy}
-      />
-      <Table columns={columns} data={indexedData} rankPolicy={{ ...rankPolicy, ...period.current }} />
+      <RankPolicyPage rankPolicy={rankPolicy} />
+      <Table columns={columns} data={indexedData} rankPolicy={{ ...rankPolicy, ...period.current }} highlightSet={highlightSet} />
     </div>
   );
 }
