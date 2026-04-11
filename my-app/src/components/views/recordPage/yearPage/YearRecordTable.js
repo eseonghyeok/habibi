@@ -4,6 +4,21 @@ import Axios from 'axios';
 import dayjs from 'dayjs';
 import Table from "../default/defaultYearRecordTable";
 
+const defaultComparator = (a, b) =>
+  (b.pts - a.pts) ||
+  (b.avg - a.avg) ||
+  (b.plays - a.plays) ||
+  (b.win - a.win) ||
+  (a.lose - b.lose) ||
+  (b.draw - a.draw) ||
+  a.name.localeCompare(b.name);
+
+const withTiebreaker = (primary, rowA, rowB, desc) => {
+  if (primary !== 0) return primary;
+  const tie = defaultComparator(rowA.original, rowB.original);
+  return desc ? -tie : tie;
+};
+
 function YearRecordTable() {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(true);
@@ -63,39 +78,42 @@ function YearRecordTable() {
       {
         accessor: "rank",
         Header: "RANK",
+        sortType: (rowA, rowB, _, desc) => withTiebreaker(rowA.original.rank - rowB.original.rank, rowA, rowB, desc),
       },
       {
         accessor: "name",
         Header: "NAME",
+        sortType: (rowA, rowB, _, desc) => withTiebreaker(rowA.original.name.localeCompare(rowB.original.name), rowA, rowB, desc),
       },
       {
         accessor: "win",
         Header: "W",
+        sortType: (rowA, rowB, _, desc) => withTiebreaker(rowA.original.win - rowB.original.win, rowA, rowB, desc),
       },
       {
         accessor: "draw",
         Header: "D",
+        sortType: (rowA, rowB, _, desc) => withTiebreaker(rowA.original.draw - rowB.original.draw, rowA, rowB, desc),
       },
       {
         accessor: "lose",
         Header: "L",
+        sortType: (rowA, rowB, _, desc) => withTiebreaker(rowA.original.lose - rowB.original.lose, rowA, rowB, desc),
       },
       {
         accessor: "plays",
         Header: "P",
+        sortType: (rowA, rowB, _, desc) => withTiebreaker(rowA.original.plays - rowB.original.plays, rowA, rowB, desc),
       },
       {
         accessor: "pts",
         Header: "PTS",
+        sortType: (rowA, rowB, _, desc) => withTiebreaker(rowA.original.pts - rowB.original.pts, rowA, rowB, desc),
       },
       {
         accessor: "avgString",
         Header: "AVG",
-        sortType: (rowA, rowB, column) => {
-          const a = Number(rowA.values[column]);
-          const b = Number(rowB.values[column]);
-          return a - b;
-        }
+        sortType: (rowA, rowB, _, desc) => withTiebreaker(rowA.original.avg - rowB.original.avg, rowA, rowB, desc),
       },
     ], []
   );
@@ -108,11 +126,11 @@ function YearRecordTable() {
       ...result[id],
       avgString: result[id].avg.toFixed(2)
     }))
-    .sort((a, b) => (b.pts - a.pts) || (b.avg - a.avg) || (b.plays - a.plays) || a.name.localeCompare(b.name));
+    .sort(defaultComparator);
 
   let playerRank = 0;
   let indexedData = Data.map((item, index, array) => {
-    if (index > 0 && array[index].pts === array[index - 1].pts) {
+    if (index > 0 && defaultComparator(array[index], array[index - 1]) === 0) {
       return { ...item, rank: playerRank };
     } else {
       playerRank++;

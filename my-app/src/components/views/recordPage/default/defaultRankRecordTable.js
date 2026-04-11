@@ -77,11 +77,11 @@ function Table({ columns, data, rankPolicy, highlightSet = null }) {
                       }}
                       onClick={() => getPlayerInfo(row.original)}
                     >
-                      { index === 0 && i ===0 ? (
+                      { index === 0 && row.original.rank === 1 ? (
                         <span>🥇</span>
-                      ) : index === 0 && i === 1 ? (
+                      ) : index === 0 && row.original.rank === 2 ? (
                         <span>🥈</span>
-                      ) : index === 0 && i === 2 ? (
+                      ) : index === 0 && row.original.rank === 3 ? (
                         <span>🥉</span>
                       ) : (
                         cell.render("Cell")
