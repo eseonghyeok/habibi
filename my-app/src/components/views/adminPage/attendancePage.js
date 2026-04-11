@@ -180,20 +180,48 @@ function AttendancePage() {
                 member.standardRecord = standardRecordData[member.id];
               });
               teamMembers.sort((a, b) => b.standardRecord.matches - a.standardRecord.matches || b.standardRecord.pts - a.standardRecord.pts);
+
+              const logLines = [];
+              logLines.push({ type: 'title', text: '[1] 전체 선수 정렬 (경기수↓ → pts↓)' });
+              teamMembers.forEach((m, i) => {
+                const r = m.standardRecord;
+                logLines.push({ type: 'row', text: `${i + 1}. ${m.name} | P:${r.matches} PTS:${r.pts} AVG:${r.avg?.toFixed(2)}` });
+              });
+
+              let round = 1;
               while (teamMembers.length > 0) {
                 const teamMembersTemp = teamMembers.splice(0, teamNames.length).sort((a, b) => a.standardRecord.avg - b.standardRecord.avg);
+                logLines.push({ type: 'title', text: `[${round}번] 팀 순서: ${teamRecords.map(t => `${t.teamName}(${t.avg.toFixed(2)})`).join(' > ')}` });
                 for (let i = 0; i < teamMembersTemp.length; i++) {
                   teamRecords[i].members.push(teamMembersTemp[i]);
                   teamRecords[i].matches += teamMembersTemp[i].standardRecord.matches;
                   teamRecords[i].pts += teamMembersTemp[i].standardRecord.pts;
                   teamRecords[i].avg = teamRecords[i].matches ? teamRecords[i].pts / teamRecords[i].matches : 0;
+                  logLines.push({ type: 'row', text: `${teamMembersTemp[i].name}(AVG:${teamMembersTemp[i].standardRecord.avg?.toFixed(2)}) → ${teamRecords[i].teamName}` });
                 }
                 teamRecords.sort((a, b) => b.avg - a.avg);
+                round++;
               }
 
+              logLines.push({ type: 'title', text: '[최종] 팀 구성' });
               for (const teamRecord of teamRecords) {
                 teamsTemp[teamRecord.teamName].members = teamRecord.members;
+                logLines.push({ type: 'row', text: `${teamRecord.teamName}(AVG:${teamRecord.avg.toFixed(2)}): ${teamRecord.members.map(m => m.name).join(', ')}` });
               }
+
+              Modal.info({
+                title: '기록 기준 팀 편성 과정',
+                content: (
+                  <div style={{ maxHeight: '60vh', overflowY: 'auto', fontFamily: 'monospace', fontSize: '12px' }}>
+                    {logLines.map((line, i) => (
+                      <p key={i} style={{ margin: line.type === 'title' ? '12px 0 4px' : '2px 0', fontWeight: line.type === 'title' ? 'bold' : 'normal' }}>
+                        {line.text}
+                      </p>
+                    ))}
+                  </div>
+                ),
+                okText: '확인'
+              });
 
               break;
             }
