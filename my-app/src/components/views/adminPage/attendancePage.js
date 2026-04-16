@@ -21,6 +21,8 @@ function AttendancePage() {
   const [teams, setTeams] = useState({});
   const [activeTeam, setActiveTeam] = useState(null);
   const [members, setMembers] = useState([]);
+  const [mixLog, setMixLog] = useState(null);
+  const mixLogRef = useRef(null);
   const profiles = useRef([]);
   const now = dayjs().format('YYYY-MM-DD');
 
@@ -71,6 +73,12 @@ function AttendancePage() {
         setTeams(teamsTemp);
         setActiveTeam(Object.keys(teamsTemp)[0]);
         setMembers((await Axios.get('/api/players')).data.filter(player => !player.teamName).sort((a, b) => a.name.localeCompare(b.name)));
+
+        const shuffleSetting = await Axios.get('/api/settings/name/shuffle').catch(() => null);
+        const shuffleContent = shuffleSetting?.data?.content;
+        if (shuffleContent && Object.keys(shuffleContent).length > 0) {
+          setMixLog({ criteria: shuffleContent.type, logLines: shuffleContent.history, manual: shuffleContent.manual || [] });
+        }
       } catch (err) {
         alert('오늘의 팀 정보 가져오기를 실패하였습니다.');
         window.location.reload();
@@ -107,6 +115,22 @@ function AttendancePage() {
       throw err;
     }
   }
+
+  useEffect(() => { mixLogRef.current = mixLog; }, [mixLog]);
+
+  const saveMixLogToDB = (log) => {
+    if (!log) return;
+    Axios.patch('/api/settings/name/shuffle', {
+      content: { type: log.criteria, history: log.logLines, manual: log.manual || [] }
+    }).catch(() => {});
+  };
+
+  const appendManualEntry = (entry) => {
+    const prev = mixLogRef.current;
+    const updated = { ...(prev || { criteria: null, logLines: [] }), manual: [...(prev?.manual || []), entry] };
+    setMixLog(updated);
+    saveMixLogToDB(updated);
+  };
 
   const relocationTeam = async () => {
     let selectedValue = 'record';
@@ -166,13 +190,7 @@ function AttendancePage() {
 
               const teamRecords = [];
               for (const teamName of teamNames) {
-                teamRecords.push({
-                  teamName,
-                  members: [],
-                  matches: 0,
-                  pts: 0,
-                  avg: 0
-                });
+                teamRecords.push({ teamName, members: [], matches: 0, pts: 0, avg: 0 });
               }
 
               const standardRecordData = (await Axios.get(`/api/records/standard`)).data;
@@ -181,51 +199,45 @@ function AttendancePage() {
               });
               teamMembers.sort((a, b) => b.standardRecord.matches - a.standardRecord.matches || b.standardRecord.pts - a.standardRecord.pts);
 
-              const logLines = [];
-              logLines.push({ type: 'title', text: '[1] 전체 선수 정렬 (경기수↓ → pts↓)' });
+              const recordLogLines = [];
+              recordLogLines.push({ type: 'title', text: '[1] 전체 선수 정렬 (경기수↓ → pts↓)' });
               teamMembers.forEach((m, i) => {
                 const r = m.standardRecord;
-                logLines.push({ type: 'row', text: `${i + 1}. ${m.name} | P:${r.matches} PTS:${r.pts} AVG:${r.avg?.toFixed(2)}` });
+                recordLogLines.push({ type: 'row', text: `${i + 1}. ${m.name} | P:${r.matches} PTS:${r.pts} AVG:${r.avg?.toFixed(2)}` });
               });
 
               let round = 1;
               while (teamMembers.length > 0) {
                 const teamMembersTemp = teamMembers.splice(0, teamNames.length).sort((a, b) => a.standardRecord.avg - b.standardRecord.avg);
-                logLines.push({ type: 'title', text: `[${round}번] 팀 순서: ${teamRecords.map(t => `${t.teamName}(${t.avg.toFixed(2)})`).join(' > ')}` });
+                recordLogLines.push({ type: 'title', text: `[${round}번] 팀 순서: ${teamRecords.map(t => `${t.teamName}(${t.avg.toFixed(2)})`).join(' > ')}` });
                 for (let i = 0; i < teamMembersTemp.length; i++) {
                   teamRecords[i].members.push(teamMembersTemp[i]);
                   teamRecords[i].matches += teamMembersTemp[i].standardRecord.matches;
                   teamRecords[i].pts += teamMembersTemp[i].standardRecord.pts;
                   teamRecords[i].avg = teamRecords[i].matches ? teamRecords[i].pts / teamRecords[i].matches : 0;
-                  logLines.push({ type: 'row', text: `${teamMembersTemp[i].name}(AVG:${teamMembersTemp[i].standardRecord.avg?.toFixed(2)}) → ${teamRecords[i].teamName}` });
+                  recordLogLines.push({ type: 'row', text: `${teamMembersTemp[i].name}(AVG:${teamMembersTemp[i].standardRecord.avg?.toFixed(2)}) → ${teamRecords[i].teamName}` });
                 }
                 teamRecords.sort((a, b) => b.avg - a.avg);
                 round++;
               }
 
-              logLines.push({ type: 'title', text: '[최종] 팀 구성' });
+              recordLogLines.push({ type: 'title', text: '[최종] 팀 구성' });
               for (const teamRecord of teamRecords) {
                 teamsTemp[teamRecord.teamName].members = teamRecord.members;
-                logLines.push({ type: 'row', text: `${teamRecord.teamName}(AVG:${teamRecord.avg.toFixed(2)}): ${teamRecord.members.map(m => m.name).join(', ')}` });
+                recordLogLines.push({ type: 'row', text: `${teamRecord.teamName}(AVG:${teamRecord.avg.toFixed(2)}): ${teamRecord.members.map(m => m.name).join(', ')}` });
               }
 
-              Modal.info({
-                title: '기록 기준 팀 편성 과정',
-                content: (
-                  <div style={{ maxHeight: '60vh', overflowY: 'auto', fontFamily: 'monospace', fontSize: '12px' }}>
-                    {logLines.map((line, i) => (
-                      <p key={i} style={{ margin: line.type === 'title' ? '12px 0 4px' : '2px 0', fontWeight: line.type === 'title' ? 'bold' : 'normal' }}>
-                        {line.text}
-                      </p>
-                    ))}
-                  </div>
-                ),
-                okText: '확인'
-              });
-
+              await Axios.patch('/api/settings/name/shuffle', { content: { type: '기록 기준', history: recordLogLines, manual: [] } });
+              setMixLog({ criteria: '기록 기준', logLines: recordLogLines, manual: [] });
               break;
             }
-            case "tier":
+            case "tier": {
+              const tierLogLines = [];
+              tierLogLines.push({ type: 'title', text: '[원래 팀 구성 (순서 = 티어)]' });
+              for (const name of teamNames) {
+                tierLogLines.push({ type: 'row', text: `${name}: ${teams[name].members.map((m, i) => `${i + 1}.${m.name}`).join(', ')}` });
+              }
+
               let maxNum = 0;
               for (const name of teamNames) {
                 maxNum = Math.max(maxNum, teams[name].members.length);
@@ -238,26 +250,51 @@ function AttendancePage() {
                   const k = Math.floor(Math.random() * (j + 1));
                   [teamValues[j], teamValues[k]] = [teamValues[k], teamValues[j]];
                 }
-
+                const shuffledOrder = [...teamValues];
+                tierLogLines.push({ type: 'title', text: `[티어 ${i + 1}] 배정 순서: ${shuffledOrder.map(t => Object.keys(teams).find(n => teams[n] === t)).join(' > ')}` });
                 for (const j in teamValues) {
                   if (teamValues[j].members[i]) {
-                    teamsTemp[teamNames[j]].members.push(teamValues[j].members[i]);
+                    const assignedTeam = teamNames[j];
+                    teamsTemp[assignedTeam].members.push(teamValues[j].members[i]);
+                    tierLogLines.push({ type: 'row', text: `${teamValues[j].members[i].name} → ${assignedTeam}` });
                   }
                 }
               }
 
+              tierLogLines.push({ type: 'title', text: '[최종] 팀 구성' });
+              for (const name of teamNames) {
+                tierLogLines.push({ type: 'row', text: `${name}: ${teamsTemp[name].members.map(m => m.name).join(', ')}` });
+              }
+
+              await Axios.patch('/api/settings/name/shuffle', { content: { type: '티어 기준', history: tierLogLines, manual: [] } });
+              setMixLog({ criteria: '티어 기준', logLines: tierLogLines, manual: [] });
               break;
-            case "radnom":
+            }
+            case "radnom": {
               for (let i = teamMembers.length - 1; i > 0; i--) {
                 const j = Math.floor(Math.random() * (i + 1));
                 [teamMembers[i], teamMembers[j]] = [teamMembers[j], teamMembers[i]];
               }
 
+              const randomLogLines = [];
+              randomLogLines.push({ type: 'title', text: '[무작위 배정]' });
+              randomLogLines.push({ type: 'row', text: `무작위 결과: ${teamMembers.map(m => m.name).join(', ')}` });
+              randomLogLines.push({ type: 'title', text: '[팀 배정]' });
               teamMembers.forEach((member, i) => {
-                teamsTemp[teamNames[i % teamNames.length]].members.push(member);
+                const assignedTeam = teamNames[i % teamNames.length];
+                teamsTemp[assignedTeam].members.push(member);
+                randomLogLines.push({ type: 'row', text: `${member.name} → ${assignedTeam}` });
               });
 
+              randomLogLines.push({ type: 'title', text: '[최종] 팀 구성' });
+              for (const name of teamNames) {
+                randomLogLines.push({ type: 'row', text: `${name}: ${teamsTemp[name].members.map(m => m.name).join(', ')}` });
+              }
+
+              await Axios.patch('/api/settings/name/shuffle', { content: { type: '무작위', history: randomLogLines, manual: [] } });
+              setMixLog({ criteria: '무작위', logLines: randomLogLines, manual: [] });
               break;
+            }
             default:
               throw new Error(null);
           }
@@ -345,6 +382,7 @@ function AttendancePage() {
         teamsTemp[activeTeam].members.push(member);
         setTeams(teamsTemp);
         setMembers(members.filter((m) => m !== member).sort((a, b) => a.name.localeCompare(b.name)));
+        appendManualEntry(`${member.name}: 대기 → ${activeTeam}`);
       }
     });
   };
@@ -365,6 +403,7 @@ function AttendancePage() {
         teamsTemp[name].members = teams[name].members.filter((m) => m !== member);
         setTeams(teamsTemp);
         setMembers([...members, member].sort((a, b) => a.name.localeCompare(b.name)));
+        appendManualEntry(`${member.name}: ${name} → 대기`);
       }
     });
   };
@@ -387,6 +426,7 @@ function AttendancePage() {
             await Axios.delete(`/api/records/date/${now}`);
           }
           await Axios.patch('/api/teams/reset');
+          await Axios.patch('/api/settings/name/shuffle', { content: {} });
           window.location.reload();
         } catch (err) {
           alert('팀 초기화에 실패하였습니다.');
@@ -510,6 +550,36 @@ function AttendancePage() {
       )}
 
       <div ref={teamRef} style={{ padding: '20px', background: `url(${groundJpg})`, backgroundSize: 'cover', backgroundPosition: 'center', position: 'relative', overflow: 'hidden' }}>
+        {mixLog && (
+          <div style={{ textAlign: 'right', marginBottom: 8 }}>
+            <Button
+              size="small"
+              onClick={() => Modal.info({
+                title: `${mixLog.criteria} 팀 편성 과정`,
+                content: (
+                  <div style={{ maxHeight: '60vh', overflowY: 'auto', fontFamily: 'monospace', fontSize: '12px' }}>
+                    {mixLog.logLines.map((line, i) => (
+                      <p key={i} style={{ margin: line.type === 'title' ? '12px 0 4px' : '2px 0', fontWeight: line.type === 'title' ? 'bold' : 'normal' }}>
+                        {line.text}
+                      </p>
+                    ))}
+                    {mixLog.manual?.length > 0 && (
+                      <>
+                        <p style={{ margin: '16px 0 4px', fontWeight: 'bold' }}>[직접 변경]</p>
+                        {mixLog.manual.map((entry, i) => (
+                          <p key={i} style={{ margin: '2px 0' }}>{i + 1}. {entry}</p>
+                        ))}
+                      </>
+                    )}
+                  </div>
+                ),
+                okText: '확인'
+              })}
+            >
+              📋 편성 결과 보기 ({mixLog.criteria})
+            </Button>
+          </div>
+        )}
         {Object.keys(teams).map(name => (
           <div key={name} style={{ marginBottom: '20px' }}>
             <h2 style={{ color: 'white' }}>{name}</h2>
