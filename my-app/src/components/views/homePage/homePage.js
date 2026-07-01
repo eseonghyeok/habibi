@@ -148,9 +148,6 @@ function HomePage() {
           <Button type="primary" href="/suggestion" size="large" style={buttonStyle}>
             건의 사항
           </Button>
-          <Button type="primary" href="/dues" size="large" style={buttonStyle}>
-            회비 내역
-          </Button>
         </div>
       ),
       okText: '취소'

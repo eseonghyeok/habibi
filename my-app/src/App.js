@@ -4,7 +4,6 @@ import HomePage from "./components/views/homePage/homePage";
 import Bar from "./components/views/homePage/bar"
 import attendancePage from "./components/views/adminPage/attendancePage"
 import notiPage from "./components/views/homePage/notiPage"
-import duesPage from "./components/views/homePage/duesPage"
 import suggestionPage from "./components/views/homePage/suggestionPage"
 import playerListPage from "./components/views/playerPage/playerListPage"
 import Footer from "./components/views/homePage/footer"
@@ -26,7 +25,6 @@ function App() {
           <Route exact path="/" Component={HomePage} />
           <Route exact path="/notification" Component={notiPage} />
           <Route exact path="/suggestion" Component={suggestionPage} />
-          <Route exact path="/dues" Component={duesPage} />
           <Route exact path="/player/list" Component={playerListPage} />
           <Route exact path="/record/year" Component={yearRecordTable} />
           <Route exact path="/record/month" Component={monthRecordTable} />

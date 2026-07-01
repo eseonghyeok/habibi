@@ -1,7 +1,6 @@
 import { useEffect, useState, useMemo, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Axios from 'axios';
-import dayjs from 'dayjs';
 import { initValue, addValue } from '../../../utils';
 import Table from "../default/defaultRankRecordTable";
 import RankPolicyPage from "./RankPolicyPage";
@@ -18,10 +17,11 @@ const defaultComparator = (a, b) =>
 function RankRecordTable() {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(true);
-  const [result, setResult] = useState([]);
   const [rankPolicy, setRankPolicy] = useState({});
+  const [selectedPeriod, setSelectedPeriod] = useState(null);
   const players = useRef([]);
-  const period = useRef({})
+  const periods = useRef([]);
+  const recordsByDate = useRef({});
 
   useEffect(() => {
     async function getResult() {
@@ -39,21 +39,27 @@ function RankRecordTable() {
           return ret;
         }, {});
 
-        const recordData = (await Axios.get(`/api/records/type/month/date/${dayjs().format('YYYY')}`)).data;
-        while (recordData.length > rankData.content.month) {
-          recordData.splice(0, Number(rankData.content.month));
-        }
-        period.current.start = Number(recordData[0].date.split('-')[1]);
-        period.current.end = Math.min(period.current.start + Number(rankData.content.month) - 1, 12);
+        const recordData = (await Axios.get('/api/records/type/month')).data;
+        if (recordData.length === 0) throw new Error(null);
 
-        const resultTemp = {}
+        const periodLength = Number(rankData.content.month);
+        const periodMap = {};
         recordData.forEach(record => {
-          Object.keys(record.result).forEach(id => {
-            if (!resultTemp[id]) resultTemp[id] = initValue();
-            addValue(resultTemp[id], record.result[id]);
-          });
+          recordsByDate.current[record.date] = record;
+
+          const year = record.date.slice(0, 4);
+          const monthNum = Number(record.date.slice(5, 7));
+          const periodIdx = Math.floor((monthNum - 1) / periodLength);
+          const startMonth = periodIdx * periodLength + 1;
+          const endMonth = Math.min(startMonth + periodLength - 1, 12);
+          const key = `${year}-${String(startMonth).padStart(2, '0')}`;
+
+          if (!periodMap[key]) periodMap[key] = { key, year, startMonth, endMonth, dates: [] };
+          periodMap[key].dates.push(record.date);
         });
-        setResult(resultTemp);
+
+        periods.current = Object.values(periodMap).sort((a, b) => b.key.localeCompare(a.key));
+        setSelectedPeriod(periods.current[0].key);
       } catch (err) {
         alert('기록 가져오기를 실패하였습니다.');
         navigate('/');
@@ -116,6 +122,24 @@ function RankRecordTable() {
     ], []
   );
 
+  const currentPeriod = useMemo(
+    () => periods.current.find(p => p.key === selectedPeriod),
+    [selectedPeriod]
+  );
+
+  const result = useMemo(() => {
+    if (!currentPeriod) return {};
+    const resultTemp = {};
+    currentPeriod.dates.forEach(date => {
+      const record = recordsByDate.current[date];
+      Object.keys(record.result).forEach(id => {
+        if (!resultTemp[id]) resultTemp[id] = initValue();
+        addValue(resultTemp[id], record.result[id]);
+      });
+    });
+    return resultTemp;
+  }, [currentPeriod]);
+
   let Data = Object.keys(result)
     .filter(id => players.current[id] ? true : false)
     .map(id => ({
@@ -138,12 +162,30 @@ function RankRecordTable() {
 
   const highlightSet = new Set(indexedData.slice(0, rankPolicy.num).map(d => d.name));
 
-  if (loading) return <p>⏳ loading...</p>;
+  if (loading || !currentPeriod) return <p>⏳ loading...</p>;
 
   return (
     <div>
-      <RankPolicyPage rankPolicy={rankPolicy} />
-      <Table columns={columns} data={indexedData} rankPolicy={{ ...rankPolicy, ...period.current }} highlightSet={highlightSet} />
+      <div style={{ display: 'flex', justifyContent: 'space-between', backgroundColor: 'yellow', padding: '5px' }}>
+        <RankPolicyPage rankPolicy={rankPolicy} />
+
+        <select
+          value={selectedPeriod}
+          onChange={e => setSelectedPeriod(e.target.value)}
+          style={{ height: '30px', width: '160px' }}
+        >
+          {periods.current.map((p) => {
+            const start = String(p.startMonth).padStart(2, '0');
+            const end = String(p.endMonth).padStart(2, '0');
+            return (
+              <option key={p.key} value={p.key}>
+                {p.startMonth === p.endMonth ? `${p.year}년 ${start}월` : `${p.year}년 ${start}~${end}월`}
+              </option>
+            );
+          })}
+        </select>
+      </div>
+      <Table columns={columns} data={indexedData} rankPolicy={{ ...rankPolicy, start: currentPeriod.startMonth, end: currentPeriod.endMonth }} highlightSet={highlightSet} />
     </div>
   );
 }

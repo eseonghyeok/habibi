@@ -16,7 +16,7 @@ function Table({ columns, data, rankPolicy, highlightSet = null }) {
   return (
     <div style={{ minHeight: "100vh", padding: "10px", backgroundImage: `url(${chartpage})`, backgroundSize: "cover", backgroundPosition: "center" }}>
       <div style={{ marginBottom: "20px", textAlign: "center" }}>
-        <h1 style={{ marginBottom: "10px", color: "#fff", fontSize: "25px" }}> 순위표 ({rankPolicy.start}월 ~ {rankPolicy.end}월) </h1>
+        <h1 style={{ marginBottom: "10px", color: "#fff", fontSize: "25px" }}> 순위표 ({String(rankPolicy.start).padStart(2, '0')}월 ~ {String(rankPolicy.end).padStart(2, '0')}월) </h1>
         <p style={{ fontSize: '11px', color: "#fff" }}>💡순위표 페이지에서는 선수들의 순위를 확인할 수 있습니다.</p>
         <p style={{ fontSize: '11px', color: "#fff" }}>💡포상 정책을 눌러 자세한 포상 정책을 확인할 수 있습니다.</p>
         <p style={{ fontSize: '10px', color: "#fff" }}>💡점수는 승무패 기록으로 합산됩니다.</p>

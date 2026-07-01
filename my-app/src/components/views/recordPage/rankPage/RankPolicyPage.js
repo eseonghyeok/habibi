@@ -35,12 +35,10 @@ const RankPolicyPage = ({ rankPolicy }) => {
 
     return (
       <>
-        <div style={{ display: 'flex', justifyContent: 'flex-end', backgroundColor: 'yellow', padding: '5px' }}>
-          <button 
-            onClick={() => showModal()}>
-            포상 정책
-          </button>
-        </div>
+        <button
+          onClick={() => showModal()}>
+          포상 정책
+        </button>
 
         <Modal
           title="포상 정책"
