@@ -193,14 +193,16 @@ function AttendancePage() {
                 teamRecords.push({ teamName, members: [], matches: 0, pts: 0, avg: 0 });
               }
 
-              const standardRecordData = (await Axios.get(`/api/records/standard`)).data;
+              const standardRecordData = (await Axios.get(`/api/records/standard`, {
+                params: { ids: teamMembers.map(m => m.id).join(','), count: 50 }
+              })).data;
               teamMembers.forEach(member => {
-                member.standardRecord = standardRecordData[member.id];
+                member.standardRecord = standardRecordData[member.id] || { matches: 0, win: 0, draw: 0, lose: 0, pts: 0, avg: 0 };
               });
               teamMembers.sort((a, b) => b.standardRecord.matches - a.standardRecord.matches || b.standardRecord.pts - a.standardRecord.pts);
 
               const recordLogLines = [];
-              recordLogLines.push({ type: 'title', text: '[1] 전체 선수 정렬 (경기수↓ → pts↓)' });
+              recordLogLines.push({ type: 'title', text: '[1] 전체 선수 정렬 (최근 50경기 기준, 경기수↓ → pts↓)' });
               teamMembers.forEach((m, i) => {
                 const r = m.standardRecord;
                 recordLogLines.push({ type: 'row', text: `${i + 1}. ${m.name} | P:${r.matches} PTS:${r.pts} AVG:${r.avg?.toFixed(2)}` });

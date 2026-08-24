@@ -65,24 +65,47 @@ router.get('/last', async (req, res) => {
 });
 router.get('/standard', async (req, res) => {
   try {
-    const record = await Record.findAll({
+    const count = parseInt(req.query.count, 10) || 50;
+    const targetIds = req.query.ids ? req.query.ids.split(',') : null;
+    const isDone = (result) => targetIds && targetIds.every(id => result[id]?.matches >= count);
+
+    const result = {};
+    const dayRecords = await Record.findAll({
       where: {
-        type: 'month'
+        type: 'day'
       },
-      order: [[ "date", 'DESC' ]],
-      limit: 3
+      order: [[ "date", 'DESC' ]]
     });
 
-    res.json(record.reduce((ret, record) => {
-      for (const [uuid, data] of Object.entries(record.result)) {
-        if (!ret[uuid]) {
-          ret[uuid] = record.result[uuid];
-        } else {
-          utils.addValue(ret[uuid], record.result[uuid]);
+    for (const dayRecord of dayRecords) {
+      if (isDone(result)) {
+        break;
+      }
+
+      const log = dayRecord.metadata?.log || {};
+      const matchKeys = Object.keys(log).sort((a, b) => Number(b) - Number(a));
+      for (const matchKey of matchKeys) {
+        for (const teamResult of Object.values(log[matchKey])) {
+          for (const id of teamResult.playersId) {
+            if (targetIds && !targetIds.includes(id)) {
+              continue;
+            }
+            if (!result[id]) {
+              result[id] = utils.initValue();
+            }
+            if (result[id].matches >= count) {
+              continue;
+            }
+            result[id].matches++;
+            result[id][teamResult.type]++;
+            result[id].pts = result[id].win * 3 + result[id].draw;
+            result[id].avg = Number((result[id].pts / result[id].matches).toFixed(2));
+          }
         }
       }
-      return ret;
-    }, {}));
+    }
+
+    res.json(result);
   } catch (err) {
     console.log(err);
     res.sendStatus(500);
